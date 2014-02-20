@@ -2,82 +2,105 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/buurt"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#000"
     tools:context=".Main$DummySectionFragment" >
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg4"
+        android:alpha="0.75"
+        android:contentDescription="@string/neighborhood_image_description"/>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+	    android:paddingLeft="@dimen/activity_horizontal_margin"
+	    android:paddingRight="@dimen/activity_horizontal_margin"
+	    android:paddingTop="?android:attr/actionBarSize">
     <TextView
         android:id="@+id/section_label"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:alpha="0" />
 
-    <Button
+    <!-- <Button
         android:id="@+id/button1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/section_label"
         android:layout_alignParentBottom="true"
         android:text="@string/joinIn"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff" /> -->
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/label_buurt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView1"
-        android:layout_alignBottom="@+id/textView1"
-        android:layout_toRightOf="@+id/textView1"
-        android:text="@string/fiberNeighborhood"
+        android:layout_above="@+id/container_deelnemers"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#ffffff"
-        android:textSize="40px" />
+        android:text="@string/label_buurt"
+        android:textStyle="bold"
+        android:textColor="#FFF" />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/container_deelnemers"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView4"
-        android:layout_alignLeft="@+id/textView4"
-        android:text="Pieter&apos;s "
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#ffffff"
-        android:textSize="40px" />
+        android:layout_above="@+id/container_deelnemers_percentage">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_marginBottom="28dp"
-        android:text="22%"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#ffffff"
-        android:textSize="100px" />
+        <TextView
+            android:id="@+id/label_deelnemers_aantal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/label_deelnemers_aantal"
+            android:textSize="48sp"
+            android:textColor="#FFF" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_alignTop="@+id/textView5"
-        android:text="106 "
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#ffffff"
-        android:textSize="40px" />
+        <TextView
+            android:id="@+id/label_deelnemers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/label_deelnemers"
+            android:layout_marginLeft="28dp"
+            android:textSize="24sp"
+            android:textColor="#FFF" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/container_deelnemers_percentage"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView2"
-        android:layout_toRightOf="@+id/textView4"
-        android:text="@string/participants"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#ffffff"
-        android:textSize="35px" />
+        android:layout_above="@+id/button_join"
+        android:gravity="bottom">
+
+        <TextView
+            android:text="@string/label_deelnemers_percentage"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="96sp"
+            android:textColor="#FFF" />
+
+        <Button
+            android:id="@+id/button_facebook"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:background="@drawable/fblogo"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_join"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_join"
+        android:layout_alignParentBottom="true"
+        android:textColor="#FFF" />
+    </RelativeLayout>
 
 </RelativeLayout>
