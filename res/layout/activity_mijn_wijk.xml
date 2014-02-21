@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"     
     android:paddingLeft="10sp"
     android:paddingRight="10sp"  
-    tools:context=".DeelnemerActivity" >
+    tools:context=".MijnWijkActivity" >
 
     <LinearLayout
     android:id="@+id/voortgangText"

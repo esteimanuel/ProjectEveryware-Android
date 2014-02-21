@@ -3,6 +3,7 @@ package avans.glassy;
 import java.util.Locale;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,7 +16,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class Main extends FragmentActivity {
@@ -34,13 +37,17 @@ public class Main extends FragmentActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
+    Button deelneemButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-
-
+        setContentView(R.layout.fragment_main_dummy);
+        //TODO Leon: ik heb hierboven de setcontentview veranderd naar de dummy. vanwege de ViewPager kon ik niet bij de ik doe mee button.
+   
+        /*
+         * Dit kan je uncommentent als de setcontentview(R.layout.main) is.
+         * 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the app.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -48,8 +55,24 @@ public class Main extends FragmentActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
+        */
+        addListenerOnButton();
     }
+    
+	private void addListenerOnButton() {
+		deelneemButton = (Button) findViewById(R.id.button_join);
+
+		deelneemButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent myIntent = new Intent(Main.this, LoginActivity.class);				
+				Main.this.startActivity(myIntent);
+			}
+
+		});
+
+	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

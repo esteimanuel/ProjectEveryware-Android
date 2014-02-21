@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="15"
         android:targetSdkVersion="18" />
 
     <application
@@ -21,6 +21,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="avans.glassy.MijnWijkActivity"
+            android:label="@string/title_activity_mijn_wijk" >
+        </activity>
+        <activity
+            android:name="avans.glassy.LoginActivity" 
+            android:label="@string/title_activity_login" 
+>
         </activity>
     </application>
 

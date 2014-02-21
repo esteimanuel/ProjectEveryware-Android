@@ -10,19 +10,21 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class DeelnemerActivity extends Activity {
+
+public class MijnWijkActivity extends Activity {
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_deelnemer);
+		setContentView(R.layout.activity_mijn_wijk);
 		
 		GridView gridview = (GridView) findViewById(R.id.deelnemerGrid);
 	    gridview.setAdapter(new ImageAdapter(this));
 
 	    gridview.setOnItemClickListener(new OnItemClickListener() {
 	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	            Toast.makeText(DeelnemerActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+	            Toast.makeText(MijnWijkActivity .this, "" + position, Toast.LENGTH_SHORT).show();
 	        }
 	    });
 	    
@@ -38,6 +40,5 @@ public class DeelnemerActivity extends Activity {
 		return true;
 	}
 
+
 }
-
-
