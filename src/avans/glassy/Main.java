@@ -2,26 +2,26 @@ package avans.glassy;
 
 import java.util.Locale;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+import avans.glassy.SimpleGestureFilter.SimpleGestureListener;
 
-public class Main extends FragmentActivity {
+public class Main extends FragmentActivity implements SimpleGestureListener {
+	private SimpleGestureFilter detector;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -57,6 +57,8 @@ public class Main extends FragmentActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         */
         addListenerOnButton();
+     // Detect touched area 
+        detector = new SimpleGestureFilter(this,this);
     }
     
 	private void addListenerOnButton() {
@@ -149,5 +151,39 @@ public class Main extends FragmentActivity {
             return rootView;
         }
     }
+    
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent me){
+        // Call onTouchEvent of SimpleGestureFilter class
+         this.detector.onTouchEvent(me);
+       return super.dispatchTouchEvent(me);
+    }
 
+	@Override
+	public void onSwipe(int direction) {String str = "";
+    
+    switch (direction) {
+    
+    case SimpleGestureFilter.SWIPE_RIGHT : str = "Swipe Right";
+                                             	   break;
+    case SimpleGestureFilter.SWIPE_LEFT :  str = "Swipe Left";
+                                                   break;
+    case SimpleGestureFilter.SWIPE_DOWN :  str = "Swipe Down";
+                                                   break;
+    case SimpleGestureFilter.SWIPE_UP :    
+    	Intent myIntent = new Intent(Main.this, MijnWijkActivity.class);				
+    	Main.this.startActivity(myIntent);
+                                                   break;
+    
+    }
+     Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+   }
+
+	@Override
+	public void onDoubleTap() {
+        Toast.makeText(this, "Double Tap", Toast.LENGTH_SHORT).show();
+		
+	}
 }
+//
+//

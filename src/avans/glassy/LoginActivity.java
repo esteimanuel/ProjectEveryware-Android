@@ -45,7 +45,7 @@ public class LoginActivity extends Activity {
 		String currentPassword = password.getText().toString();
 		if(currentName.equals(matchingName) && currentPassword.equals(matchingPassword))
 		{
-		Intent myIntent = new Intent(LoginActivity.this, MijnWijkActivity.class);				
+		Intent myIntent = new Intent(LoginActivity.this, Main.class);				
 		LoginActivity.this.startActivity(myIntent);
 		}
 		else {
