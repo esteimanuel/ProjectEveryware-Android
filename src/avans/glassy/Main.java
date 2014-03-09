@@ -160,23 +160,22 @@ public class Main extends FragmentActivity implements SimpleGestureListener {
     }
 
 	@Override
-	public void onSwipe(int direction) {String str = "";
+	public void onSwipe(int direction) {
     
     switch (direction) {
     
-    case SimpleGestureFilter.SWIPE_RIGHT : str = "Swipe Right";
+    	case SimpleGestureFilter.SWIPE_RIGHT : //Nothing
                                              	   break;
-    case SimpleGestureFilter.SWIPE_LEFT :  str = "Swipe Left";
+    	case SimpleGestureFilter.SWIPE_LEFT :  //Nothing
                                                    break;
-    case SimpleGestureFilter.SWIPE_DOWN :  str = "Swipe Down";
+    	case SimpleGestureFilter.SWIPE_DOWN :  //Nothing
                                                    break;
-    case SimpleGestureFilter.SWIPE_UP :    
-    	Intent myIntent = new Intent(Main.this, MijnWijkActivity.class);				
-    	Main.this.startActivity(myIntent);
+    	case SimpleGestureFilter.SWIPE_UP :    
+    		Intent myIntent = new Intent(Main.this, MijnWijkActivity.class);				
+    		Main.this.startActivity(myIntent);
                                                    break;
     
     }
-     Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
    }
 
 	@Override
