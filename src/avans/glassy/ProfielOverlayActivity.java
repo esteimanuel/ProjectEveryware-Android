@@ -32,7 +32,7 @@ public class ProfielOverlayActivity extends Activity {
     }
  
     private void display(Deelnemer deelnemer) {
-        String desc = deelnemer.getVoornaam() + ": " + deelnemer.getAchternaam();
+        String desc = deelnemer.getVoornaam() + " " + deelnemer.getAchternaam();
         descTxt.setText(desc);
         imageView.setImageResource(deelnemer.getProfielFoto());
     }
