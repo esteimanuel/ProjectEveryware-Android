@@ -14,11 +14,23 @@ public class Deelnemer {
 		return voornaam;
 	}
 	
+	public void setVoornaam(String voornaam) {
+	      this.voornaam = voornaam;
+	}
+	
 	public String getAchternaam(){
 		return achternaam;
 	}
 	
+	public void setAchternaam(String achternaam) {
+	      this.achternaam = achternaam;
+	}
+	
 	public Integer getProfielFoto(){
 		return profielFoto;
+	}
+	
+	public void setProfielFoto(Integer profielFoto) {
+	      this.profielFoto = profielFoto;
 	}
 }

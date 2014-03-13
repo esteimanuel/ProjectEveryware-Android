@@ -10,12 +10,13 @@
         android:name="com.google.android.youtube.player.YouTubePlayerFragment"
         android:id="@+id/youtubeplayerfragment"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"/>
+        android:layout_height="fill_parent" 
+        android:layout_marginBottom="20dp" />
 
     <fragment
         android:id="@+id/DeelnemersGridFragment"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         class="avans.glassy.DeelnemerGridFragment" />
 
 </LinearLayout >

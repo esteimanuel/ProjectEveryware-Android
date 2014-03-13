@@ -26,6 +26,7 @@
     <string name="loginTop">Ik doe mee!</string>
     <string name="loginFoto">Voeg een leuke foto toe</string>
     <string name="loginKlaar">Klaar</string>
-    <string name="loginFacebook">Login via facebook</string>
-
+    <string name="loginFacebook">Login via facebook</string>	
+    <string name="title_profiel_overlay">Profiel pagina</string>    
+    <string name="image">Een profiel foto</string>
 </resources>
