@@ -1,6 +1,10 @@
-package nl.avans.glassy;
+package nl.avans.glassy.Controllers;
 
 import java.security.MessageDigest;
+
+import nl.avans.glassy.R;
+import nl.avans.glassy.R.layout;
+import nl.avans.glassy.R.menu;
 
 import android.app.Activity;
 import android.content.pm.PackageInfo;
