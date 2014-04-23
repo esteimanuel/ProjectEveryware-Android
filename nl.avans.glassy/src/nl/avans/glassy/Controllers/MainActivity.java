@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 
 import com.facebook.LoggingBehavior;
 import com.facebook.Session;
@@ -13,73 +15,85 @@ import com.facebook.SessionState;
 import com.facebook.Settings;
 
 public class MainActivity extends FragmentActivity {
-	
+
 	private Session.StatusCallback callback = new SessionStatusCallback();
-	
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
 
-        Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
-        
-    	Session session = Session.getActiveSession();
-    	if(session == null) {
-    		
-    		if(savedInstanceState != null) {
-    			
-    			session = Session.restoreSession(this, null, callback, savedInstanceState);
-    			
-    		} if(session == null) {
-    			
-    			session = new Session(this);
-    		}
-    		
-    		Session.setActiveSession(session);
-    		if(session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
-    			
-    			session.openForRead(new Session.OpenRequest(this).setCallback(callback));
-    		}
-    	}
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-    
-    @Override
-    public void onStart() {
-    	
-        super.onStart();
-        Session.getActiveSession().addCallback(callback);
-    }
+		Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
 
-    @Override
-    public void onStop() {
-    	
-        super.onStop();
-        Session.getActiveSession().removeCallback(callback);
-    }
+		Session session = Session.getActiveSession();
+		if (session == null) {
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	
-        super.onActivityResult(requestCode, resultCode, data);
-        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
-    }
+			if (savedInstanceState != null) {
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-    	
-        super.onSaveInstanceState(outState);
-        Session session = Session.getActiveSession();
-        Session.saveSession(session, outState);
-    }
-    
-    private class SessionStatusCallback implements Session.StatusCallback {
+				session = Session.restoreSession(this, null, callback,
+						savedInstanceState);
+
+			}
+			if (session == null) {
+
+				session = new Session(this);
+			}
+
+			Session.setActiveSession(session);
+			if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
+
+				session.openForRead(new Session.OpenRequest(this)
+						.setCallback(callback));
+			}
+		}
+
+		Button joinButton = (Button) findViewById(R.id.skip);
+		joinButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, WijkCollectionActivity.class);
+				startActivity(intent);
+			}
+		});
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public void onStart() {
+
+		super.onStart();
+		Session.getActiveSession().addCallback(callback);
+	}
+
+	@Override
+	public void onStop() {
+
+		super.onStop();
+		Session.getActiveSession().removeCallback(callback);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		super.onActivityResult(requestCode, resultCode, data);
+		Session.getActiveSession().onActivityResult(this, requestCode,
+				resultCode, data);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+
+		super.onSaveInstanceState(outState);
+		Session session = Session.getActiveSession();
+		Session.saveSession(session, outState);
+	}
+
+	private class SessionStatusCallback implements Session.StatusCallback {
 
 		@Override
 		public void call(Session session, SessionState state,
@@ -87,13 +101,13 @@ public class MainActivity extends FragmentActivity {
 
 			Log.i("SessionStatusCallback", session.toString());
 			Log.i("SessionStatusCallback", state.toString());
-			
-			if(exception != null) {
-			
+
+			if (exception != null) {
+
 				exception.printStackTrace();
 			}
 		}
-    	
-    }
-    
+
+	}
+
 }

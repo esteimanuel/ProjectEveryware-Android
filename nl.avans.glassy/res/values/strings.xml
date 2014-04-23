@@ -8,6 +8,15 @@
     <string name="login">Log in</string>
     <string name="register">Register</string>
     <string name="join_action">Join</string>
+    <string name="skip_action">Skip</string>
     <string name="app_id">608467429234622</string>
+    <string name="backgroundContentDescription">Buurt achtergrond</string>
+    <string name="tempwijknaam">Bart\'s glasvezel buurt</string>
+    <string name="deelnemers">deelnemers</string>
+    <string name="tempDeelnemers">0</string>
+    <string name="temppercentage">0</string>
+    <string name="procent">%</string>
+    <string name="tempButtonText">Ik doe ook mee</string>
+    <string name="video">Buurt video</string>
 
 </resources>
