@@ -1,50 +1,92 @@
 package nl.avans.glassy.Controllers;
 
-import java.security.MessageDigest;
-
 import nl.avans.glassy.R;
-import nl.avans.glassy.R.layout;
-import nl.avans.glassy.R.menu;
-
-import android.app.Activity;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 
-public class MainActivity extends Activity {
+import com.facebook.LoggingBehavior;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.Settings;
 
+public class MainActivity extends FragmentActivity {
+	
+	private Session.StatusCallback callback = new SessionStatusCallback();
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.facebook.android", 
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-                }
-            
-            System.out.println("klaar");
-        } catch(Exception e) {
-        	
-        	e.printStackTrace();
-        }
-    }
 
+        Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
+        
+    	Session session = Session.getActiveSession();
+    	if(session == null) {
+    		
+    		if(savedInstanceState != null) {
+    			
+    			session = Session.restoreSession(this, null, callback, savedInstanceState);
+    			
+    		} if(session == null) {
+    			
+    			session = new Session(this);
+    		}
+    		
+    		Session.setActiveSession(session);
+    		if(session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
+    			
+    			session.openForRead(new Session.OpenRequest(this).setCallback(callback));
+    		}
+    	}
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+    
+    @Override
+    public void onStart() {
+    	
+        super.onStart();
+        Session.getActiveSession().addCallback(callback);
+    }
+
+    @Override
+    public void onStop() {
+    	
+        super.onStop();
+        Session.getActiveSession().removeCallback(callback);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	
+        super.onActivityResult(requestCode, resultCode, data);
+        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+    	
+        super.onSaveInstanceState(outState);
+        Session session = Session.getActiveSession();
+        Session.saveSession(session, outState);
+    }
+    
+    private class SessionStatusCallback implements Session.StatusCallback {
+
+		@Override
+		public void call(Session session, SessionState state,
+				Exception exception) {
+			
+			// TODO Auto-generated method stub
+		}
+    	
     }
     
 }

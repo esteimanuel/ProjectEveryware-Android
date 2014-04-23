@@ -1,5 +1,5 @@
 # fuck metadata
-.metadata/
+#.metadata/
 
 # Files for the Dalvik VM
 *.dex
