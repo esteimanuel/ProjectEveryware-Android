@@ -4,6 +4,7 @@ import nl.avans.glassy.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 
 import com.facebook.LoggingBehavior;
@@ -83,8 +84,14 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public void call(Session session, SessionState state,
 				Exception exception) {
+
+			Log.i("SessionStatusCallback", session.toString());
+			Log.i("SessionStatusCallback", state.toString());
 			
-			// TODO Auto-generated method stub
+			if(exception != null) {
+			
+				exception.printStackTrace();
+			}
 		}
     	
     }

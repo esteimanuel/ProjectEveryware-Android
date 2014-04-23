@@ -1,5 +1,4 @@
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fb="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,17 +7,35 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <TextView
+    <!-- <fragment android:name="nl.avans.glassy.Views.LoginFragment" 
+        android:id="@+id/mainFragment"/>  -->
+        
+	<EditText 
+        android:id="@+id/email"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress" 
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" />"
+    
+    <EditText 
+        android:id="@+id/password"
+        android:hint="@string/password" 
+        android:inputType="textPassword" 
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" />
+    
+    <Button 
+        android:id="@+id/join"
+        android:text="@string/join_action"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_height="wrap_content" />
     
     <com.facebook.widget.LoginButton 
         android:id="@+id/facebookLogin"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
