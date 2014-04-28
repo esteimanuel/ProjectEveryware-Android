@@ -1,5 +1,0 @@
-INDEX VERSION 1.126+C:\Users\Mathijs van den Worm\Documents\GitHub\ProjectEveryware-Android\.metadata\.plugins\org.eclipse.jdt.core
-1135162105.index
-3065416851.index
-3226537311.index
-2259839072.index

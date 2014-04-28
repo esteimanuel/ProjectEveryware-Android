@@ -1,72 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wijkContainer"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/wijk_static"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/wijkTitel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="200dp"
-        android:text="@string/tempwijknaam"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/deelnemersCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/wijkTitel"
-        android:layout_marginLeft="5dp"
-        android:text="@string/tempDeelnemers"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/deelnemersCount"
-        android:layout_marginLeft="2dp"
-        android:layout_toRightOf="@id/deelnemersCount"
-        android:text="@string/deelnemers"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/percentage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/deelnemersCount"
-        android:layout_marginLeft="5dp"
-        android:text="@string/temppercentage"
-        android:textColor="@color/white"
-        android:textSize="30sp" />
-
-    <TextView
-        android:id="@+id/procent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/percentage"
-        android:layout_marginLeft="2dp"
-        android:layout_toRightOf="@id/percentage"
-        android:text="@string/procent"
-        android:textColor="@color/white"
-        android:textSize="30sp" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/percentage"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/custom_button"
-        android:text="@string/tempButtonText"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
 
 </RelativeLayout>
