@@ -17,25 +17,13 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayer.Provider;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-
-public class WijkFragment extends Fragment implements
-		YouTubePlayer.OnInitializedListener {
+public class WijkFragment extends Fragment {
 	private FragmentManager fragmentManager;
 	private FragmentTransaction fragmentTransaction;
 
 	// Fragments
 	private WijkDetailsFragment wijkDetails;
-	private YouTubePlayerSupportFragment youtubePlayerFragment;
-
-	// Misc
-	public static final String API_KEY = "AIzaSyDPmdqhVEdYTJSHxol_FKg2PtPEPg3Xfcw";
-	public static final String VIDEO_ID = "vkgRqz2lLAs";
-
-	private static final int RQS_ErrorDialog = 1;
+	private WijkVideoFragment wijkVideoFragment;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,9 +52,8 @@ public class WijkFragment extends Fragment implements
 		fragmentTransaction.replace(R.id.details, wijkDetails, "wijkDetails");
 
 		// New youtubePlayer SupportFragment
-		youtubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
-		youtubePlayerFragment.initialize(API_KEY, this);
-		fragmentTransaction.replace(R.id.youtube, youtubePlayerFragment,
+		wijkVideoFragment = new WijkVideoFragment();
+		fragmentTransaction.replace(R.id.youtube, wijkVideoFragment,
 				"youtubePlayer");
 
 		fragmentTransaction.commit();
@@ -74,23 +61,7 @@ public class WijkFragment extends Fragment implements
 		return rootView;
 	}
 
-	@Override
-	public void onInitializationFailure(Provider provider,
-			YouTubeInitializationResult result) {
-
-		if (result.isUserRecoverableError()) {
-			result.getErrorDialog(getActivity(), RQS_ErrorDialog).show();
-		}
-	}
-
-	@Override
-	public void onInitializationSuccess(Provider provider,
-			YouTubePlayer player, boolean wasRestored) {
-
-		if (!wasRestored) {
-			player.cueVideo(VIDEO_ID);
-		}
-	}
+	
 
 	// Get usable device height (not counting statusbar ect.)
 	// Used for setting height of first fragment
