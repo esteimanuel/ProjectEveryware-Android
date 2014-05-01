@@ -1,9 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/wijkContainer"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/wijk_static"
-    android:orientation="vertical" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/wijk_static">
+
+    <ScrollView
+        android:background="@color/blackTransparent"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/wijkContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:id="@+id/details"
+                android:name="nl.avans.glassy.Controllers.WijkDetailsFragment"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2" 
+                android:layout_marginBottom="20dp"/>
+
+            <FrameLayout
+                android:id="@+id/youtube"
+                android:name="com.google.android.youtube.player.YouTubePlayerFragment"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" >
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
