@@ -20,7 +20,7 @@ import android.os.AsyncTask;
 
 public class ApiCommunicator extends AsyncTask<String, Void, JSONObject>{
 
-	private static String BASE_URL = "http://glassy-api.avans-project.nl";
+	private static String BASE_URL = "http://glassy-api.avans-project.nl/api/";
 	private static final String[] ACCEPTED_REQUEST_METHODS = new String[]{"GET", "POST", "PUT", "DELETE"};
 	private HttpClient httpClient = new DefaultHttpClient();
 		

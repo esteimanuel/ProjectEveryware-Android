@@ -1,6 +1,9 @@
 package nl.avans.glassy.Controllers;
 
+import java.util.Arrays;
+
 import nl.avans.glassy.R;
+import nl.avans.glassy.Models.Gebruiker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -10,11 +13,15 @@ import android.view.View;
 import android.widget.Button;
 
 import com.facebook.LoggingBehavior;
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.Settings;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
 
-public class MainActivity extends FragmentActivity {
+public class AuthActivity extends FragmentActivity {
 
 	private Session.StatusCallback callback = new SessionStatusCallback();
 
@@ -22,8 +29,14 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		Gebruiker.login("meep@meep.nl", "meep");
+		Gebruiker.register("meep@meep.nl", "meep");
 
 		Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
+		
+		LoginButton facebookLogin = (LoginButton) findViewById(R.id.facebookLogin);
+		facebookLogin.setReadPermissions(Arrays.asList("basic_info", "email", "user_photos", "user_videos"));
 
 		Session session = Session.getActiveSession();
 		if (session == null) {
@@ -50,7 +63,7 @@ public class MainActivity extends FragmentActivity {
 		Button joinButton = (Button) findViewById(R.id.skip);
 		joinButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this, WijkCollectionActivity.class);
+				Intent intent = new Intent(AuthActivity.this, WijkActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -105,6 +118,19 @@ public class MainActivity extends FragmentActivity {
 			if (exception != null) {
 
 				exception.printStackTrace();
+			}
+			
+			if (state.toString().equals("OPENED")) {
+				
+				Request.newMeRequest(session, new Request.GraphUserCallback() {
+					
+					@Override
+					public void onCompleted(GraphUser user, Response response) {
+						
+						Log.i("GraphUser", user.toString());
+					}
+					
+				}).executeAsync();
 			}
 		}
 
