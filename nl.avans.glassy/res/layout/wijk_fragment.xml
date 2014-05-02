@@ -4,6 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/wijk_static"
+    android:alpha="0.8"
     android:orientation="vertical" >
 
 </RelativeLayout>
