@@ -1,4 +1,4 @@
-package nl.avans.glassy.Controllers;
+package nl.avans.glassy.controllers;
 
 import nl.avans.glassy.R;
 import nl.avans.glassy.Views.WijkDetailsFragment;
