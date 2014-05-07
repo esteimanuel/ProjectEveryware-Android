@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 
 public class GebruikerAccountFragment extends Fragment {
 	
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		return (ViewGroup) inflater.inflate(R.layout.account_fragment, container, false);
 	}
-
 }

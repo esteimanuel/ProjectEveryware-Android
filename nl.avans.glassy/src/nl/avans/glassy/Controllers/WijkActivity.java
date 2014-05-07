@@ -1,6 +1,7 @@
 package nl.avans.glassy.Controllers;
 
 import nl.avans.glassy.R;
+import nl.avans.glassy.Views.GebruikerAccountFragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,6 +32,9 @@ public class WijkActivity extends FragmentActivity {
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
+		
+		FragmentManager fm = this.getSupportFragmentManager();
+		GebruikerAccountFragment gaf = (GebruikerAccountFragment) fm.findFragmentById(R.id.gebruikerFuncties);
 	}
 
 	@Override
