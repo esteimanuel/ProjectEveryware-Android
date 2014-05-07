@@ -1,6 +1,7 @@
 package nl.avans.glassy.Controllers;
 
 import nl.avans.glassy.R;
+import nl.avans.glassy.Views.WijkMapFragment;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ public class WijkFragment extends Fragment {
 	// Fragments
 	private WijkDetailsFragment wijkDetails;
 	private WijkVideoFragment wijkVideoFragment;
+	private WijkMapFragment wijkMapFragment;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,7 +42,6 @@ public class WijkFragment extends Fragment {
 		fragmentTransaction = fragmentManager.beginTransaction();
 
 		// New wijkDetails SupportFragment
-
 		FrameLayout wijkDetailsPlaceholder = (FrameLayout) rootView
 				.findViewById(R.id.details);
 		LayoutParams params = (LinearLayout.LayoutParams) wijkDetailsPlaceholder
@@ -53,8 +54,11 @@ public class WijkFragment extends Fragment {
 
 		// New youtubePlayer SupportFragment
 		wijkVideoFragment = new WijkVideoFragment();
-		fragmentTransaction.replace(R.id.youtube, wijkVideoFragment,
-				"youtubePlayer");
+		fragmentTransaction.replace(R.id.youtube, wijkVideoFragment, "youtubePlayer");
+		
+		// New Mapwebview SupportFragment
+		wijkMapFragment = new WijkMapFragment();
+		fragmentTransaction.replace(R.id.map, wijkMapFragment, "wijkMap");
 
 		fragmentTransaction.commit();
 
