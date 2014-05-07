@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -17,37 +18,33 @@ import android.webkit.WebViewClient;
 
 public class WijkMapFragment extends Fragment  {
 
-	private String url = "https://www.insidegamer.nl/";
+	private String url = "https://www.google.nl/maps/place/%27%27s-Hertogenbosch%27/@51.7003464,5.3086228,15z/data=!4m2!3m1!1s0x47c6ee37ad3edd37:0x400de5a8d1e7c50?hl=en";
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.wijkmap_fragment, container, false);
-
+		WebView webView = null;
 		if(url != null)
 		{
-			WebView webView = (WebView) rootView.findViewById(R.id.webview);
-			WebViewClient client = new WebViewClient();
-			
-			webView.setWebViewClient(client);
-			webView.getSettings().setJavaScriptEnabled(true);
-			webView.getSettings().setLoadWithOverviewMode(true);
-			webView.getSettings().setUseWideViewPort(true);
-			
+			// Set WebView URL
+			webView = (WebView) rootView.findViewById(R.id.webview);
 			webView.loadUrl(url);
+
+			// Prevent it from opening in a external browser
+			webView.setWebViewClient(new WebViewClient() {
+				public void onPageFinished(WebView view, String url) {
+					}
+			});
+
+			// Enable Javascript
+			WebSettings settings = webView.getSettings();
+			settings.setJavaScriptEnabled(true);
 		}
 
 		return rootView;
 	}
 
-	private class wijkWebClient extends WebViewClient {
-
-		@Override
-		public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			return false;
-		}	
 
 
-	}
-	
 
 }
