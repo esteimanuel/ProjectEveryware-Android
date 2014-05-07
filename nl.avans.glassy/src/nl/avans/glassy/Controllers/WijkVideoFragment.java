@@ -24,7 +24,7 @@ public class WijkVideoFragment extends Fragment implements
 
 	// Misc
 	public static final String API_KEY = "AIzaSyDPmdqhVEdYTJSHxol_FKg2PtPEPg3Xfcw";
-	public static final String VIDEO_ID = "vkgRqz2lLAs";
+	private String VIDEO_ID;
 
 	private static final int RQS_ErrorDialog = 1;
 
@@ -33,7 +33,16 @@ public class WijkVideoFragment extends Fragment implements
 			Bundle savedInstanceState) {
 
 		ViewGroup rootView = (ViewGroup) inflater.inflate(
-				R.layout.wijkvideo_fragment, container, false);
+				R.layout.wijkvideo_fragment, container, false);		
+		
+		fragmentInitialization("vkgRqz2lLAs");
+
+		return rootView;
+	}
+	
+	private void fragmentInitialization(String VIDEO_ID){
+		//Set video URL
+		this.VIDEO_ID = VIDEO_ID;
 		
 		fragmentManager = getChildFragmentManager();
 		fragmentTransaction = fragmentManager.beginTransaction();
@@ -45,8 +54,7 @@ public class WijkVideoFragment extends Fragment implements
 				"youtubePlayer");
 
 		fragmentTransaction.commit();
-
-		return rootView;
+		
 	}
 
 	@Override

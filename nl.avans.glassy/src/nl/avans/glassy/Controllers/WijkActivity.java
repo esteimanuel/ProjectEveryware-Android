@@ -2,15 +2,25 @@ package nl.avans.glassy.Controllers;
 
 import nl.avans.glassy.R;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class WijkActivity extends FragmentActivity {
+	static Handler handler = new  Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			// get the bundle and extract data by key
+			Bundle b = msg.getData();
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,5 +101,34 @@ public class WijkActivity extends FragmentActivity {
 		public int getCount() {
 			return NUM_PAGES;
 		}
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		// Do async task for wijk objects
+		// create a new thread
+		Thread background = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				for (int i = 0; i < NUM_PAGES; i++) {
+					try {
+						Message msg = new Message();
+						Bundle b = new Bundle();
+						b.putString("My Key", "My Value: " + String.valueOf(i));
+						msg.setData(b);
+						// send message to the handler with the current message
+						// handler
+						handler.sendMessage(msg);
+					} catch (Exception e) {
+						Log.v("Error", e.toString());
+					}
+				}
+			}
+		});
+
+		background.start();
 	}
 }
