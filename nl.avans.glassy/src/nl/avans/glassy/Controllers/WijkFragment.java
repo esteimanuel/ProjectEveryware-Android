@@ -1,8 +1,9 @@
 package nl.avans.glassy.Controllers;
 
 import nl.avans.glassy.R;
-import nl.avans.glassy.Views.GebruikerAccountFragment;
+import nl.avans.glassy.Views.WijkDetailsFragment;
 import nl.avans.glassy.Views.WijkMapFragment;
+import nl.avans.glassy.Views.WijkVideoFragment;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package nl.avans.glassy.Controllers;
+package nl.avans.glassy.Views;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
