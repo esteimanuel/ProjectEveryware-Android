@@ -1,6 +1,7 @@
 package nl.avans.glassy.Controllers;
 
 import nl.avans.glassy.R;
+import nl.avans.glassy.Views.GebruikerAccountFragment;
 import nl.avans.glassy.Views.WijkMapFragment;
 import android.content.Context;
 import android.graphics.Point;
@@ -40,6 +41,9 @@ public class WijkFragment extends Fragment {
 
 		fragmentManager = getChildFragmentManager();
 		fragmentTransaction = fragmentManager.beginTransaction();
+		
+//		GebruikerAccountFragment headerFragment = new GebruikerAccountFragment();
+//		fragmentTransaction.replace(R.id.gebruikerFuncties, headerFragment, "gebruikerFuncties");		
 
 		// New wijkDetails SupportFragment
 		FrameLayout wijkDetailsPlaceholder = (FrameLayout) rootView

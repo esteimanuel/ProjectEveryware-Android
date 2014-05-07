@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class ApiCommunicator extends AsyncTask<String, Void, JSONObject>{
 
@@ -196,6 +197,8 @@ public class ApiCommunicator extends AsyncTask<String, Void, JSONObject>{
 				builder.append(line).append("\n");
 			}
 			
+			Log.i("parse http response", builder.toString());
+			
 			JSONObject retval = (JSONObject) new JSONTokener(builder.toString()).nextValue();
 			
 			return retval;
@@ -210,11 +213,13 @@ public class ApiCommunicator extends AsyncTask<String, Void, JSONObject>{
 				
 			} catch(Exception e) {
 				
+				e.printStackTrace();
 				return null;
 			}
 			
 		} catch(Exception e) {
 			
+			e.printStackTrace();
 			return null;
 		}
 	}

@@ -19,5 +19,6 @@
     <string name="tempButtonText">Ik doe ook mee</string>
     <string name="video">Buurt video</string>
     <string name="map">map</string>
+    <string name="gebruiker_anoniem">Anonieme Gebruiker</string>
 
 </resources>

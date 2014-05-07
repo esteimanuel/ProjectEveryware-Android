@@ -9,7 +9,8 @@
     <ScrollView
         android:background="@color/blackTransparent"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp" >
 
         <LinearLayout
             android:id="@+id/wijkContainer"
@@ -17,6 +18,8 @@
             android:layout_height="wrap_content"
             android:baselineAligned="false"
             android:orientation="vertical" >
+            
+           
 
             <FrameLayout
                 android:id="@+id/details"

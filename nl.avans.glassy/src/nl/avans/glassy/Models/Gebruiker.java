@@ -104,29 +104,47 @@ public class Gebruiker {
 			@Override
 			protected void onPostExecute(JSONObject result) {
 				
-//				Log.i("user.login", result.toString());
+				if(result != null) {
+				
+					Log.i("user.login", result.toString());
+				
+				} else {
+					
+					Log.i("user.login foutje", "login foutje");
+				}
 			}
-			
 		}.execute(params);
 	}
 	
 	public static void register(String email, String password) {
 		
 		String[] params = {
-				"GET",
+				"POST",
 				API_CONTROLLER + "register",
 				"{email:"+ email +", wachtwoord:"+ password +"}"
 		};
 		
+		try {
 		new ApiCommunicator(){
 			
 			@Override
 			protected void onPostExecute(JSONObject result) {
 				
-				Log.i("user.register", result.toString());
+				if(result != null) {
+					
+					Log.i("user.register", result.toString());
+				
+				} else {
+					
+					Log.i("user.register foutje", "registreer foutje");
+				}
 			}
 			
 		}.execute(params);
+		} catch(Exception e) {
+			
+			e.printStackTrace();
+		}
 	}
 	
 	public static void facebookLogin(int facebookid) {

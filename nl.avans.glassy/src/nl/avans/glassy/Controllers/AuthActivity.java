@@ -29,9 +29,6 @@ public class AuthActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
-		Gebruiker.login("meep@meep.nl", "meep");
-		Gebruiker.register("meep@meep.nl", "meep");
 
 		Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
 		
