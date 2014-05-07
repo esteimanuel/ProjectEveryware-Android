@@ -1,4 +1,4 @@
-package nl.avans.glassy.controllers;
+package nl.avans.glassy.Controllers;
 
 import java.util.Arrays;
 

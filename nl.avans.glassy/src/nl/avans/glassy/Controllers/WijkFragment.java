@@ -1,6 +1,7 @@
-package nl.avans.glassy.controllers;
+package nl.avans.glassy.Controllers;
 
 import nl.avans.glassy.R;
+import nl.avans.glassy.Interfaces.ScrollViewListener;
 import nl.avans.glassy.Views.WijkDetailsFragment;
 import nl.avans.glassy.Views.WijkMapFragment;
 import nl.avans.glassy.Views.WijkVideoFragment;
@@ -20,7 +21,10 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-public class WijkFragment extends Fragment {
+public class WijkFragment extends Fragment implements ScrollViewListener {
+
+	private ObservableScrollView scrollView = null;
+
 	private FragmentManager fragmentManager;
 	private FragmentTransaction fragmentTransaction;
 
@@ -31,10 +35,14 @@ public class WijkFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) { 	
+			Bundle savedInstanceState) {
 
 		ViewGroup rootView = (ViewGroup) inflater.inflate(
 				R.layout.wijk_fragment, container, false);
+
+		ObservableScrollView scrollView = (ObservableScrollView) rootView
+				.findViewById(R.id.scrollPanel);
+		scrollView.setScrollViewListener(this);
 
 		int height = getDeviceSize();
 
@@ -42,9 +50,6 @@ public class WijkFragment extends Fragment {
 
 		fragmentManager = getChildFragmentManager();
 		fragmentTransaction = fragmentManager.beginTransaction();
-		
-//		GebruikerAccountFragment headerFragment = new GebruikerAccountFragment();
-//		fragmentTransaction.replace(R.id.gebruikerFuncties, headerFragment, "gebruikerFuncties");		
 
 		// New wijkDetails SupportFragment
 		FrameLayout wijkDetailsPlaceholder = (FrameLayout) rootView
@@ -59,8 +64,9 @@ public class WijkFragment extends Fragment {
 
 		// New youtubePlayer SupportFragment
 		wijkVideoFragment = new WijkVideoFragment();
-		fragmentTransaction.replace(R.id.youtube, wijkVideoFragment, "youtubePlayer");
-		
+		fragmentTransaction.replace(R.id.youtube, wijkVideoFragment,
+				"youtubePlayer");
+
 		// New Mapwebview SupportFragment
 		wijkMapFragment = new WijkMapFragment();
 		fragmentTransaction.replace(R.id.map, wijkMapFragment, "wijkMap");
@@ -69,8 +75,6 @@ public class WijkFragment extends Fragment {
 
 		return rootView;
 	}
-
-	
 
 	// Get usable device height (not counting statusbar ect.)
 	// Used for setting height of first fragment
@@ -93,4 +97,8 @@ public class WijkFragment extends Fragment {
 
 		return height;
 	}
+
+	 public void onScrollChanged(ObservableScrollView scrollView, int x, int y, int oldx, int oldy) {
+			Log.d("scolling", Integer.toString(y));
+	    }
 }
