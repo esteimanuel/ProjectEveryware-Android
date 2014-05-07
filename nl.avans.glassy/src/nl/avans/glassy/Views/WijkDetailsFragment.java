@@ -1,4 +1,4 @@
-package nl.avans.glassy.Controllers;
+package nl.avans.glassy.Views;
 
 import nl.avans.glassy.R;
 import android.os.Bundle;
