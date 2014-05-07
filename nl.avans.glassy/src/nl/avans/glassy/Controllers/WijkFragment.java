@@ -30,7 +30,7 @@ public class WijkFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+			Bundle savedInstanceState) { 	
 
 		ViewGroup rootView = (ViewGroup) inflater.inflate(
 				R.layout.wijk_fragment, container, false);
@@ -87,7 +87,7 @@ public class WijkFragment extends Fragment {
 				"dimen", "android");
 		if (resourceId > 0) {
 			result = getResources().getDimensionPixelSize(resourceId);
-			height = height - result - 10;
+			height = height - result - 50;
 		}
 
 		return height;
