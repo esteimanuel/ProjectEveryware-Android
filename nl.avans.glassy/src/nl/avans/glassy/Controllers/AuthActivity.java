@@ -3,6 +3,7 @@ package nl.avans.glassy.Controllers;
 import java.util.Arrays;
 
 import nl.avans.glassy.R;
+
 import nl.avans.glassy.Views.GebruikerAccountFragment;
 import android.content.Intent;
 import android.os.Bundle;

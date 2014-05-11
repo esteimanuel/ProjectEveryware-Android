@@ -1,6 +1,7 @@
 package nl.avans.glassy.Controllers;
 
 import nl.avans.glassy.R;
+import nl.avans.glassy.Interfaces.ScrollViewListener;
 import nl.avans.glassy.Views.WijkDetailsFragment;
 import nl.avans.glassy.Views.WijkMapFragment;
 import nl.avans.glassy.Views.WijkVideoFragment;
@@ -10,17 +11,20 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-public class WijkFragment extends Fragment {
+public class WijkFragment extends Fragment implements ScrollViewListener {
+	private float oldAlpha = 1.00f;
+	private ImageView background;
+
 	private FragmentManager fragmentManager;
 	private FragmentTransaction fragmentTransaction;
 
@@ -31,27 +35,26 @@ public class WijkFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) { 	
+			Bundle savedInstanceState) {
 
 		ViewGroup rootView = (ViewGroup) inflater.inflate(
 				R.layout.wijk_fragment, container, false);
 
-		int height = getDeviceSize();
-
-		Log.d("height", Integer.toString(height));
-
+		ObservableScrollView scrollView = (ObservableScrollView) rootView
+				.findViewById(R.id.scrollPanel);
+		scrollView.setScrollViewListener(this);
+		
+		background = (ImageView) rootView.findViewById(R.id.backgroundImage);
+		
 		fragmentManager = getChildFragmentManager();
 		fragmentTransaction = fragmentManager.beginTransaction();
-		
-//		GebruikerAccountFragment headerFragment = new GebruikerAccountFragment();
-//		fragmentTransaction.replace(R.id.gebruikerFuncties, headerFragment, "gebruikerFuncties");		
 
 		// New wijkDetails SupportFragment
 		FrameLayout wijkDetailsPlaceholder = (FrameLayout) rootView
 				.findViewById(R.id.details);
 		LayoutParams params = (LinearLayout.LayoutParams) wijkDetailsPlaceholder
 				.getLayoutParams();
-		params.height = height;
+		params.height = getDeviceSize();
 		wijkDetailsPlaceholder.setLayoutParams(params);
 
 		wijkDetails = new WijkDetailsFragment();
@@ -59,8 +62,9 @@ public class WijkFragment extends Fragment {
 
 		// New youtubePlayer SupportFragment
 		wijkVideoFragment = new WijkVideoFragment();
-		fragmentTransaction.replace(R.id.youtube, wijkVideoFragment, "youtubePlayer");
-		
+		fragmentTransaction.replace(R.id.youtube, wijkVideoFragment,
+				"youtubePlayer");
+
 		// New Mapwebview SupportFragment
 		wijkMapFragment = new WijkMapFragment();
 		fragmentTransaction.replace(R.id.map, wijkMapFragment, "wijkMap");
@@ -70,11 +74,8 @@ public class WijkFragment extends Fragment {
 		return rootView;
 	}
 
-	
-
 	// Get usable device height (not counting statusbar ect.)
-	// Used for setting height of first fragment
-	// TODO: detect API version since this code is API 13+
+	// Used for setting height of wijkDetails
 	private int getDeviceSize() {
 		WindowManager wm = (WindowManager) getActivity().getSystemService(
 				Context.WINDOW_SERVICE);
@@ -92,5 +93,30 @@ public class WijkFragment extends Fragment {
 		}
 
 		return height;
+	}
+
+	public void onScrollChanged(ObservableScrollView scrollView, int x, int y,
+			int oldx, int oldy) {
+		// Log.d("scolling", "Scrolling");
+
+		float neededBlur = 1.00f;
+		if (y < 50) {
+			// ScrollView on top
+			neededBlur = 1.00f;
+		} else if (y >= 50 && y <= 200) {
+			// ScrollView in fading zone
+			neededBlur -= ((y - 50.00f) / 150.00f);
+		} else {
+			// ScrollView scrolling past fading zone
+			neededBlur = 0.00f;
+		}
+
+		// Log.d("neededBlur", Double.toString(neededAlpha));
+
+		if (neededBlur != oldAlpha) {
+		//	background.setImageBitmap();
+		}
+
+		oldAlpha = neededBlur;
 	}
 }

@@ -2,19 +2,15 @@ package nl.avans.glassy.Views;
 
 
 import nl.avans.glassy.R;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Display;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-
 
 public class WijkMapFragment extends Fragment  {
 
@@ -28,6 +24,9 @@ public class WijkMapFragment extends Fragment  {
 		{
 			// Set WebView URL
 			webView = (WebView) rootView.findViewById(R.id.webview);
+			DisplayMetrics display = this.getResources().getDisplayMetrics();
+			final int height = display.heightPixels;
+			webView.getLayoutParams().height = (height/2);
 			webView.loadUrl(url);
 
 			// Prevent it from opening in a external browser
