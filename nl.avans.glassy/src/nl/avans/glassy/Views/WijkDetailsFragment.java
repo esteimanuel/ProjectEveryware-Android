@@ -6,10 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 public class WijkDetailsFragment extends Fragment {
-	private View view;
+//	private View view;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -17,16 +16,16 @@ public class WijkDetailsFragment extends Fragment {
 
 		ViewGroup rootView = (ViewGroup) inflater.inflate(
 				R.layout.wijkdetails_fragment, container, false);
-		view = rootView;
+//		view = rootView;
 		return rootView;
 	}
 
-	private void fragmentInitialization() {
-		TextView wijkName = (TextView) view.findViewById(R.id.wijkTitel);
-		TextView deelnemersCount = (TextView) view
-				.findViewById(R.id.deelnemersCount);
-		TextView targetPercentage = (TextView) view
-				.findViewById(R.id.percentage);
-
-	}
+//	private void fragmentInitialization() {
+//		TextView wijkName = (TextView) view.findViewById(R.id.wijkTitel);
+//		TextView deelnemersCount = (TextView) view
+//				.findViewById(R.id.deelnemersCount);
+//		TextView targetPercentage = (TextView) view
+//				.findViewById(R.id.percentage);
+//
+//	}
 }

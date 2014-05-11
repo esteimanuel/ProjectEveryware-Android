@@ -3,7 +3,6 @@ package nl.avans.glassy.Controllers;
 import java.util.Arrays;
 
 import nl.avans.glassy.R;
-import nl.avans.glassy.Models.Gebruiker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;

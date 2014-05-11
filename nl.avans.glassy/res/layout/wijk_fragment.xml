@@ -4,6 +4,7 @@
     android:layout_height="match_parent" >
 
     <ImageView
+        android:id="@+id/backgroundImage"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:contentDescription="@string/backgroundContentDescription"
