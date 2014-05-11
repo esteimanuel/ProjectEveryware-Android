@@ -1,9 +1,9 @@
-package nl.avans.glassy.controllers;
+package nl.avans.glassy.Controllers;
 
 import java.util.Arrays;
 
 import nl.avans.glassy.R;
-import nl.avans.glassy.Models.Gebruiker;
+import nl.avans.glassy.Views.GebruikerAccountFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -21,7 +21,7 @@ import com.facebook.Settings;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 
-public class AuthActivity extends FragmentActivity {
+public abstract class AuthActivity extends FragmentActivity implements GebruikerAccountFragment.ToggleFunctionsOnClick {
 
 	private Session.StatusCallback callback = new SessionStatusCallback();
 
@@ -42,8 +42,8 @@ public class AuthActivity extends FragmentActivity {
 
 				session = Session.restoreSession(this, null, callback,
 						savedInstanceState);
-
 			}
+			
 			if (session == null) {
 
 				session = new Session(this);
@@ -57,13 +57,24 @@ public class AuthActivity extends FragmentActivity {
 			}
 		}
 
-		Button joinButton = (Button) findViewById(R.id.skip);
-		joinButton.setOnClickListener(new View.OnClickListener() {
+		Button skipButton = (Button) findViewById(R.id.skip);
+		skipButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(AuthActivity.this, WijkActivity.class);
 				startActivity(intent);
 			}
 		});
+		
+		Button registerButton = (Button) findViewById(R.id.register);
+		registerButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				findViewById(R.id.skip).setVisibility(View.VISIBLE);
+			}
+		});
+		
 	}
 
 	@Override
@@ -131,6 +142,21 @@ public class AuthActivity extends FragmentActivity {
 			}
 		}
 
+	}
+
+	@Override
+	public void toggleFunctions() {
+		
+		View toToggle = findViewById(R.id.account_functies);
+		
+		if(toToggle.getVisibility() == View.GONE) {
+			
+			toToggle.setVisibility(View.VISIBLE);
+			
+		} else {
+			
+			toToggle.setVisibility(View.GONE);
+		}
 	}
 
 }
