@@ -20,5 +20,6 @@
     <string name="video">Buurt video</string>
     <string name="map">Buurt wijk</string>
     <string name="gebruiker_anoniem">Anonieme Gebruiker</string>
+    <string name="deelnemer">Buurt deelnemers</string>
 
 </resources>

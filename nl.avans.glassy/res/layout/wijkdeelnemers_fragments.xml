@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/deelnemerCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/deelnemersText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/deelnemerCount"
+        android:layout_toRightOf="@id/deelnemerCount"
+        android:paddingLeft="5sp"
+        android:text="@string/deelnemers"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/procentCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/deelnemersText"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/procentCount"
+        android:text="@string/procent"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
+
+    <View
+        android:id="@+id/serperator"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:paddingBottom="5dp"
+        android:layout_below="@id/deelnemerCount"
+        android:background="@android:color/darker_gray" />
+
+    <GridView
+        android:id="@+id/deelnemerGrid"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/serperator"
+        android:columnWidth="90sp"
+        android:gravity="fill"
+        android:numColumns="5"
+        android:stretchMode="columnWidth" />
+
+</RelativeLayout>

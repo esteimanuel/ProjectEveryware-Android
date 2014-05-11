@@ -2,6 +2,7 @@ package nl.avans.glassy.Controllers;
 
 import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.ScrollViewListener;
+import nl.avans.glassy.Views.WijkDeelnemersFragment;
 import nl.avans.glassy.Views.WijkDetailsFragment;
 import nl.avans.glassy.Views.WijkMapFragment;
 import nl.avans.glassy.Views.WijkVideoFragment;
@@ -32,6 +33,7 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 	private WijkDetailsFragment wijkDetails;
 	private WijkVideoFragment wijkVideoFragment;
 	private WijkMapFragment wijkMapFragment;
+	private WijkDeelnemersFragment wijkDeelnemersFragment;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,6 +59,7 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 		params.height = getDeviceSize();
 		wijkDetailsPlaceholder.setLayoutParams(params);
 
+		// New WijkDetails Fragment
 		wijkDetails = new WijkDetailsFragment();
 		fragmentTransaction.replace(R.id.details, wijkDetails, "wijkDetails");
 
@@ -65,9 +68,13 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 		fragmentTransaction.replace(R.id.youtube, wijkVideoFragment,
 				"youtubePlayer");
 
-		// New Mapwebview SupportFragment
+		// New Webview Fragment
 		wijkMapFragment = new WijkMapFragment();
 		fragmentTransaction.replace(R.id.map, wijkMapFragment, "wijkMap");
+		
+		// New WijkDeelnemers Fragment
+		wijkDeelnemersFragment = new WijkDeelnemersFragment();
+		fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment, "wijkDeelnemers");
 
 		fragmentTransaction.commit();
 
