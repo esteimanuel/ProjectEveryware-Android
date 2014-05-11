@@ -3,9 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
+    
     <EditText 
-        android:paddingTop="10dp"
         android:id="@+id/email"
         android:hint="@string/email"
         android:inputType="textEmailAddress" 
@@ -22,40 +21,25 @@
         android:gravity="center_vertical" />
 	
 	<EditText
-	    android:visibility="gone"
 	    android:id="@+id/password_repeat"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:ems="10"
-	    android:hint="@string/password_repeat"
+	    android:hint="@string/password"
 	    android:inputType="textPassword"
         android:gravity="center_vertical" />
-
+	
 	<RelativeLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content" >
 		
 		<Button
-	    	android:id="@+id/executeAuth"
+	    	android:id="@+id/register"
 	    	android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
-	    	android:text="@string/login"
+	    	android:text="@string/register"
 	    	android:layout_alignParentRight="true" />
 	
 	</RelativeLayout>
-
-    <com.facebook.widget.LoginButton
-        android:layout_marginTop="20dp"
-        android:id="@+id/facebookLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
-    
-    <Button 
-        android:id="@+id/logRegSwitch"
-        android:text="@string/register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

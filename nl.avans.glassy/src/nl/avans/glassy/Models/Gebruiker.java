@@ -4,6 +4,8 @@ import nl.avans.glassy.Utils.ApiCommunicator;
 
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 public class Gebruiker {
@@ -92,31 +94,35 @@ public class Gebruiker {
 	}
 	
 	// api fuctions
-	public static void login(String email, String password) {
+	public static void login(Context context, String email, String password) {
 		
 		String[] params = {
 				"GET",
 				API_CONTROLLER + "login?email="+ email +"&wachtwoord=" + password
 		};
 		
-		new ApiCommunicator(){
+		new ApiCommunicator(context){
 			
 			@Override
 			protected void onPostExecute(JSONObject result) {
 				
-				if(result != null) {
-				
-					Log.i("user.login", result.toString());
-				
-				} else {
+				try {
 					
-					Log.i("user.login foutje", "login foutje");
+					SharedPreferences sp = getContext().getSharedPreferences("GLASSY", 0);
+					SharedPreferences.Editor editor = sp.edit();
+					editor.putString("ACCOUNT", result.get("account").toString()); // if account is null exception will be caught
+					
+					editor.commit();
+					
+				} catch(Exception e) {
+					
+					e.printStackTrace(); // log it
 				}
 			}
 		}.execute(params);
 	}
 	
-	public static void register(String email, String password) {
+	public static void register(Context context, String email, String password) {
 		
 		String[] params = {
 				"POST",
@@ -124,32 +130,32 @@ public class Gebruiker {
 				"{email:"+ email +", wachtwoord:"+ password +"}"
 		};
 		
-		try {
-		new ApiCommunicator(){
+		new ApiCommunicator(context){
 			
 			@Override
 			protected void onPostExecute(JSONObject result) {
 				
-				if(result != null) {
+				try {
 					
-					Log.i("user.register", result.toString());
+					SharedPreferences sp = getContext().getSharedPreferences("GLASSY", 0);
+					SharedPreferences.Editor editor = sp.edit();
+					editor.putString("ACCOUNT", result.get("account").toString()); // if account is null exception will be caught
+					
+					editor.commit();
 				
-				} else {
+				} catch(Exception e) {
 					
-					Log.i("user.register foutje", "registreer foutje");
+					e.printStackTrace();
 				}
 			}
 			
 		}.execute(params);
-		} catch(Exception e) {
-			
-			e.printStackTrace();
-		}
+		
 	}
 	
 	public static void facebookLogin(int facebookid) {
 		
-		
+		// TODO facebook api validation
 	}
 
 }

@@ -39,11 +39,15 @@
         android:layout_alignParentRight="true" />
     
     <fragment 
+        android:layout_marginTop="10dp"
         android:layout_below="@id/user_util"
-        android:id="@+id/account_functies"
+        android:id="@+id/preAuthFuncties"
         android:name="nl.avans.glassy.Views.AuthFragment"
         android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" /> 
+        
+    <!-- <fragment 
+        android:id="@+id/postAuthFuncties"/> --> 
     
 </RelativeLayout>

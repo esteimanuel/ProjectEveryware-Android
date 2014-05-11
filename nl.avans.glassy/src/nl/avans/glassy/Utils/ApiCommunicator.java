@@ -16,14 +16,22 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class ApiCommunicator extends AsyncTask<String, Void, JSONObject>{
+public class ApiCommunicator extends AsyncTask<String, JSONObject, JSONObject>{
 
 	private static String BASE_URL = "http://glassy-api.avans-project.nl/api/";
 	private static final String[] ACCEPTED_REQUEST_METHODS = new String[]{"GET", "POST", "PUT", "DELETE"};
 	private HttpClient httpClient = new DefaultHttpClient();
+	
+	private Context context;
+	
+	public ApiCommunicator(Context context) {
+		
+		this.context = context;
+	}
 		
 	/**
 	 * makes a httpgetrequest and gives a httpresponse
@@ -222,5 +230,10 @@ public class ApiCommunicator extends AsyncTask<String, Void, JSONObject>{
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	protected Context getContext() {
+		
+		return this.context;
 	}
 }

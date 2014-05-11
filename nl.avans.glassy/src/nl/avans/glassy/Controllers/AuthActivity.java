@@ -3,15 +3,18 @@ package nl.avans.glassy.Controllers;
 import java.util.Arrays;
 
 import nl.avans.glassy.R;
-
+import nl.avans.glassy.Models.Gebruiker;
+import nl.avans.glassy.Utils.ApiCommunicator;
 import nl.avans.glassy.Views.GebruikerAccountFragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.facebook.LoggingBehavior;
 import com.facebook.Request;
@@ -27,67 +30,54 @@ public abstract class AuthActivity extends FragmentActivity implements Gebruiker
 	private Session.StatusCallback callback = new SessionStatusCallback();
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
-
-		Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
+	public void toggleFunctions() {
 		
-		LoginButton facebookLogin = (LoginButton) findViewById(R.id.facebookLogin);
-		facebookLogin.setReadPermissions(Arrays.asList("basic_info", "email", "user_photos", "user_videos"));
+		View toToggle = findViewById(R.id.preAuthFuncties);
+		
+		if(toToggle.getVisibility() == View.GONE) {
+			
+			toToggle.setVisibility(View.VISIBLE);
+			
+		} else {
+			
+			toToggle.setVisibility(View.GONE);
+		}
+	}
+	
+	private class SessionStatusCallback implements Session.StatusCallback {
 
-		Session session = Session.getActiveSession();
-		if (session == null) {
+		@Override
+		public void call(Session session, SessionState state,
+				Exception exception) {
 
-			if (savedInstanceState != null) {
+			if (exception != null) {
 
-				session = Session.restoreSession(this, null, callback,
-						savedInstanceState);
+				exception.printStackTrace();
 			}
 			
-			if (session == null) {
-
-				session = new Session(this);
-			}
-
-			Session.setActiveSession(session);
-			if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
-
-				session.openForRead(new Session.OpenRequest(this)
-						.setCallback(callback));
+			if (state.toString().equals("OPENED")) {
+				
+				Request.newMeRequest(session, new Request.GraphUserCallback() {
+					
+					@Override
+					public void onCompleted(GraphUser user, Response response) {
+						
+						SharedPreferences sp = getApplicationContext().getSharedPreferences("GLASSY", 0);
+						SharedPreferences.Editor editor = sp.edit();
+						editor.putString("ACCOUNT", user.toString());
+						
+						editor.commit();
+					}
+					
+				}).executeAsync();
 			}
 		}
 
-		Button skipButton = (Button) findViewById(R.id.skip);
-		skipButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				Intent intent = new Intent(AuthActivity.this, WijkActivity.class);
-				startActivity(intent);
-			}
-		});
-		
-		Button registerButton = (Button) findViewById(R.id.register);
-		registerButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-
-				findViewById(R.id.skip).setVisibility(View.VISIBLE);
-			}
-		});
-		
 	}
-
+	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public void onStart() {
-
+	protected void onStart() {
+		
 		super.onStart();
 		Session.getActiveSession().addCallback(callback);
 	}
@@ -114,50 +104,100 @@ public abstract class AuthActivity extends FragmentActivity implements Gebruiker
 		Session session = Session.getActiveSession();
 		Session.saveSession(session, outState);
 	}
+	
+	protected void initFacebookLogin(Bundle savedInstanceState) {
+		
+		Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
+		
+		LoginButton facebookLogin = (LoginButton) findViewById(R.id.facebookLogin);
+		facebookLogin.setReadPermissions(Arrays.asList("basic_info", "email", "user_photos", "user_videos"));
 
-	private class SessionStatusCallback implements Session.StatusCallback {
+		Session session = Session.getActiveSession();
+		if (session == null) {
 
-		@Override
-		public void call(Session session, SessionState state,
-				Exception exception) {
+			if (savedInstanceState != null) {
 
-			Log.i("SessionStatusCallback", session.toString());
-			Log.i("SessionStatusCallback", state.toString());
-
-			if (exception != null) {
-
-				exception.printStackTrace();
+				session = Session.restoreSession(this, null, callback,
+						savedInstanceState);
 			}
 			
-			if (state.toString().equals("OPENED")) {
-				
-				Request.newMeRequest(session, new Request.GraphUserCallback() {
+			if (session == null) {
+
+				session = new Session(this);
+			}
+
+			Session.setActiveSession(session);
+			if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
+
+				session.openForRead(new Session.OpenRequest(this)
+						.setCallback(callback));
+			}
+		}
+	}
+	
+	protected void initApiLogin() {
+		
+		Button switchButton = (Button) findViewById(R.id.logRegSwitch);
+		switchButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				Button source = (Button) v;
+				String sourceText = source.getText().toString();
+				if(sourceText.toLowerCase().equals("register")) {
+
+					source.setText(R.string.login);
+
+					((Button) findViewById(R.id.executeAuth)).setText(R.string.register);
+					findViewById(R.id.password_repeat).setVisibility(View.VISIBLE);
 					
-					@Override
-					public void onCompleted(GraphUser user, Response response) {
+				} else {
+
+					source.setText(R.string.register);
+
+					((Button) findViewById(R.id.executeAuth)).setText(R.string.login);
+					findViewById(R.id.password_repeat).setVisibility(View.GONE);
+				}
+			}
+		});
+		
+		Button loginButton = (Button) findViewById(R.id.executeAuth);
+		loginButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				Button source = (Button) v;
+				String sourceText = source.getText().toString();
+				
+				if(sourceText.toLowerCase().equals("log in")) {
+					
+					Gebruiker.login(
+						getApplicationContext(),
+						((EditText) findViewById(R.id.email)).getText().toString(), 
+						((EditText) findViewById(R.id.password)).getText().toString()
+					);
+					
+				} else {
+
+					EditText email = (EditText) findViewById(R.id.email);
+					EditText password = (EditText) findViewById(R.id.password);
+					EditText password_repeat = (EditText) findViewById(R.id.password_repeat);
+					
+					if(!password.getText().toString().equals(password_repeat.getText().toString())) {
 						
-						Log.i("GraphUser", user.toString());
+						// TODO melding geven aan gebruiker
 					}
 					
-				}).executeAsync();
+					Gebruiker.register(
+						getApplicationContext(),
+						email.getText().toString(), 
+						password.getText().toString()
+					);
+				}			
 			}
-		}
-
+		});
 	}
-
-	@Override
-	public void toggleFunctions() {
-		
-		View toToggle = findViewById(R.id.account_functies);
-		
-		if(toToggle.getVisibility() == View.GONE) {
-			
-			toToggle.setVisibility(View.VISIBLE);
-			
-		} else {
-			
-			toToggle.setVisibility(View.GONE);
-		}
-	}
-
+	
 }
