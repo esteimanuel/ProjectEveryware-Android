@@ -73,8 +73,8 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 		fragmentTransaction.replace(R.id.map, wijkMapFragment, "wijkMap");
 		
 		// New WijkDeelnemers Fragment
-		wijkDeelnemersFragment = new WijkDeelnemersFragment();
-		fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment, "wijkDeelnemers");
+//		wijkDeelnemersFragment = new WijkDeelnemersFragment();
+//		fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment, "wijkDeelnemers");
 
 		fragmentTransaction.commit();
 
