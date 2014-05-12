@@ -63,6 +63,8 @@ public class WijkActivity extends AuthActivity {
 		setContentView(R.layout.wijkcollection_activity);
 		
 		getApplicationContext().getSharedPreferences("GLASSY", 0).registerOnSharedPreferenceChangeListener(spListener);
+		
+		findViewById(R.id.preAuthFuncties).setVisibility(View.GONE);
 
 		// Instantiate a ViewPager and a PagerAdapter.
 		mPager = (ViewPager) findViewById(R.id.pager);

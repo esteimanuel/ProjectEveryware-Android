@@ -43,7 +43,6 @@
         android:layout_below="@id/user_util"
         android:id="@+id/preAuthFuncties"
         android:name="nl.avans.glassy.Views.AuthFragment"
-        android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" /> 
         
