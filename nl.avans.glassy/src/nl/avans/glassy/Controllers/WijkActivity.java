@@ -1,6 +1,7 @@
 package nl.avans.glassy.Controllers;
 
 import nl.avans.glassy.R;
+import nl.avans.glassy.Utils.ApiCommunicator;
 
 import org.json.JSONObject;
 
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class WijkActivity extends AuthActivity {
+	private static String API_CONTROLLER = "wijk/";
 	
 	private OnSharedPreferenceChangeListener spListener = new OnSharedPreferenceChangeListener() {
 		
@@ -149,29 +151,15 @@ public class WijkActivity extends AuthActivity {
 	protected void onStart() {
 		super.onStart();
 
-		// Do async task for wijk objects
-		// create a new thread
-		Thread background = new Thread(new Runnable() {
-
+		String[] params = { "GET", API_CONTROLLER};
+		
+		new ApiCommunicator(this){
+			
 			@Override
-			public void run() {
-				for (int i = 0; i < NUM_PAGES; i++) {
-					try {
-						Message msg = new Message();
-						Bundle b = new Bundle();
-						b.putString("My Key", "My Value: " + String.valueOf(i));
-						msg.setData(b);
-						// send message to the handler with the current message
-						// handler
-						handler.sendMessage(msg);
-					} catch (Exception e) {
-						Log.v("Error", e.toString());
-					}
-				}
+			protected void onPostExecute(JSONObject result){
+				Log.d("Results", result.toString());
 			}
-		});
-
-		background.start();		
+		}.execute(params);
 	}
 	
 	protected void updateAccount(String name) {
