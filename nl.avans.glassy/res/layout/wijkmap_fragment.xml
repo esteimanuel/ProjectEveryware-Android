@@ -20,8 +20,9 @@
         android:id="@+id/web_view_progress"        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp" 
-        android:layout_below="@id/mapTitel"/>
+        android:layout_below="@id/mapTitel"
+        android:background="@drawable/rectangle"/>
+    
+    
 
 </RelativeLayout>
