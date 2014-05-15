@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/transparent" >   
     
-    
-    <TextView
+    <nl.avans.glassy.Utils.CustomTextView
         android:id="@+id/mapTitel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,8 +20,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/mapTitel"
-        android:background="@drawable/rectangle"/>
-    
-    
-
+        android:background="@drawable/rectangle"/>    
+        
 </RelativeLayout>

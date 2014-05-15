@@ -26,14 +26,14 @@ public class WijkMapFragment extends Fragment {
 	private WebView webView;
 	private webClientListener mywebListener;
 	private Boolean listenerset = false;
-	
+
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO: Not needed yet. Just a try to get the map to load faster.
 		super.onCreate(savedInstanceState);
-		
+
 		//get required size based on screen size
 		DisplayMetrics display = this.getResources().getDisplayMetrics();
 		mapHeight = display.heightPixels / 2;
@@ -49,7 +49,7 @@ public class WijkMapFragment extends Fragment {
 		WebViewClient customWebViewClient = new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				
+
 				view.loadUrl(url);
 
 				return true;
@@ -77,7 +77,7 @@ public class WijkMapFragment extends Fragment {
 		webView.getSettings().setUseWideViewPort(true);
 		Log.d("webView", "Settings are set");
 
-		
+
 		// Create layout, padding and other settings.
 		RelativeLayout.LayoutParams webViewLayout = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, mapHeight);
 		webViewLayout.addRule(RelativeLayout.BELOW, R.id.mapTitel);
@@ -89,8 +89,6 @@ public class WijkMapFragment extends Fragment {
 		webView.setPadding(dpAsPixels, 0, dpAsPixels, 0);
 		Log.d("webView", "webView padding set");
 
-		//add onTouch map listener
-		
 	}
 
 	@Override
@@ -101,15 +99,15 @@ public class WijkMapFragment extends Fragment {
 
 		layout.addView(webView);
 		Log.d("webView", "webView added to layout");
-		
+
 		createProgressSpinner(rootView);
-		
+
 		// Set WebView URL
 		webView.loadUrl(URL + wijkID);
 		Log.d("webView", "webView loadURL called");
 		return rootView;
 	}
-	
+
 	private void setlisteners()
 	{
 		webView.setOnTouchListener(new View.OnTouchListener() {			
@@ -120,11 +118,11 @@ public class WijkMapFragment extends Fragment {
 			}
 		}); 
 	}
-	
+
 	public interface webClientListener {
 		public void onTouchMap(String URL);
 	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -135,10 +133,12 @@ public class WijkMapFragment extends Fragment {
 					+ " must implement BoardListListener");
 		}
 	}
-	
+
 	public void createProgressSpinner(View view)
 	{
+		//Find progressbar 
 		mPbar = (ProgressBar) view.findViewById(R.id.web_view_progress);
+		//set the size
 		RelativeLayout.LayoutParams webViewLayout = new RelativeLayout.LayoutParams(mapWidth, mapHeight);
 		webViewLayout.addRule(RelativeLayout.BELOW, R.id.mapTitel);
 		mPbar.setLayoutParams(webViewLayout);
