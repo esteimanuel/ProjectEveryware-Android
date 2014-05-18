@@ -111,9 +111,9 @@ public class WijkActivity extends AccountFunctieActivity  implements webClientLi
 	// Implementations of the ontouchlistener from wijkMapFragment
 	@Override
 	public void onTouchMap(String URL) {
-		// TODO deze wordt 3 keer aangeroepen.
-		Intent myIntent = new Intent(this, MapDetailActivity.class);
-		myIntent.putExtra("url", URL);
+		//TODO deze wordt 3 keer aangeroepen.
+		Intent myIntent = new Intent(this, DetailMapActivity.class);
+		myIntent.putExtra("url", URL); 
 		this.startActivity(myIntent);
 	}
 

@@ -51,6 +51,16 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp" >
             </FrameLayout>
+            
+            <FrameLayout
+                android:id="@+id/goededoelen"
+                android:name="nl.avans.glassy.Views.WijkGoededoelenFragment"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" >
+            </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/deelnemers"

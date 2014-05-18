@@ -67,7 +67,7 @@ public class ActieManager {
 	private static ActieManager sInstance = null;
 
 	// An object that manages Messages in a Thread
-	private Handler mHandler;
+	public static Handler mHandler;
 
 	// A queue of ActieManager tasks. Tasks are handed to a ThreadPool.
 	private final Queue<ActieTask> mActieTaskWorkQueue;
@@ -203,7 +203,7 @@ public class ActieManager {
 		myLocation = new MyLocation();
 
 		Log.d("ActieManager", "Getting geolocation");
-		myLocation.getLocation(myActivity.getApplicationContext());
+		myLocation.getLocation(myActivity);
 	}
 
 	/**
@@ -252,29 +252,29 @@ public class ActieManager {
 	 *            The state of the task
 	 */
 	public void handleLocationResult(Location locationResult, int state) {
-		double lat = 52.0833;
-		double lon = 5.1333;
+		double lat = 51.5852378;
+		double lon = 4.7564221;
 
 		switch (state) {
 		// Obtaining the location successful
 		case LOCATION_OBTAINED:
-			Log.d("ActieManager", locationResult.getLatitude() + " : "
-					+ locationResult.getLongitude());
 			lat = locationResult.getLatitude();
 			lon = locationResult.getLongitude();
 
-			// Prevent further change in location
-			myLocation = null;
+			Log.d("ActieManager", lat + " : " + lon);
 			break;
 		// Obtaining the location failed
 		case LOCATION_FAILED:
 		default:
+			lat = 51.5852378;
+			lon = 4.7564221;
 			// TODO
 			Log.d("ActieManager",
 					"getLocation failed, Using default location Utrecht");
 			break;
 		}
 
+		Log.d("ActieManager", lat + " : " + lon);
 		getCloseByActies(lat, lon);
 
 	}
@@ -289,47 +289,32 @@ public class ActieManager {
 
 	private void getCloseByActies(double lat, double lon) {
 
+		Log.d("ActieManager", "getCloseByActies called");
 		String API_CONTROLLER = "wijk/closeby?lat=" + lat + "&long=" + lon;
 		String[] params = { "GET", API_CONTROLLER };
 
-		new ApiCommunicator(myActivity.getApplicationContext()) {
+		new ApiCommunicator(myActivity) {
 
 			@Override
 			protected void onPostExecute(JSONObject result) {
-				
-				if(result != null) {
-				
-					handleJSONDownloadState(result, DOWNLOAD_COMPLETE);
-				
-				} else {
-
-					handleJSONDownloadState(result, DOWNLOAD_FAILED);
-				}
-				
+				Log.d("ActieManager", "onPostExecute called");
+				handleJSONDownloadState(result, DOWNLOAD_COMPLETE);
 			}
 		}.execute(params);
-
 	}
 
 	public void handleJSONDownloadState(JSONObject result, int state) {
-		
 		Log.d("ActieManager", "handleJSONDownloadState called");
-		
 		try {
-			
 			JSONArray acties = result.getJSONArray("entries");
-			
 			for (int i = 0; i < acties.length(); i++) {
-				
 				JSONObject temp = acties.getJSONObject(i);
 				Actie tempActie = new Actie();
 				tempActie.setActieJSON(temp);
 				tempActie.startDecode();
 				actieArray.add(tempActie);
 			}
-			
-		} catch (Exception e) {
-			
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}
