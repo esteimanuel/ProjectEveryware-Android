@@ -20,8 +20,7 @@ public class MyLocation {
 	// Constants for indicating the state of the download
 	static final int LOCATION_FAILED = -1;
 	static final int LOCATION_OBTAINED = 0;
-
-	Timer timer1;
+	
 	LocationManager lm;
 	Location locationResult;
 	boolean gps_enabled = false;
@@ -57,18 +56,24 @@ public class MyLocation {
 			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
 					locationListenerGps);
 
-		timer1 = new Timer();
-		timer1.schedule(new GetLastLocation(), 5);
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				/* do what you need to do */
+				GetLastLocation();
+			}
+		};
+
+		ActieManager.mHandler.postDelayed(runnable, 5000);
 		return true;
 	}
 
 	LocationListener locationListenerGps = new LocationListener() {
 		public void onLocationChanged(Location location) {
-				timer1.cancel();
-				locationResult = location;
-				handleState(LOCATION_OBTAINED);
-				lm.removeUpdates(this);
-				lm.removeUpdates(locationListenerNetwork);
+			locationResult = location;
+			handleState(LOCATION_OBTAINED);
+			lm.removeUpdates(this);
+			lm.removeUpdates(locationListenerNetwork);
 		}
 
 		public void onProviderDisabled(String provider) {
@@ -83,7 +88,6 @@ public class MyLocation {
 
 	LocationListener locationListenerNetwork = new LocationListener() {
 		public void onLocationChanged(Location location) {
-			timer1.cancel();
 			locationResult = location;
 			handleState(LOCATION_OBTAINED);
 			lm.removeUpdates(this);
@@ -100,41 +104,37 @@ public class MyLocation {
 		}
 	};
 
-	class GetLastLocation extends TimerTask {
-		@Override
-		public void run() {
-			lm.removeUpdates(locationListenerGps);
-			lm.removeUpdates(locationListenerNetwork);
+	private void GetLastLocation() {
+		lm.removeUpdates(locationListenerGps);
+		lm.removeUpdates(locationListenerNetwork);
 
-			Location net_loc = null, gps_loc = null;
-			if (gps_enabled)
-				gps_loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			if (network_enabled)
-				net_loc = lm
-						.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		Location net_loc = null, gps_loc = null;
+		if (gps_enabled)
+			gps_loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (network_enabled)
+			net_loc = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-			// if there are both values use the latest one
-			if (gps_loc != null && net_loc != null) {
-				if (gps_loc.getTime() > net_loc.getTime()) {
-					locationResult = gps_loc;
-					handleState(LOCATION_OBTAINED);
-				} else {
-					locationResult = net_loc;
-					handleState(LOCATION_OBTAINED);
-				}
-				return;
-			} else if (gps_loc != null) {
+		// if there are both values use the latest one
+		if (gps_loc != null && net_loc != null) {
+			if (gps_loc.getTime() > net_loc.getTime()) {
 				locationResult = gps_loc;
 				handleState(LOCATION_OBTAINED);
-				return;
-			} else if (net_loc != null) {
+			} else {
 				locationResult = net_loc;
 				handleState(LOCATION_OBTAINED);
-				return;
 			}
-			locationResult = null;
-			handleState(LOCATION_FAILED);
+			return;
+		} else if (gps_loc != null) {
+			locationResult = gps_loc;
+			handleState(LOCATION_OBTAINED);
+			return;
+		} else if (net_loc != null) {
+			locationResult = net_loc;
+			handleState(LOCATION_OBTAINED);
+			return;
 		}
+		locationResult = null;
+		handleState(LOCATION_FAILED);
 	}
 
 	// Delegates handling the current state of the task to the PhotoManager
@@ -145,7 +145,6 @@ public class MyLocation {
 
 			// Passes the state to the ThreadPool object.
 			sActieManager.handleLocationResult(locationResult, state);
-
 			sActieManager = null;
 		}
 	}

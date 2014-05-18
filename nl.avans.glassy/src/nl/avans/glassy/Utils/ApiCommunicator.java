@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-import nl.avans.glassy.Threads.ActieManager;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
@@ -23,14 +21,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class ApiCommunicator extends AsyncTask<String, JSONObject, JSONObject> {
-	/*
-	 * An object that contains the ThreadPool singleton.
-	 */
-	private static ActieManager sActieManager;
 
 	// Constants for indicating the state of the download
-	static final int LOCATION_FAILED = -1;
-	static final int LOCATION_OBTAINED = 0;
+	static final int DOWNLOAD_FAILED = -1;
+	static final int DOWNLOAD_COMPLETE = 0;
 
 	private static String BASE_URL = "http://glassy-api.avans-project.nl/api/";
 	private static final String[] ACCEPTED_REQUEST_METHODS = new String[] {
@@ -40,9 +34,7 @@ public class ApiCommunicator extends AsyncTask<String, JSONObject, JSONObject> {
 	private Context context;
 
 	public ApiCommunicator(Context context) {
-
 		this.context = context;
-		sActieManager = ActieManager.getInstance();
 	}
 
 	/**
@@ -254,14 +246,5 @@ public class ApiCommunicator extends AsyncTask<String, JSONObject, JSONObject> {
 	protected Context getContext() {
 
 		return this.context;
-	}
-
-	// Delegates handling the current state of the task to the PhotoManager
-	// object
-	protected void handleState(JSONObject result, int state) {
-		Log.d("ActieManager", "ApiCommunicator handleState called");
-
-		// Passes the state to the ThreadPool object.
-		sActieManager.handleJSONDownloadState(result, state);
 	}
 }
