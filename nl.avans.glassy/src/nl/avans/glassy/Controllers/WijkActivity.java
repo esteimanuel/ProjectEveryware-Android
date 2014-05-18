@@ -1,15 +1,14 @@
 package nl.avans.glassy.Controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nl.avans.glassy.R;
-import nl.avans.glassy.Utils.ApiCommunicator;
+import nl.avans.glassy.Models.Actie;
+import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
-
-import org.json.JSONObject;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -18,25 +17,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-public class WijkActivity extends AccountFunctieActivity implements webClientListener {
-
-	private static String API_CONTROLLER = "wijk/"; // moet in moddel...
-	
-	static Handler handler = new  Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			// get the bundle and extract data by key
-			Bundle b = msg.getData();
-		}
-	};
-
+public class WijkActivity extends AccountFunctieActivity  implements webClientListener {
+			
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wijkcollection_activity);
 		
 		findViewById(R.id.functies).setVisibility(View.GONE);
+		
+		ActieManager.getInstance().init(this);
 
 		// Instantiate a ViewPager and a PagerAdapter.
 		mPager = (ViewPager) findViewById(R.id.pager);
@@ -68,11 +58,6 @@ public class WijkActivity extends AccountFunctieActivity implements webClientLis
 	}
 
 	/**
-	 * The number of pages (wizard steps) to show in this demo.
-	 */
-	private static final int NUM_PAGES = 2;
-
-	/**
 	 * The pager widget, which handles animation and allows swiping horizontally
 	 * to access previous and next wizard steps.
 	 */
@@ -102,43 +87,44 @@ public class WijkActivity extends AccountFunctieActivity implements webClientLis
 	 * in sequence.
 	 */
 	private class PagerAdapter extends FragmentStatePagerAdapter {
+		private List<WijkFragment> actieList;
+
 		public PagerAdapter(FragmentManager fm) {
 			super(fm);
+			actieList = new ArrayList<WijkFragment>();
 		}
 
 		@Override
 		public Fragment getItem(int position) {
-			return new WijkFragment();
+			Log.d("stuff", Integer.toString(position));
+			return actieList.get(position);
 		}
 
 		@Override
 		public int getCount() {
-			return NUM_PAGES;
+			return actieList.size();
+		}
+
+		public void addFragmentToAdapter(WijkFragment theFragment) {
+			actieList.add(theFragment);
+			notifyDataSetChanged();
 		}
 	}
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-
-		String[] params = { "GET", API_CONTROLLER};
-		
-		new ApiCommunicator(this){
-			
-			@Override
-			protected void onPostExecute(JSONObject result){
-				Log.d("Results", result.toString());
-			}
-		}.execute(params);
-	}
-
-	//Implementations of the ontouchlistener from wijkMapFragment
+	// Implementations of the ontouchlistener from wijkMapFragment
 	@Override
 	public void onTouchMap(String URL) {
-		//TODO deze wordt 3 keer aangeroepen.
+		// TODO deze wordt 3 keer aangeroepen.
 		Intent myIntent = new Intent(this, MapDetailActivity.class);
-		myIntent.putExtra("url", URL); 
+		myIntent.putExtra("url", URL);
 		this.startActivity(myIntent);
 	}
 
+	public void addFragment(Actie actie) {
+		WijkFragment tempFragment = new WijkFragment();
+		Bundle bundle = new Bundle();
+		bundle.putParcelable("ActieObject", actie);
+		tempFragment.setArguments(bundle);
+		mPagerAdapter.addFragmentToAdapter(tempFragment);
+	}
 }

@@ -1,5 +1,7 @@
 package nl.avans.glassy.Controllers;
 
+import java.lang.reflect.Field;
+
 import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.ScrollViewListener;
 import nl.avans.glassy.Views.WijkDeelnemersFragment;
@@ -23,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
 public class WijkFragment extends Fragment implements ScrollViewListener {
+
 	private float oldAlpha = 1.00f;
 	private ImageView background;
 
@@ -38,6 +41,7 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Bundle bundle = this.getArguments();
 
 		ViewGroup rootView = (ViewGroup) inflater.inflate(
 				R.layout.wijk_fragment, container, false);
@@ -45,9 +49,9 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 		ObservableScrollView scrollView = (ObservableScrollView) rootView
 				.findViewById(R.id.scrollPanel);
 		scrollView.setScrollViewListener(this);
-		
+
 		background = (ImageView) rootView.findViewById(R.id.backgroundImage);
-		
+
 		fragmentManager = getChildFragmentManager();
 		fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -61,24 +65,43 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 
 		// New WijkDetails Fragment
 		wijkDetails = new WijkDetailsFragment();
+		wijkDetails.setArguments(bundle);
 		fragmentTransaction.replace(R.id.details, wijkDetails, "wijkDetails");
 
 		// New youtubePlayer SupportFragment
 		wijkVideoFragment = new WijkVideoFragment();
+		wijkVideoFragment.setArguments(bundle);
 		fragmentTransaction.replace(R.id.youtube, wijkVideoFragment,
 				"youtubePlayer");
 
 		// New Webview Fragment
 		wijkMapFragment = new WijkMapFragment();
+		wijkMapFragment.setArguments(bundle);
 		fragmentTransaction.replace(R.id.map, wijkMapFragment, "wijkMap");
-		
+
 		// New WijkDeelnemers Fragment
-//		wijkDeelnemersFragment = new WijkDeelnemersFragment();
-//		fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment, "wijkDeelnemers");
+		// wijkDeelnemersFragment = new WijkDeelnemersFragment();
+		// fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment,
+		// "wijkDeelnemers");
 
 		fragmentTransaction.commit();
 
 		return rootView;
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		try {
+			Field childFragmentManager = Fragment.class
+					.getDeclaredField("mChildFragmentManager");
+			childFragmentManager.setAccessible(true);
+			childFragmentManager.set(this, null);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	// Get usable device height (not counting statusbar ect.)
@@ -121,7 +144,7 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 		// Log.d("neededBlur", Double.toString(neededAlpha));
 
 		if (neededBlur != oldAlpha) {
-		//	background.setImageBitmap();
+			// background.setImageBitmap();
 		}
 
 		oldAlpha = neededBlur;
