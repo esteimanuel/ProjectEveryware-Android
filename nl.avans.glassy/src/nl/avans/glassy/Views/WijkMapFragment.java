@@ -1,12 +1,12 @@
 package nl.avans.glassy.Views;
 
 import nl.avans.glassy.R;
+import nl.avans.glassy.Models.Actie;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,26 +19,28 @@ import android.widget.RelativeLayout.LayoutParams;
 
 public class WijkMapFragment extends Fragment {
 	private final String URL = "http://glassy-web.avans-project.nl/?wijk=";
-	private String wijkID = "1";
 	private int mapHeight;
 	private int mapWidth;
 	private ProgressBar mPbar = null;
 	private WebView webView;
 	private webClientListener mywebListener;
 	private Boolean listenerset = false;
+	private Actie thisActie;
 
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO: Not needed yet. Just a try to get the map to load faster.
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);		
+
+		Bundle bundle = this.getArguments();
+		thisActie = (Actie) bundle.getParcelable("ActieObject");
 
 		//get required size based on screen size
 		DisplayMetrics display = this.getResources().getDisplayMetrics();
 		mapHeight = display.heightPixels / 2;
 		mapWidth = display.widthPixels;
-		Log.d("mapHeight","mapHeight: " + Integer.toString(mapHeight));
 
 		//Set the right size programmatically + various settings for what is allowed
 		webviewSetup();
@@ -53,12 +55,10 @@ public class WijkMapFragment extends Fragment {
 		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.container);		
 
 		layout.addView(webView);
-		Log.d("webView", "webView added to layout");
 		createProgressSpinner(rootView);
 
 		// Set WebView URL
-		webView.loadUrl(URL + wijkID);
-		Log.d("webView", "webView loadURL called");
+		webView.loadUrl(URL + thisActie.getWijk_id());
 		return rootView;
 	}
 
@@ -67,7 +67,7 @@ public class WijkMapFragment extends Fragment {
 		webView.setOnTouchListener(new View.OnTouchListener() {			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				mywebListener.onTouchMap(URL + wijkID);
+				mywebListener.onTouchMap(URL + thisActie.getWijk_id());
 				return true;
 			}
 		}); 
@@ -98,15 +98,13 @@ public class WijkMapFragment extends Fragment {
 		RelativeLayout.LayoutParams webViewLayout = new RelativeLayout.LayoutParams(mapWidth, mapHeight);
 		webViewLayout.addRule(RelativeLayout.BELOW, R.id.mapTitel);
 		mPbar.setLayoutParams(webViewLayout);
-		Log.d("webView", "webView layout set");
 	}
 	
 	public void webviewSetup()
 	{
 		// Create new WebView object.
 				webView = new WebView(getActivity());
-				webView.setVisibility(View.GONE);
-				Log.d("webView", "WebView Object created");				
+				webView.setVisibility(View.GONE);			
 
 				// Enable different settings
 				// Alert: If the App doesn't need JavaScript setJavaScriptEnabled should
@@ -114,18 +112,15 @@ public class WijkMapFragment extends Fragment {
 				webView.getSettings().setJavaScriptEnabled(true);
 				webView.getSettings().setLoadWithOverviewMode(true);
 				webView.getSettings().setUseWideViewPort(true);
-				Log.d("webView", "Settings are set");
 
 				// Create layout, padding and other settings.
 				RelativeLayout.LayoutParams webViewLayout = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, mapHeight);
 				webViewLayout.addRule(RelativeLayout.BELOW, R.id.mapTitel);
 				webView.setLayoutParams(webViewLayout);
-				Log.d("webView", "webView layout set");
 
 				float scale = getResources().getDisplayMetrics().density;
 				int dpAsPixels = (int) (5 * scale + 0.5f);
-				webView.setPadding(dpAsPixels, 0, dpAsPixels, 0);
-				Log.d("webView", "webView padding set");		
+				webView.setPadding(dpAsPixels, 0, dpAsPixels, 0);	
 	}
 	
 	public void connectWebViewClient()
@@ -152,6 +147,5 @@ public class WijkMapFragment extends Fragment {
 			}
 		};
 		webView.setWebViewClient(customWebViewClient);
-		Log.d("webView", "Custom WebViewClient Object created");
 	}
 }
