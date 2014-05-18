@@ -2,11 +2,11 @@ package nl.avans.glassy.Controllers;
 
 import nl.avans.glassy.R;
 import nl.avans.glassy.Utils.ApiCommunicator;
+import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
 
 import org.json.JSONObject;
 
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,10 +18,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
-public class WijkActivity extends AccountFunctieActivity {
-	private static String API_CONTROLLER = "wijk/";
+public class WijkActivity extends AccountFunctieActivity implements webClientListener {
+
+	private static String API_CONTROLLER = "wijk/"; // moet in moddel...
 	
 	static Handler handler = new  Handler() {
 		@Override
@@ -130,6 +130,15 @@ public class WijkActivity extends AccountFunctieActivity {
 				Log.d("Results", result.toString());
 			}
 		}.execute(params);
+	}
+
+	//Implementations of the ontouchlistener from wijkMapFragment
+	@Override
+	public void onTouchMap(String URL) {
+		//TODO deze wordt 3 keer aangeroepen.
+		Intent myIntent = new Intent(this, MapDetailActivity.class);
+		myIntent.putExtra("url", URL); 
+		this.startActivity(myIntent);
 	}
 
 }

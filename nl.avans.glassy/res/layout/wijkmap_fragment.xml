@@ -3,17 +3,9 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent" >
-
+    android:background="@color/transparent" >   
     
-    <ProgressBar
-        android:id="@+id/web_view_progress"        
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp" />
-    
-    <TextView
+    <nl.avans.glassy.Utils.CustomTextView
         android:id="@+id/mapTitel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,5 +14,12 @@
         android:text="@string/map"
         android:textColor="@color/white"
         android:textSize="20sp" />
-
+    
+    <ProgressBar
+        android:id="@+id/web_view_progress"        
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mapTitel"
+        android:background="@drawable/rectangle"/>   
+        
 </RelativeLayout>
