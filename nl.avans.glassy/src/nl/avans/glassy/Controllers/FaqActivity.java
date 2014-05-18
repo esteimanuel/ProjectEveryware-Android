@@ -1,5 +1,7 @@
 package nl.avans.glassy.Controllers;
 
+import java.util.ArrayList;
+
 import org.json.JSONObject;
 
 import nl.avans.glassy.R;
@@ -44,13 +46,10 @@ public class FaqActivity extends FragmentActivity implements faqListener {
 	}
 
 	@Override
-	public void onFaqLoaded(String URL) {
+	public void onFaqLoaded(ArrayList<String> questions, ArrayList<String> answers) {
 		FaqFragment fragment = (FaqFragment) getFragmentManager().findFragmentById(R.id.faqfragment);
-		fragment.updateText(URL);
-		
+		fragment.updateText(questions, answers);		
 	}
-
-
 
 
 }

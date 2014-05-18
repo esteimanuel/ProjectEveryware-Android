@@ -1,5 +1,7 @@
 package nl.avans.glassy.Views;
 
+import java.util.ArrayList;
+
 import nl.avans.glassy.R;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -22,8 +24,20 @@ public class FaqFragment extends Fragment {
 		return rootView;
 	}
 
-	public void updateText(String uRL) {
-		faqinfo.setText(uRL);
+	public void updateText(ArrayList<String> questions,	ArrayList<String> answers) {
+	
+		//TODO netjes zetten
+		if(questions.size() == answers.size())
+		{
+			String textviewinfo = "";
+			for(int i = 0; i < questions.size(); i++)
+			{
+				String info = null;
+				info = questions.get(i) + "\n" + answers.get(i) + "\n\n";
+				textviewinfo = textviewinfo + info;				
+			}
+			faqinfo.setText(textviewinfo);
+		}
 	}
 
 
