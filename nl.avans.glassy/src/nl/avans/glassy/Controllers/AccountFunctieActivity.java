@@ -161,6 +161,13 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 		}
 	}
 	
+	@Override
+	public void showFAQ() {
+		
+		Intent intent = new Intent(this, FaqActivity.class);
+		startActivity(intent);
+	}
+	
 	/**
 	 * Facebook login functions
 	 * @author Mathijs van den Worm
@@ -194,7 +201,6 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 				}).executeAsync();
 			}
 		}
-		
 	}
 	
 	protected void initFacebookLogin(Bundle savedInstanceState) {

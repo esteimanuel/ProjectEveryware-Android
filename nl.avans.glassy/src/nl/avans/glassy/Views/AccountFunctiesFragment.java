@@ -53,6 +53,16 @@ public class AccountFunctiesFragment extends Fragment {
 				toggleManager.toggleFuncties();
 			}
 		});	
+		
+		view.findViewById(R.id.user_util)
+			.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+
+					toggleManager.showFAQ();
+				}
+			});
 				
 		return view;
 	}
@@ -88,6 +98,8 @@ public class AccountFunctiesFragment extends Fragment {
 	public interface ToggleFunctiesManager {
 		
 		public void toggleFuncties();
+		
+		public void showFAQ();
 	}
 	
 }
