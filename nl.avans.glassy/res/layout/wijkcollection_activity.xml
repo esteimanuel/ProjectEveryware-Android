@@ -9,7 +9,7 @@
     
     <fragment
     	android:id="@+id/gebruikerFuncties"
-    	android:name="nl.avans.glassy.Views.GebruikerAccountFragment"
+    	android:name="nl.avans.glassy.Views.AccountFunctiesFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
     

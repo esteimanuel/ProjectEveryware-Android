@@ -23,7 +23,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
 public class WijkActivity extends AuthActivity implements webClientListener {
 
 	private OnSharedPreferenceChangeListener spListener = new OnSharedPreferenceChangeListener() {
@@ -55,7 +54,7 @@ public class WijkActivity extends AuthActivity implements webClientListener {
 			}
 		}
 	};
-
+			
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,6 +64,8 @@ public class WijkActivity extends AuthActivity implements webClientListener {
 				.registerOnSharedPreferenceChangeListener(spListener);
 
 		findViewById(R.id.preAuthFuncties).setVisibility(View.GONE);
+		
+		findViewById(R.id.functies).setVisibility(View.GONE);
 
 		initFacebookLogin(savedInstanceState);
 		initApiLogin();
@@ -74,6 +75,9 @@ public class WijkActivity extends AuthActivity implements webClientListener {
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
+		
+//		initFacebookLogin(savedInstanceState);
+//		initApiLogin();
 	}
 
 	@Override
