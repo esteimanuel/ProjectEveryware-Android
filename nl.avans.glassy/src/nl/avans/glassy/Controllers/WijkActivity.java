@@ -1,17 +1,14 @@
 package nl.avans.glassy.Controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nl.avans.glassy.R;
-import nl.avans.glassy.Utils.ApiCommunicator;
+import nl.avans.glassy.Models.Actie;
+import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
-
-import org.json.JSONObject;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -20,63 +17,24 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-
-public class WijkActivity extends AuthActivity implements webClientListener {
-	private static String API_CONTROLLER = "wijk/";
-	
-	private OnSharedPreferenceChangeListener spListener = new OnSharedPreferenceChangeListener() {
-		
-		@Override
-		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-				String key) {
+public class WijkActivity extends AccountFunctieActivity  implements webClientListener {
 			
-			if(key.equals("ACCOUNT")) {
-				
-				String account = sharedPreferences.getString(key, null);
-				Log.i("SP ACCOUNT", account);
-				
-				if(account != null) {
-					
-					try {
-						
-						JSONObject accountAsJson = new JSONObject(account);
-						
-						updateAccount(accountAsJson.getString("token")); // them nested blocks...
-						
-					} catch(Exception e) {
-						
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-	};
-	
-	static Handler handler = new  Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			// get the bundle and extract data by key
-			Bundle b = msg.getData();
-		}
-	};
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wijkcollection_activity);
 		
-		getApplicationContext().getSharedPreferences("GLASSY", 0).registerOnSharedPreferenceChangeListener(spListener);
+		findViewById(R.id.functies).setVisibility(View.GONE);
 		
-		findViewById(R.id.preAuthFuncties).setVisibility(View.GONE);
+		ActieManager.getInstance().init(this);
 
 		// Instantiate a ViewPager and a PagerAdapter.
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
 		
-		initFacebookLogin(savedInstanceState);
-		initApiLogin();
+//		initFacebookLogin(savedInstanceState);
+//		initApiLogin();
 	}
 
 	@Override
@@ -98,11 +56,6 @@ public class WijkActivity extends AuthActivity implements webClientListener {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-	/**
-	 * The number of pages (wizard steps) to show in this demo.
-	 */
-	private static final int NUM_PAGES = 2;
 
 	/**
 	 * The pager widget, which handles animation and allows swiping horizontally
@@ -134,43 +87,31 @@ public class WijkActivity extends AuthActivity implements webClientListener {
 	 * in sequence.
 	 */
 	private class PagerAdapter extends FragmentStatePagerAdapter {
+		private List<WijkFragment> actieList;
+
 		public PagerAdapter(FragmentManager fm) {
 			super(fm);
+			actieList = new ArrayList<WijkFragment>();
 		}
 
 		@Override
 		public Fragment getItem(int position) {
-			return new WijkFragment();
+			Log.d("stuff", Integer.toString(position));
+			return actieList.get(position);
 		}
 
 		@Override
 		public int getCount() {
-			return NUM_PAGES;
+			return actieList.size();
+		}
+
+		public void addFragmentToAdapter(WijkFragment theFragment) {
+			actieList.add(theFragment);
+			notifyDataSetChanged();
 		}
 	}
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-
-		String[] params = { "GET", API_CONTROLLER};
-		
-		new ApiCommunicator(this){
-			
-			@Override
-			protected void onPostExecute(JSONObject result){
-				Log.d("Results", result.toString());
-			}
-		}.execute(params);
-	}
-	
-	protected void updateAccount(String name) {
-		
-		((TextView) findViewById(R.id.gebruikersnaam)).setText(name);
-		findViewById(R.id.preAuthFuncties).setVisibility(View.GONE);
-	}
-
-	//Implementations of the ontouchlistener from wijkMapFragment
+	// Implementations of the ontouchlistener from wijkMapFragment
 	@Override
 	public void onTouchMap(String URL) {
 		//TODO deze wordt 3 keer aangeroepen.
@@ -179,4 +120,11 @@ public class WijkActivity extends AuthActivity implements webClientListener {
 		this.startActivity(myIntent);
 	}
 
+	public void addFragment(Actie actie) {
+		WijkFragment tempFragment = new WijkFragment();
+		Bundle bundle = new Bundle();
+		bundle.putParcelable("ActieObject", actie);
+		tempFragment.setArguments(bundle);
+		mPagerAdapter.addFragmentToAdapter(tempFragment);
+	}
 }

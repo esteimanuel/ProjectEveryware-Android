@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
+import nl.avans.glassy.Threads.ActieManager;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
@@ -20,220 +22,246 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class ApiCommunicator extends AsyncTask<String, JSONObject, JSONObject>{
+public class ApiCommunicator extends AsyncTask<String, JSONObject, JSONObject> {
+	/*
+	 * An object that contains the ThreadPool singleton.
+	 */
+	private static ActieManager sActieManager;
+
+	// Constants for indicating the state of the download
+	static final int LOCATION_FAILED = -1;
+	static final int LOCATION_OBTAINED = 0;
 
 	private static String BASE_URL = "http://glassy-api.avans-project.nl/api/";
-	private static final String[] ACCEPTED_REQUEST_METHODS = new String[]{"GET", "POST", "PUT", "DELETE"};
+	private static final String[] ACCEPTED_REQUEST_METHODS = new String[] {
+			"GET", "POST", "PUT", "DELETE" };
 	private HttpClient httpClient = new DefaultHttpClient();
-	
+
 	private Context context;
-	
+
 	public ApiCommunicator(Context context) {
-		
+
 		this.context = context;
+		sActieManager = ActieManager.getInstance();
 	}
-		
+
 	/**
 	 * makes a httpgetrequest and gives a httpresponse
-	 * @param String url
+	 * 
+	 * @param String
+	 *            url
 	 * @return HttpResponse response
 	 */
 	private HttpResponse prepareAndExecuteGetRequest(String url) {
-		
+
 		try {
-			
+
 			System.out.println("GET!");
 			HttpGet request = new HttpGet(url);
 			return httpClient.execute(request);
-			
-		} catch(Exception e) {
-			
+
+		} catch (Exception e) {
+
 			return null;
 		}
 	}
-	
+
 	/**
 	 * makes a httppostrequet and gives a httpresponse
-	 * @param String url
-	 * @param JSONObject body
+	 * 
+	 * @param String
+	 *            url
+	 * @param JSONObject
+	 *            body
 	 * @return HttpResponse response
 	 */
-	private HttpResponse prepareAndExecutePostRequest(String url, JSONObject body) {
-		
+	private HttpResponse prepareAndExecutePostRequest(String url,
+			JSONObject body) {
+
 		try {
-			
+
 			System.out.println("POST!");
 			HttpPost request = new HttpPost(url);
-			request.setEntity(
-				new StringEntity(
-					body.toString(), "UTF8"
-				)
-			);
+			request.setEntity(new StringEntity(body.toString(), "UTF8"));
 			request.setHeader("Content-type", "application/json");
-			
+
 			return httpClient.execute(request);
-			
-		} catch(Exception e) {
-			
-			//TODO: handle exception
+
+		} catch (Exception e) {
+
+			// TODO: handle exception
 			return null;
 		}
 	}
-	
+
 	private HttpResponse prepareAndExecutePutRequest(String url, JSONObject body) {
-		
+
 		try {
-			
+
 			System.out.println("PUT!");
 			HttpPut request = new HttpPut(url);
-			request.setEntity(
-				new StringEntity(
-					body.toString(), "UTF8"
-				)
-			);
+			request.setEntity(new StringEntity(body.toString(), "UTF8"));
 			request.setHeader("Content-type", "application/json");
-			
+
 			return httpClient.execute(request);
-			
-		} catch(Exception e) {
-			
-			//TODO: handle exception
+
+		} catch (Exception e) {
+
+			// TODO: handle exception
 			return null;
 		}
 	}
-	
+
 	private HttpResponse prepareAndExecuteDeleteRequest(String url) {
-		
+
 		try {
-			
+
 			System.out.println("DELETE!");
 			HttpDelete request = new HttpDelete(url);
 
 			return httpClient.execute(request);
-			
-		} catch(Exception e) {
-			
-			//TODO: handle exception
+
+		} catch (Exception e) {
+
+			// TODO: handle exception
 			return null;
 		}
 	}
-	
+
 	@Override
 	protected JSONObject doInBackground(String... arg0) {
-		
+
 		// get the parameters
 		String method = arg0[0].toUpperCase();
-		String url = BASE_URL + arg0[1]; 
+		String url = BASE_URL + arg0[1];
 		JSONObject requestBody = null;
-		
-		try { 
-		
-			requestBody = new JSONObject(arg0[2]); // there might be a body in the parameter array
-		
-		} catch(Exception e) {
-			
+
+		try {
+
+			requestBody = new JSONObject(arg0[2]); // there might be a body in
+													// the parameter array
+
+		} catch (Exception e) {
+
 			System.out.println("No requestbody given");
 		}
 
-		if(!Arrays.asList(ACCEPTED_REQUEST_METHODS).contains(method)) { // validate method
-			
+		if (!Arrays.asList(ACCEPTED_REQUEST_METHODS).contains(method)) { // validate
+																			// method
+
 			System.out.println("Non supported http method found: " + method);
 			System.out.println("please use: GET, POST, PUT or DELETE");
-			
+
 			return null;
 		}
-		
+
 		return executeRequest(method, url, requestBody); // doejeding
 	}
-	
+
 	/**
-	 * prepares a request for the given method and url. 
-	 * @param String method
-	 * @param String url
-	 * @param JSONObject requestBody
+	 * prepares a request for the given method and url.
+	 * 
+	 * @param String
+	 *            method
+	 * @param String
+	 *            url
+	 * @param JSONObject
+	 *            requestBody
 	 * @return JSONObject responseBody
 	 */
-	private JSONObject executeRequest(String method, String url, JSONObject requestBody) {
-		
+	private JSONObject executeRequest(String method, String url,
+			JSONObject requestBody) {
+
 		HttpResponse response = null;
-		
-		if(method.equals("GET")) {
-			
+
+		if (method.equals("GET")) {
+
 			response = prepareAndExecuteGetRequest(url);
-			
-		} else if(method.equals("POST")) {
-						
+
+		} else if (method.equals("POST")) {
+
 			response = prepareAndExecutePostRequest(url, requestBody);
-			
-		} else if(method.equals("PUT")) {
-			
+
+		} else if (method.equals("PUT")) {
+
 			response = prepareAndExecutePutRequest(url, requestBody);
-			
-		} else if(method.equals("DELETE")) {
-			
+
+		} else if (method.equals("DELETE")) {
+
 			response = prepareAndExecuteDeleteRequest(url);
-		} 
-		
+		}
+
 		return parseHttpResponse(response);
 	}
-	
+
 	/**
 	 * this function tries to parse a given HttpResponse.
-	 * @param HttpResponse response
+	 * 
+	 * @param HttpResponse
+	 *            response
 	 * @return JSONObject responseBody
 	 */
 	protected JSONObject parseHttpResponse(HttpResponse response) {
-		
-		if(response == null) {
-			
+
+		if (response == null) {
+
 			System.out.println("No HttpResponse");
 			return null;
-		}	
-	
+		}
+
 		StringBuilder builder = new StringBuilder();
-		
+
 		try {
-			
-			BufferedReader reader = new BufferedReader(
-				new InputStreamReader(
-					response.getEntity().getContent(), "UTF-8"
-				)
-			);
-						
+
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					response.getEntity().getContent(), "UTF-8"));
+
 			String line = null;
-			while((line = reader.readLine()) != null) {
+			while ((line = reader.readLine()) != null) {
 				builder.append(line).append("\n");
 			}
-			
+
 			Log.i("parse http response", builder.toString());
-			
-			JSONObject retval = (JSONObject) new JSONTokener(builder.toString()).nextValue();
-			
+
+			JSONObject retval = (JSONObject) new JSONTokener(builder.toString())
+					.nextValue();
+
 			return retval;
-			
-		} catch(ClassCastException cce) {
+
+		} catch (ClassCastException cce) {
 
 			try {
-				
+
 				JSONObject retval = new JSONObject();
-				retval.put("entries", (JSONArray) new JSONTokener(builder.toString()).nextValue());
+				retval.put("entries",
+						(JSONArray) new JSONTokener(builder.toString())
+								.nextValue());
 				return retval;
-				
-			} catch(Exception e) {
-				
+
+			} catch (Exception e) {
+
 				e.printStackTrace();
 				return null;
 			}
-			
-		} catch(Exception e) {
-			
+
+		} catch (Exception e) {
+
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
+
 	protected Context getContext() {
-		
+
 		return this.context;
+	}
+
+	// Delegates handling the current state of the task to the PhotoManager
+	// object
+	protected void handleState(JSONObject result, int state) {
+		Log.d("ActieManager", "ApiCommunicator handleState called");
+
+		// Passes the state to the ThreadPool object.
+		sActieManager.handleJSONDownloadState(result, state);
 	}
 }

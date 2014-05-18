@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal" 
-    android:background="@color/white"
     android:padding="10dp" >
    
     <LinearLayout
@@ -22,11 +21,12 @@
        	    android:layout_height="40dp"
        	    android:src="@drawable/default_avatar" />
        	
-       	<TextView
+       	<nl.avans.glassy.Utils.CustomTextView
        	    android:id="@+id/gebruikersnaam"
+       	    android:layout_marginLeft="5dp"
        	    android:layout_width="wrap_content"
        	    android:layout_height="match_parent"
-       	    android:text="@string/gebruiker_anoniem"
+       	    android:text="Anonieme Gebruiker"
        	    android:gravity="center_vertical" />
        	
     </LinearLayout>
@@ -38,13 +38,12 @@
         android:layout_height="40dp"
         android:layout_alignParentRight="true" />
     
-    <fragment 
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/user_util"
-        android:id="@+id/preAuthFuncties"
-        android:name="nl.avans.glassy.Views.AuthFragment"
+    <FrameLayout
+        android:id="@+id/functies"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" /> 
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_util"
+        android:layout_marginTop="10dp" />
         
     <!-- <fragment 
         android:id="@+id/postAuthFuncties"/> --> 

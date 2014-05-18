@@ -9,17 +9,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-public class AuthFragment extends Fragment {
+public class PostAuthFragment extends Fragment {
 
-	private AuthManager manager;
+	private AccountLinkManager manager;
 	
 	public void onAttach(Activity activity) {
-		
+
 		super.onAttach(activity);
 		
-		if(activity instanceof AuthManager) {
+		if(activity instanceof AccountLinkManager) {
 			
-			manager = (AuthManager) activity;
+			manager = (AccountLinkManager) activity;
 			
 		} else {
 			
@@ -30,36 +30,48 @@ public class AuthFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		View view = (View) inflater.inflate(R.layout.fragment_auth, container, false);
+		View view = (View) inflater.inflate(R.layout.fragment_postauthfuncties, container, false);
+				
+		view.findViewById(R.id.profiel_link)
+			.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+	
+					manager.gaNaarProfiel();					
+				}
+			});
 		
-		view.findViewById(R.id.executeAuth)
+		view.findViewById(R.id.mijn_wijk_link)
 			.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 	
-					manager.auth();
+					manager.gaNaarMijnWijk();					
 				}
 			});
-	
-		view.findViewById(R.id.logRegSwitch)
+		
+		view.findViewById(R.id.instellingen_link)
 			.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 	
-					manager.logRegSwap();
+					manager.gaNaarInstellingen();					
 				}
 			});
-				
+		
 		return view;
 	}
-
-	public interface AuthManager {
+	
+	public interface AccountLinkManager {
 		
-		public void logRegSwap();
+		public void gaNaarProfiel();
 		
-		public void auth();
+		public void gaNaarMijnWijk();
+		
+		public void gaNaarInstellingen();
 	}
 	
 }
