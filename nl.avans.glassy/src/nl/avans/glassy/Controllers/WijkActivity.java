@@ -20,36 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-public class WijkActivity extends AuthActivity {
+public class WijkActivity extends AccountFunctieActivity {
 	private static String API_CONTROLLER = "wijk/";
-	
-	private OnSharedPreferenceChangeListener spListener = new OnSharedPreferenceChangeListener() {
-		
-		@Override
-		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-				String key) {
-			
-			if(key.equals("ACCOUNT")) {
-				
-				String account = sharedPreferences.getString(key, null);
-				Log.i("SP ACCOUNT", account);
-				
-				if(account != null) {
-					
-					try {
-						
-						JSONObject accountAsJson = new JSONObject(account);
-						
-						updateAccount(accountAsJson.getString("token")); // them nested blocks...
-						
-					} catch(Exception e) {
-						
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-	};
 	
 	static Handler handler = new  Handler() {
 		@Override
@@ -64,17 +36,15 @@ public class WijkActivity extends AuthActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wijkcollection_activity);
 		
-		getApplicationContext().getSharedPreferences("GLASSY", 0).registerOnSharedPreferenceChangeListener(spListener);
-		
-		findViewById(R.id.preAuthFuncties).setVisibility(View.GONE);
+		findViewById(R.id.functies).setVisibility(View.GONE);
 
 		// Instantiate a ViewPager and a PagerAdapter.
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
 		
-		initFacebookLogin(savedInstanceState);
-		initApiLogin();
+//		initFacebookLogin(savedInstanceState);
+//		initApiLogin();
 	}
 
 	@Override
@@ -160,12 +130,6 @@ public class WijkActivity extends AuthActivity {
 				Log.d("Results", result.toString());
 			}
 		}.execute(params);
-	}
-	
-	protected void updateAccount(String name) {
-		
-		((TextView) findViewById(R.id.gebruikersnaam)).setText(name);
-		findViewById(R.id.preAuthFuncties).setVisibility(View.GONE);
 	}
 
 }
