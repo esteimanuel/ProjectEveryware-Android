@@ -34,7 +34,7 @@ import com.facebook.Settings;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 
-public abstract class AccountFunctieActivity extends FragmentActivity implements ToggleFunctiesManager, AuthManager, AccountLinkManager, ProfielBewerkingManager{
+public abstract class AccountFunctieActivity extends FragmentActivity implements ToggleFunctiesManager, AuthManager, AccountLinkManager, ProfielBewerkingManager {
 
 	private StatusCallback fssc = new FacebookSessionStatusCallback();
 	private SharedPreferenceStalker sps = new SharedPreferenceStalker();
@@ -231,14 +231,22 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 	protected void onStart() {
 		
 		super.onStart();
-//		Session.getActiveSession().addCallback(fssc);
+		
+		if(Session.getActiveSession() != null) {
+			
+			Session.getActiveSession().addCallback(fssc);
+		}
 	}
 
 	@Override
 	public void onStop() {
 
 		super.onStop();
-		Session.getActiveSession().removeCallback(fssc);
+		
+		if(Session.getActiveSession() != null) {
+			
+			Session.getActiveSession().removeCallback(fssc);
+		}
 	}
 
 	@Override
@@ -258,7 +266,7 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 	}
 	
 	/**
-	 * Account stalkers
+	 * Account stalker 
 	 */
 	private class SharedPreferenceStalker implements OnSharedPreferenceChangeListener {
 

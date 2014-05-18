@@ -21,7 +21,7 @@
        	    android:layout_height="40dp"
        	    android:src="@drawable/default_avatar" />
        	
-       	<TextView
+       	<nl.avans.glassy.Utils.CustomTextView
        	    android:id="@+id/gebruikersnaam"
        	    android:layout_marginLeft="5dp"
        	    android:layout_width="wrap_content"
