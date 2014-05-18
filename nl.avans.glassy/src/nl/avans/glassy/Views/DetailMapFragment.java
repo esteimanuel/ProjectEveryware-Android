@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 
 public class DetailMapFragment extends Fragment {	
 	private final String URL = "http://glassy-web.avans-project.nl/?wijk=";
@@ -23,6 +25,14 @@ public class DetailMapFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.detailmap_fragment, container, false);
+		webviewSetup(rootView);
 		return rootView;
 	}
+	
+	public void webviewSetup(View rootView)
+	{
+		//laden
+	}
+	
+
 }

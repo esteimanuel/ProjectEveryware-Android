@@ -1,14 +1,22 @@
 package nl.avans.glassy.Controllers;
 
+import org.json.JSONObject;
+
 import nl.avans.glassy.R;
 import nl.avans.glassy.R.id;
 import nl.avans.glassy.R.layout;
 import nl.avans.glassy.R.menu;
+import nl.avans.glassy.Models.Faq;
+import nl.avans.glassy.Models.Faq.faqListener;
+import nl.avans.glassy.Utils.ApiCommunicator;
 import nl.avans.glassy.Views.FaqFragment;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 
-public class FaqActivity extends Activity {
+public class FaqActivity extends FragmentActivity implements faqListener {
+	private Faq faq;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,31 +34,23 @@ public class FaqActivity extends Activity {
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction().add(R.id.container, new FaqFragment()).commit();
 		}
+		loadFaqInfo();
+	}
+
+	private void loadFaqInfo()
+	{
+		Context context = getApplicationContext();
+		Faq.loadFaq(context, this);	
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.faq, menu);
-		return true;
+	public void onFaqLoaded(String URL) {
+		FaqFragment fragment = (FaqFragment) getFragmentManager().findFragmentById(R.id.faqfragment);
+		fragment.updateText(URL);
+		
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
 
 
 }
