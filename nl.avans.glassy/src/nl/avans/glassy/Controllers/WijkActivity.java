@@ -7,12 +7,7 @@ import nl.avans.glassy.R;
 import nl.avans.glassy.Models.Actie;
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
-
-import org.json.JSONObject;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,53 +17,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-public class WijkActivity extends AuthActivity implements webClientListener {
-
-	private OnSharedPreferenceChangeListener spListener = new OnSharedPreferenceChangeListener() {
-
-		@Override
-		public void onSharedPreferenceChanged(
-				SharedPreferences sharedPreferences, String key) {
-
-			if (key.equals("ACCOUNT")) {
-
-				String account = sharedPreferences.getString(key, null);
-				Log.i("SP ACCOUNT", account);
-
-				if (account != null) {
-
-					try {
-
-						JSONObject accountAsJson = new JSONObject(account);
-
-						updateAccount(accountAsJson.getString("token")); // them
-																			// nested
-																			// blocks...
-
-					} catch (Exception e) {
-
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-	};
+public class WijkActivity extends AccountFunctieActivity  implements webClientListener {
 			
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wijkcollection_activity);
-
-		getApplicationContext().getSharedPreferences("GLASSY", 0)
-				.registerOnSharedPreferenceChangeListener(spListener);
-
-		findViewById(R.id.preAuthFuncties).setVisibility(View.GONE);
 		
 		findViewById(R.id.functies).setVisibility(View.GONE);
-
-		initFacebookLogin(savedInstanceState);
-		initApiLogin();
+		
 		ActieManager.getInstance().init(this);
 
 		// Instantiate a ViewPager and a PagerAdapter.
@@ -152,12 +109,6 @@ public class WijkActivity extends AuthActivity implements webClientListener {
 			actieList.add(theFragment);
 			notifyDataSetChanged();
 		}
-	}
-
-	protected void updateAccount(String name) {
-
-		((TextView) findViewById(R.id.gebruikersnaam)).setText(name);
-		findViewById(R.id.preAuthFuncties).setVisibility(View.GONE);
 	}
 
 	// Implementations of the ontouchlistener from wijkMapFragment
