@@ -4,6 +4,7 @@ import nl.avans.glassy.R;
 import nl.avans.glassy.R.id;
 import nl.avans.glassy.R.layout;
 import nl.avans.glassy.R.menu;
+import nl.avans.glassy.Views.FaqFragment;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -21,10 +22,8 @@ public class FaqActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.faq_activity);
-
 		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
+			getFragmentManager().beginTransaction().add(R.id.container, new FaqFragment()).commit();
 		}
 	}
 
@@ -51,18 +50,6 @@ public class FaqActivity extends Activity {
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
-	public static class PlaceholderFragment extends Fragment {
 
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.faq_fragment, container,
-					false);
-			return rootView;
-		}
-	}
 
 }
