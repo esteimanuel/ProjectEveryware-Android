@@ -24,5 +24,7 @@
     <string name="deelnemer">Buurt deelnemers</string>
     <string name="title_activity_map_detail">MapDetailActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="goededoelen">Goede doelen</string>
+    <string name="title_activity_faq">FAQ</string>
 
 </resources>

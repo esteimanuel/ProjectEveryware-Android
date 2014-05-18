@@ -15,12 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 
-public class MapDetailActivity extends Activity {
+public class FaqActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_map_detail);
+		setContentView(R.layout.faq_activity);
 
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
@@ -32,7 +32,7 @@ public class MapDetailActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.map_detail, menu);
+		getMenuInflater().inflate(R.menu.faq, menu);
 		return true;
 	}
 
@@ -59,8 +59,8 @@ public class MapDetailActivity extends Activity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_map_detail,
-					container, false);
+			View rootView = inflater.inflate(R.layout.faq_fragment, container,
+					false);
 			return rootView;
 		}
 	}

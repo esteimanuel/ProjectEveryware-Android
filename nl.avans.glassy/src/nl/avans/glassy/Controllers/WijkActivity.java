@@ -174,7 +174,7 @@ public class WijkActivity extends AuthActivity implements webClientListener {
 	@Override
 	public void onTouchMap(String URL) {
 		//TODO deze wordt 3 keer aangeroepen.
-		Intent myIntent = new Intent(this, MapDetailActivity.class);
+		Intent myIntent = new Intent(this, DetailMapActivity.class);
 		myIntent.putExtra("url", URL); 
 		this.startActivity(myIntent);
 	}
