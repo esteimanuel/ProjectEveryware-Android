@@ -203,7 +203,7 @@ public class ActieManager {
 		myLocation = new MyLocation();
 
 		Log.d("ActieManager", "Getting geolocation");
-		myLocation.getLocation(myActivity);
+		myLocation.getLocation(myActivity.getApplicationContext());
 	}
 
 	/**
@@ -292,28 +292,44 @@ public class ActieManager {
 		String API_CONTROLLER = "wijk/closeby?lat=" + lat + "&long=" + lon;
 		String[] params = { "GET", API_CONTROLLER };
 
-		new ApiCommunicator(myActivity) {
+		new ApiCommunicator(myActivity.getApplicationContext()) {
 
 			@Override
 			protected void onPostExecute(JSONObject result) {
-				this.handleState(result, DOWNLOAD_COMPLETE);
+				
+				if(result != null) {
+				
+					handleJSONDownloadState(result, DOWNLOAD_COMPLETE);
+				
+				} else {
+
+					handleJSONDownloadState(result, DOWNLOAD_FAILED);
+				}
+				
 			}
 		}.execute(params);
 
 	}
 
 	public void handleJSONDownloadState(JSONObject result, int state) {
+		
 		Log.d("ActieManager", "handleJSONDownloadState called");
+		
 		try {
+			
 			JSONArray acties = result.getJSONArray("entries");
+			
 			for (int i = 0; i < acties.length(); i++) {
+				
 				JSONObject temp = acties.getJSONObject(i);
 				Actie tempActie = new Actie();
 				tempActie.setActieJSON(temp);
 				tempActie.startDecode();
 				actieArray.add(tempActie);
 			}
-		} catch (JSONException e) {
+			
+		} catch (Exception e) {
+			
 			e.printStackTrace();
 		}
 	}

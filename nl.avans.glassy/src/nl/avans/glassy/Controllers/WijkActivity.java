@@ -32,9 +32,6 @@ public class WijkActivity extends AccountFunctieActivity  implements webClientLi
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
-		
-//		initFacebookLogin(savedInstanceState);
-//		initApiLogin();
 	}
 
 	@Override
