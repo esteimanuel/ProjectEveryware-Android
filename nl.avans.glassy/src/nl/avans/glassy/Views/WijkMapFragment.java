@@ -62,31 +62,15 @@ public class WijkMapFragment extends Fragment {
 		return rootView;
 	}
 
-	private void setlisteners()
-	{
-		webView.setOnTouchListener(new View.OnTouchListener() {			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				mywebListener.onTouchMap(URL + thisActie.getWijk_id());
-				return true;
-			}
-		}); 
-	}
-
-	//Interface that the activity implements to listen to events
-	public interface webClientListener {
-		public void onTouchMap(String URL);
-	}
-
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		try {
-			//attaches the activity Listener to the fragment
+		//koppel de activity aan de listener
+		try {					
 			mywebListener = (webClientListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-					+ " must implement BoardListListener");
+					+ " must implement webClientListener");
 		}
 	}
 
@@ -129,9 +113,7 @@ public class WijkMapFragment extends Fragment {
 		WebViewClient customWebViewClient = new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
 				view.loadUrl(url);
-
 				return true;
 			}
 
@@ -147,5 +129,22 @@ public class WijkMapFragment extends Fragment {
 			}
 		};
 		webView.setWebViewClient(customWebViewClient);
+	}
+	
+	private void setlisteners()
+	{
+		webView.setOnLongClickListener(new View.OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				mywebListener.onTouchMap(URL + thisActie.getWijk_id());
+				return true;
+			}
+		});
+	}
+	
+	//Interface that the activity implements to listen to events
+	public interface webClientListener {
+		public void onTouchMap(String URL);
 	}
 }

@@ -3,13 +3,13 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nl.avans.glassy.Controllers.DetailMapActivity"
-    tools:ignore="MergeRootFrame" 
-    android:background="@color/black">
+    tools:context="nl.avans.glassy.Controllers.DetailGoededoelenActivity"
+    tools:ignore="MergeRootFrame"
+    android:background="@color/black" >
 
 	<fragment
-    	android:id="@+id/detailmapfragment"
-    	android:name="nl.avans.glassy.Views.DetailMapFragment"
+    	android:id="@+id/detailGoededoelenfragment"
+    	android:name="nl.avans.glassy.Views.DetailGoededoelenFragment"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 	
