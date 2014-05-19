@@ -3,14 +3,12 @@ package nl.avans.glassy.Models;
 import java.util.ArrayList;
 
 import nl.avans.glassy.Utils.ApiCommunicator;
-import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 
 public class Faq {
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
+    <nl.avans.glassy.Utils.CustomTextView
         android:id="@+id/goededoelenTitel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,12 +13,25 @@
         android:textColor="@color/white"
         android:textSize="20sp" />
     
-    <TextView
-        android:id="@+id/goededoelenInfo"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/goededoelenTitel"
         android:paddingLeft="5dp"
-        android:paddingRight="5dp"/>
+        android:paddingRight="5dp"
+        android:layout_below="@id/goededoelenTitel"
+        android:background="@drawable/wijkbackgroundbox" >
+
+        <nl.avans.glassy.Utils.CustomTextView
+            android:id="@+id/goededoelenInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"            
+            android:textColor="@color/white" />
+
+        <ProgressBar
+            android:id="@+id/goededoelen_view_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
     
 </RelativeLayout>

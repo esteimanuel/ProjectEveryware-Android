@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 public class WijkGoededoelenFragment extends Fragment{
 	
-	private String myInfo = "test info dit moet aangepast worden.";
+	private String myInfo = "Als er meer dan 70% van de wijk meedoet dan zal iedereen in de wijk 50% korting bij alle providers krijgen.\ndus waar wacht je nog op ? doe ook mee en overtuig gelijk de buren";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

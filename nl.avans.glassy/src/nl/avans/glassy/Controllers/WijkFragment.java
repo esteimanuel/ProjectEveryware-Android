@@ -6,6 +6,7 @@ import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.ScrollViewListener;
 import nl.avans.glassy.Views.WijkDeelnemersFragment;
 import nl.avans.glassy.Views.WijkDetailsFragment;
+import nl.avans.glassy.Views.WijkGoededoelenFragment;
 import nl.avans.glassy.Views.WijkMapFragment;
 import nl.avans.glassy.Views.WijkVideoFragment;
 import android.content.Context;
@@ -37,6 +38,7 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 	private WijkVideoFragment wijkVideoFragment;
 	private WijkMapFragment wijkMapFragment;
 	private WijkDeelnemersFragment wijkDeelnemersFragment;
+	private WijkGoededoelenFragment wijkGoededoelenFragment;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,6 +80,11 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 		wijkMapFragment = new WijkMapFragment();
 		wijkMapFragment.setArguments(bundle);
 		fragmentTransaction.replace(R.id.map, wijkMapFragment, "wijkMap");
+
+		// New Webview Fragment
+		wijkGoededoelenFragment = new WijkGoededoelenFragment();
+		wijkGoededoelenFragment.setArguments(bundle);
+		fragmentTransaction.replace(R.id.goededoelen, wijkGoededoelenFragment, "wijkgoededoelen");
 
 		// New WijkDeelnemers Fragment
 		// wijkDeelnemersFragment = new WijkDeelnemersFragment();
