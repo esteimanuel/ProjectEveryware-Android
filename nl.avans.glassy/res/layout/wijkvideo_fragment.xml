@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <TextView
+    <nl.avans.glassy.Utils.TextViewHelveticaLight
         android:id="@+id/videoTitel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

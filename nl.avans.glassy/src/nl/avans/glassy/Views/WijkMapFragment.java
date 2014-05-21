@@ -97,14 +97,13 @@ public class WijkMapFragment extends Fragment {
 				webView.getSettings().setLoadWithOverviewMode(true);
 				webView.getSettings().setUseWideViewPort(true);
 
+		
 				// Create layout, padding and other settings.
 				RelativeLayout.LayoutParams webViewLayout = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, mapHeight);
 				webViewLayout.addRule(RelativeLayout.BELOW, R.id.mapTitel);
 				webView.setLayoutParams(webViewLayout);
 
-				float scale = getResources().getDisplayMetrics().density;
-				int dpAsPixels = (int) (5 * scale + 0.5f);
-				webView.setPadding(dpAsPixels, 0, dpAsPixels, 0);	
+			
 	}
 	
 	public void connectWebViewClient()
