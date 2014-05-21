@@ -32,7 +32,12 @@
             android:textColor="@color/white" 
             android:maxLines="2"
              /> 
-             <!-- android:ellipsize="end"  toevoegen voor ... -->
+        <!--
+             android:ellipsize="end"  toevoegen voor ... 
+             Dit zorgde voor een error die geen negatieve gevolgen leek te hebben. 
+             Toch maar even weggecomment zodat errors makelijker te lezen zijn.
+        -->
+
             
         <ProgressBar
             android:id="@+id/goededoelen_view_progress"
