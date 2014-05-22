@@ -3,11 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <nl.avans.glassy.Utils.CustomTextView
+    <nl.avans.glassy.Utils.TextViewHelveticaLight
         android:id="@+id/faqInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
 
     <ProgressBar
         android:id="@+id/faq_view_progress"

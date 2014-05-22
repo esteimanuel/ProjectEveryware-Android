@@ -40,7 +40,7 @@ import com.facebook.Settings;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 
-public abstract class AccountFunctieActivity extends GoogleServicesActivity implements ToggleFunctiesManager, AuthManager, AccountLinkManager, ProfielBewerkingManager {
+public abstract class AccountFunctieActivity extends FragmentActivity implements ToggleFunctiesManager, AuthManager, AccountLinkManager, ProfielBewerkingManager {
 
 	private StatusCallback fssc = new FacebookSessionStatusCallback();
 	private SharedPreferenceStalker sps = new SharedPreferenceStalker();

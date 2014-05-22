@@ -5,16 +5,16 @@
     android:layout_gravity="bottom"
     android:orientation="vertical" >
 
-    <nl.avans.glassy.Utils.CustomTextView
+    <nl.avans.glassy.Utils.TextViewHelveticaLight
         android:id="@+id/wijkTitel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:text="@string/tempwijknaam"
         android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:textSize="25sp" />
 
-    <nl.avans.glassy.Utils.CustomTextView
+    <nl.avans.glassy.Utils.TextViewHelveticaUltralight
         android:id="@+id/deelnemersCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,9 +22,9 @@
         android:layout_marginLeft="5dp"
         android:text="@string/tempDeelnemers"
         android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textSize="50sp" />
 
-    <nl.avans.glassy.Utils.CustomTextView
+    <nl.avans.glassy.Utils.TextViewHelveticaLight
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/deelnemersCount"
@@ -32,9 +32,9 @@
         android:layout_toRightOf="@id/deelnemersCount"
         android:text="@string/deelnemers"
         android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:textSize="25sp"/>
 
-    <nl.avans.glassy.Utils.CustomTextView
+    <nl.avans.glassy.Utils.TextViewHelveticaLight
         android:id="@+id/percentage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,9 +42,9 @@
         android:layout_marginLeft="5dp"
         android:text="@string/temppercentage"
         android:textColor="@color/white"
-        android:textSize="30sp" />
+        android:textSize="100sp" />
 
-    <nl.avans.glassy.Utils.CustomTextView
+    <nl.avans.glassy.Utils.TextViewHelveticaLight
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/percentage"
@@ -52,17 +52,18 @@
         android:layout_toRightOf="@id/percentage"
         android:text="@string/procent"
         android:textColor="@color/white"
-        android:textSize="30sp" />
+        android:textSize="100sp" />
 
+    <!-- Typeface for this button is set in code in WijkDetailsFragment init() method -->
     <Button
-        android:id="@+id/button"
+        android:id="@+id/ikDoeMeeButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/percentage"
         android:layout_margin="5dp"
-        android:background="@drawable/custom_button"
+        android:background="@drawable/wijkbackgroundbox"
         android:text="@string/tempButtonText"
         android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:textSize="24sp" />
 
 </RelativeLayout>

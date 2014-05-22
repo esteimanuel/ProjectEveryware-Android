@@ -3,12 +3,14 @@ package nl.avans.glassy.Views;
 import nl.avans.glassy.R;
 import nl.avans.glassy.Models.Actie;
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class WijkDetailsFragment extends Fragment {
@@ -39,13 +41,12 @@ public class WijkDetailsFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		rootView = (ViewGroup) inflater.inflate(R.layout.wijkdetails_fragment,
 				container, false);
 		
-		rootView.findViewById(R.id.button).setOnClickListener(new OnClickListener() {
+		rootView.findViewById(R.id.ikDoeMeeButton).setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -53,6 +54,7 @@ public class WijkDetailsFragment extends Fragment {
 				listener.volgendeActieStapUitvoeren();
 			}
 		});
+
 		init();
 		return rootView;
 	}
@@ -60,6 +62,10 @@ public class WijkDetailsFragment extends Fragment {
 	private void init() {
 		TextView wijkTitel = (TextView) rootView.findViewById(R.id.wijkTitel);
 		wijkTitel.setText(thisActie.getWijk_naam());
+		
+		Button ikDoeMeeButton = (Button) rootView.findViewById(R.id.ikDoeMeeButton);
+		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "Fonts/HelveticaNeue_Lt.ttf");
+		ikDoeMeeButton.setTypeface(font);
 	}
 	
 	public Actie getActie() {
