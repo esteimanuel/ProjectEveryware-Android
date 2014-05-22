@@ -6,8 +6,10 @@ import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.ScrollViewListener;
 import nl.avans.glassy.Views.WijkDeelnemersFragment;
 import nl.avans.glassy.Views.WijkDetailsFragment;
+import nl.avans.glassy.Views.WijkFaqFragment;
 import nl.avans.glassy.Views.WijkGoededoelenFragment;
 import nl.avans.glassy.Views.WijkMapFragment;
+import nl.avans.glassy.Views.WijkStappenFragment;
 import nl.avans.glassy.Views.WijkVideoFragment;
 import android.content.Context;
 import android.graphics.Point;
@@ -39,6 +41,8 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 	private WijkMapFragment wijkMapFragment;
 	private WijkDeelnemersFragment wijkDeelnemersFragment;
 	private WijkGoededoelenFragment wijkGoededoelenFragment;
+	private WijkStappenFragment wijkStappenFragment;
+	private WijkFaqFragment wijkFaqFragment;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,16 +80,29 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 		fragmentTransaction.replace(R.id.youtube, wijkVideoFragment,
 				"youtubePlayer");
 
-		// New Webview Fragment
+		// New map Fragment
 		wijkMapFragment = new WijkMapFragment();
 		wijkMapFragment.setArguments(bundle);
 		fragmentTransaction.replace(R.id.map, wijkMapFragment, "wijkMap");
 
-		// New Webview Fragment
+		// New goededoelen Fragment
 		wijkGoededoelenFragment = new WijkGoededoelenFragment();
 		wijkGoededoelenFragment.setArguments(bundle);
 		fragmentTransaction.replace(R.id.goededoelen, wijkGoededoelenFragment, "wijkgoededoelen");
+		
+		// New faq Fragment
+		wijkFaqFragment = new WijkFaqFragment();
+		wijkFaqFragment.setArguments(bundle);
+		fragmentTransaction.replace(R.id.faq, wijkFaqFragment, "wijkfaq");
 
+		// New stappen Fragment
+		wijkStappenFragment = new WijkStappenFragment();
+		wijkStappenFragment.setArguments(bundle);
+		fragmentTransaction.replace(R.id.stappen, wijkStappenFragment, "wijkstappen");
+		
+		
+
+		
 		// New WijkDeelnemers Fragment
 		// wijkDeelnemersFragment = new WijkDeelnemersFragment();
 		// fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment,
