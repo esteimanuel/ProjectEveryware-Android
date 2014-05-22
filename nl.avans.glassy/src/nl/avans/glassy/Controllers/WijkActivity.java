@@ -5,11 +5,15 @@ import java.util.List;
 
 import nl.avans.glassy.R;
 import nl.avans.glassy.Models.Actie;
-import nl.avans.glassy.Models.GoedeDoelen.goededoelenListener;
 import nl.avans.glassy.Threads.ActieManager;
+import nl.avans.glassy.Views.WijkDetailsFragment.OnSpecialButtonPressListener;
 import nl.avans.glassy.Views.WijkGoededoelenFragment.wijkgoededoelenListener;
 import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
+
+import org.json.JSONObject;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,7 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-public class WijkActivity extends AccountFunctieActivity  implements webClientListener, wijkgoededoelenListener {
+public class WijkActivity extends AccountFunctieActivity  implements webClientListener, wijkgoededoelenListener, OnSpecialButtonPressListener {
 			
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +138,30 @@ public class WijkActivity extends AccountFunctieActivity  implements webClientLi
 		this.startActivity(myIntent);	
 	}
 
+	@Override
+	public void volgendeActieStapUitvoeren() {
 
+		WijkFragment huidigeWijk = ((WijkFragment) mPagerAdapter.getItem(mPager.getCurrentItem()));
+		Actie actieVanHuidigeWijk = huidigeWijk.getActie();
 
-
+		SharedPreferences preferences = getApplicationContext().getSharedPreferences("GLASSY", 0);
+		
+		try {
+			
+			JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
+			JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
+			
+//			if(gebruiker.getInt("actie_id") == null) {
+//				
+//				
+//			} else if() {
+//				
+//			} 
+			
+		} catch(Exception e) {
+			
+			e.printStackTrace();
+		}
+	}
+	
 }

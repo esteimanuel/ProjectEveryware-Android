@@ -1,18 +1,26 @@
 package nl.avans.glassy.Views;
 
 import nl.avans.glassy.R;
+import nl.avans.glassy.Models.Gebruiker;
+import nl.avans.glassy.Utils.DrawableFromUrlCreator;
 
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Switch;
 
 public class ProfielBewerkenFragment extends Fragment {
 	
@@ -57,6 +65,15 @@ public class ProfielBewerkenFragment extends Fragment {
 				}
 			});
 		
+		((Switch) view.findViewById(R.id.buddy_functies)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				
+				manager.toggleBuddyGegevens(isChecked);
+			}
+		});
+		
 		veldenInvullen(view);
 		
 		return view;
@@ -70,6 +87,17 @@ public class ProfielBewerkenFragment extends Fragment {
 			
 			JSONObject account = new JSONObject(sp.getString("ACCOUNT", null));
 			JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
+			
+			final ImageButton foto_button = ((ImageButton) view.findViewById(R.id.profiel_foto));
+			
+			new DrawableFromUrlCreator(){
+				
+				@Override
+				protected void onPostExecute(Drawable image) {
+					
+					foto_button.setImageDrawable(image);
+				}
+			}.execute(Gebruiker.getStringUitGebruikerJson(account, "foto_link"));
 		
 			// naam gegevens invullen
 			if(gebruiker.getString("voornaam") != null && !gebruiker.getString("voornaam").equals("null")) {
@@ -121,5 +149,7 @@ public class ProfielBewerkenFragment extends Fragment {
 		public void profielWijzigen();
 		
 		public void avatarWijzigen();
+		
+		public void toggleBuddyGegevens(boolean zichtbaar);
 	}
 }

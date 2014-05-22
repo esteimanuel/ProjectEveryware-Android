@@ -62,6 +62,16 @@ public class PostAuthFragment extends Fragment {
 				}
 			});
 		
+		view.findViewById(R.id.uitloggen)
+			.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+
+					manager.uitloggen();
+				}
+			});
+		
 		return view;
 	}
 	
@@ -72,6 +82,8 @@ public class PostAuthFragment extends Fragment {
 		public void gaNaarMijnWijk();
 		
 		public void gaNaarInstellingen();
+		
+		public void uitloggen();
 	}
 	
 }

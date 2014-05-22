@@ -2,26 +2,32 @@ package nl.avans.glassy.Controllers;
 
 import java.util.Arrays;
 
+import nl.avans.glassy.R;
+import nl.avans.glassy.Controllers.GCM.GoogleServicesActivity;
+import nl.avans.glassy.Models.Gebruiker;
+import nl.avans.glassy.Utils.DrawableFromUrlCreator;
+import nl.avans.glassy.Views.AccountFunctiesFragment;
+import nl.avans.glassy.Views.AccountFunctiesFragment.ToggleFunctiesManager;
+import nl.avans.glassy.Views.AuthFragment;
+import nl.avans.glassy.Views.AuthFragment.AuthManager;
+import nl.avans.glassy.Views.PostAuthFragment;
+import nl.avans.glassy.Views.PostAuthFragment.AccountLinkManager;
+import nl.avans.glassy.Views.ProfielBewerkenFragment;
+import nl.avans.glassy.Views.ProfielBewerkenFragment.ProfielBewerkingManager;
+
 import org.json.JSONObject;
 
-import nl.avans.glassy.R;
-import nl.avans.glassy.Models.Gebruiker;
-import nl.avans.glassy.Views.AccountFunctiesFragment;
-import nl.avans.glassy.Views.PostAuthFragment;
-import nl.avans.glassy.Views.ProfielBewerkenFragment;
-import nl.avans.glassy.Views.AccountFunctiesFragment.ToggleFunctiesManager;
-import nl.avans.glassy.Views.AuthFragment.AuthManager;
-import nl.avans.glassy.Views.PostAuthFragment.AccountLinkManager;
-import nl.avans.glassy.Views.ProfielBewerkenFragment.ProfielBewerkingManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.LoggingBehavior;
@@ -34,7 +40,7 @@ import com.facebook.Settings;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 
-public abstract class AccountFunctieActivity extends FragmentActivity implements ToggleFunctiesManager, AuthManager, AccountLinkManager, ProfielBewerkingManager {
+public abstract class AccountFunctieActivity extends GoogleServicesActivity implements ToggleFunctiesManager, AuthManager, AccountLinkManager, ProfielBewerkingManager {
 
 	private StatusCallback fssc = new FacebookSessionStatusCallback();
 	private SharedPreferenceStalker sps = new SharedPreferenceStalker();
@@ -79,6 +85,21 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void toggleBuddyGegevens(boolean zichtbaar) {
+		
+		if(zichtbaar) {
+			
+			findViewById(R.id.buddy_contactemail).setVisibility(View.VISIBLE);
+			findViewById(R.id.buddy_contacttel).setVisibility(View.VISIBLE);
+			
+		} else {
+
+			findViewById(R.id.buddy_contactemail).setVisibility(View.GONE);
+			findViewById(R.id.buddy_contacttel).setVisibility(View.GONE);
+		}
+	}
 
 	@Override
 	public void gaNaarProfiel() {
@@ -96,6 +117,28 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 	public void gaNaarInstellingen() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void uitloggen() {
+				
+		try {
+			
+			SharedPreferences sp = getApplicationContext().getSharedPreferences("GLASSY", 0);
+			SharedPreferences.Editor editor = sp.edit();
+			editor.putString("ACCOUNT", null); 
+			
+			editor.commit();
+			
+			Log.i("uitloggen", sp.getString("ACCOUNT", "niks"));
+			
+		} catch(Exception e) {
+			
+			e.printStackTrace(); // log it
+		}
+
+		AccountFunctiesFragment.getInstance().setIngelogd(false);
+		AccountFunctiesFragment.getInstance().veranderFragment(new AuthFragment());
 	}
 
 	@Override
@@ -190,12 +233,9 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 					@Override
 					public void onCompleted(GraphUser user, Response response) {
 						
-						// TODO JSONObject in shared preferences gooien
-//						SharedPreferences sp = getApplicationContext().getSharedPreferences("GLASSY", 0);
-//						SharedPreferences.Editor editor = sp.edit();
-//						editor.putString("ACCOUNT", user.toString());
-//						
-//						editor.commit();
+						Log.i("facebook user", user.toString());
+						
+						Gebruiker.facebookLogin(getApplicationContext(), user);
 					}
 					
 				}).executeAsync();
@@ -280,9 +320,14 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 		public void onSharedPreferenceChanged(
 				SharedPreferences sharedPreferences, String key) {
 
+			Log.i("sharedpreferencestalker", "change! " + key);
+
+			String imageSource = "";
+			
 			if(key.equals("ACCOUNT")) {
 				
-				String account = sharedPreferences.getString(key, null);
+				String account = sharedPreferences.getString("ACCOUNT", null);
+				Log.i("ACCOUNT", account);
 				
 				if(account != null) {
 					
@@ -290,9 +335,10 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 						
 						JSONObject accountAsJson = new JSONObject(account);						
 						JSONObject gebruiker = new JSONObject(accountAsJson.getString("gebruiker"));
-						Log.i("lege naam", gebruiker.getString("voornaam").getClass().toString());
-						
-						String gebruikersnaam = "";
+					
+						String gebruikersnaam = "";	
+						imageSource = Gebruiker.getStringUitGebruikerJson(accountAsJson, "foto_link");
+
 						
 						if(gebruiker.getString("voornaam") != null && !gebruiker.getString("voornaam").equals("null")) {
 							
@@ -311,28 +357,53 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 
 						if(gebruikersnaam.equals("")) {
 							
-							updateAccount(getResources().getString(R.string.anonieme_gebruiker));
+							updateAccount(true, getResources().getString(R.string.anonieme_gebruiker), imageSource);
 							
 						} else {
 							
-							updateAccount(gebruikersnaam);
+							updateAccount(true, gebruikersnaam, imageSource);
 						}
 						
 					} catch(Exception e) {
 						
 						e.printStackTrace();
+						// TODO melding naar gebruiker!
 					}
+					
+				} else {
+					
+					updateAccount(false, getResources().getString(R.string.anonieme_gebruiker), imageSource);
 				}
 			}
 		}		
 	}	
 
-	protected void updateAccount(String name) {
+	protected void updateAccount(boolean ingelogd, String name, String imageSource) {
 		
 		((TextView) findViewById(R.id.gebruikersnaam)).setText(name);
-		findViewById(R.id.functies).setVisibility(View.GONE);
-
-		AccountFunctiesFragment.getInstance().veranderFragment(new PostAuthFragment());
-		AccountFunctiesFragment.getInstance().setIngelogd(true);
+		
+		if(imageSource == null || imageSource.equals("") || imageSource.equals("null")) {
+		
+			((ImageView) findViewById(R.id.gebruikersfoto)).setImageResource(R.drawable.default_avatar);
+			
+		} else {
+			
+			new DrawableFromUrlCreator(){
+				
+				@Override
+				protected void onPostExecute(Drawable image) {
+					
+					((ImageView) findViewById(R.id.gebruikersfoto)).setImageDrawable(image);
+				}
+			}.execute(imageSource);
+		}
+		
+		if(ingelogd) {
+			
+			findViewById(R.id.functies).setVisibility(View.GONE);
+	
+			AccountFunctiesFragment.getInstance().veranderFragment(new PostAuthFragment());
+			AccountFunctiesFragment.getInstance().setIngelogd(true);
+		}
 	}
 }

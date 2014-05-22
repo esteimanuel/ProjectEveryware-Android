@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.ScrollViewListener;
+import nl.avans.glassy.Models.Actie;
 import nl.avans.glassy.Views.WijkDeelnemersFragment;
 import nl.avans.glassy.Views.WijkDetailsFragment;
 import nl.avans.glassy.Views.WijkGoededoelenFragment;
@@ -39,6 +40,8 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 	private WijkMapFragment wijkMapFragment;
 	private WijkDeelnemersFragment wijkDeelnemersFragment;
 	private WijkGoededoelenFragment wijkGoededoelenFragment;
+	
+	private Actie wijkActie;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,6 +95,8 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 		// "wijkDeelnemers");
 
 		fragmentTransaction.commit();
+		
+		wijkActie = (Actie) bundle.getParcelable("ActieObject");;
 
 		return rootView;
 	}
@@ -155,5 +160,10 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 		}
 
 		oldAlpha = neededBlur;
+	}
+	
+	public Actie getActie() {
+		
+		return wijkActie;
 	}
 }

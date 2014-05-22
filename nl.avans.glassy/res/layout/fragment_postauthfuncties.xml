@@ -27,5 +27,13 @@
         android:padding="10dp"
         android:clickable="true"
         android:text="Instellingen" />
+	
+	<nl.avans.glassy.Utils.CustomTextView
+        android:id="@+id/uitloggen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:clickable="true"
+        android:text="Uitloggen" />
 
 </LinearLayout>

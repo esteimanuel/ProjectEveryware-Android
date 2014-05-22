@@ -131,7 +131,7 @@ public class ApiCommunicator extends AsyncTask<String, JSONObject, JSONObject> {
 		try {
 
 			requestBody = new JSONObject(arg0[2]); // there might be a body in
-													// the parameter array
+			Log.i("request body", requestBody.toString());										// the parameter array
 
 		} catch (Exception e) {
 
@@ -194,7 +194,7 @@ public class ApiCommunicator extends AsyncTask<String, JSONObject, JSONObject> {
 	 * @return JSONObject responseBody
 	 */
 	protected JSONObject parseHttpResponse(HttpResponse response) {
-
+		
 		if (response == null) {
 
 			System.out.println("No HttpResponse");

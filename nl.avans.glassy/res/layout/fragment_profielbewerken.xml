@@ -1,64 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <ImageButton
-        android:id="@+id/profiel_foto"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:scaleType="centerCrop"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/default_avatar" />
-    
-	<EditText
-	    android:id="@+id/profiel_voornaam"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:hint="Voornaam" />
-	
-	<EditText
-	    android:id="@+id/profiel_tussenvoegsel"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:hint="Tussenvoegsel" />
-	
-	<EditText
-	    android:id="@+id/profiel_achternaam"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:hint="Achternaam" />
-	
-	<EditText
-	    android:id="@+id/profiel_postcode"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:hint="Postcode" />
-	
-	<EditText
-	    android:id="@+id/profiel_stad"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:hint="Stad" />
-	
-	<EditText
-	    android:id="@+id/profiel_straat"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:hint="Straat" />
-	
-	<EditText
-	    android:id="@+id/profiel_huisnummer"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:hint="Huisnummer" />
-	
-	<Button
-	    android:id="@+id/profiel_wijzigen"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_gravity="right"
-	    android:text="Wijzigen" />
-    
-</LinearLayout>
+       
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+	    
+	    <ImageButton
+	        android:id="@+id/profiel_foto"
+	        android:layout_width="120dp"
+	        android:layout_height="120dp"
+	        android:scaleType="centerCrop"
+	        android:layout_gravity="center_horizontal"
+	        android:src="@drawable/default_avatar" />
+	    
+		<EditText
+		    android:id="@+id/profiel_voornaam"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:hint="Voornaam" />
+		
+		<EditText
+		    android:id="@+id/profiel_tussenvoegsel"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:hint="Tussenvoegsel" />
+		
+		<EditText
+		    android:id="@+id/profiel_achternaam"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:hint="Achternaam" />
+		
+		<EditText
+		    android:id="@+id/profiel_postcode"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:hint="Postcode" />
+		
+		<EditText
+		    android:id="@+id/profiel_stad"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:hint="Stad" />
+		
+		<EditText
+		    android:id="@+id/profiel_straat"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:hint="Straat" />
+		
+		<EditText
+		    android:id="@+id/profiel_huisnummer"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:hint="Huisnummer" />
+		
+		<Switch
+		    android:id="@+id/buddy_functies"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:textOff="Buddy\?"
+		    android:textOn="Buddy!" />
+		
+		<EditText
+		    android:id="@+id/buddy_contactemail"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:hint="Contact email"
+		    android:visibility="gone" />
+		
+		<EditText
+		    android:id="@+id/buddy_contacttel"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:hint="Contact telefoonnummer"
+		    android:visibility="gone" />
+		
+		<Button
+		    android:id="@+id/profiel_wijzigen"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="right"
+		    android:text="Wijzigen" />
+
+	</LinearLayout>
+
+</ScrollView>
