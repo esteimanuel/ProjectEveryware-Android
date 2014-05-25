@@ -22,10 +22,6 @@ import android.util.Log;
 
 public class ApiCommunicator extends AsyncTask<String, JSONObject, JSONObject> {
 
-	// Constants for indicating the state of the download
-	static final int DOWNLOAD_FAILED = -1;
-	static final int DOWNLOAD_COMPLETE = 0;
-
 	private static String BASE_URL = "http://glassy-api.avans-project.nl/api/";
 	private static final String[] ACCEPTED_REQUEST_METHODS = new String[] {
 			"GET", "POST", "PUT", "DELETE" };
@@ -129,7 +125,6 @@ public class ApiCommunicator extends AsyncTask<String, JSONObject, JSONObject> {
 		JSONObject requestBody = null;
 
 		try {
-
 			requestBody = new JSONObject(arg0[2]); // there might be a body in
 													// the parameter array
 

@@ -6,9 +6,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 
 public class MyLocation {
+	/**
+	 * TODO: Rewrite this class
+	 */
+
 	/*
 	 * An object that contains the ThreadPool singleton.
 	 */
@@ -46,17 +49,16 @@ public class MyLocation {
 		// don't start listeners if no provider is enabled
 		if (!gps_enabled && !network_enabled)
 			return false;
-		if (network_enabled)
+		else if (network_enabled)
 			lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
 					locationListenerNetwork);
-		if (gps_enabled)
+		else if (gps_enabled)
 			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
 					locationListenerGps);
 
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				/* do what you need to do */
 				GetLastLocation();
 			}
 		};
@@ -68,7 +70,7 @@ public class MyLocation {
 	LocationListener locationListenerGps = new LocationListener() {
 		public void onLocationChanged(Location location) {
 			locationResult = location;
-			handleState(LOCATION_OBTAINED);
+			handleResult(LOCATION_OBTAINED);
 			lm.removeUpdates(this);
 			lm.removeUpdates(locationListenerNetwork);
 		}
@@ -86,7 +88,7 @@ public class MyLocation {
 	LocationListener locationListenerNetwork = new LocationListener() {
 		public void onLocationChanged(Location location) {
 			locationResult = location;
-			handleState(LOCATION_OBTAINED);
+			handleResult(LOCATION_OBTAINED);
 			lm.removeUpdates(this);
 			lm.removeUpdates(locationListenerGps);
 		}
@@ -115,33 +117,44 @@ public class MyLocation {
 		if (gps_loc != null && net_loc != null) {
 			if (gps_loc.getTime() > net_loc.getTime()) {
 				locationResult = gps_loc;
-				handleState(LOCATION_OBTAINED);
+				handleResult(LOCATION_OBTAINED);
 			} else {
 				locationResult = net_loc;
-				handleState(LOCATION_OBTAINED);
+				handleResult(LOCATION_OBTAINED);
 			}
 			return;
 		} else if (gps_loc != null) {
 			locationResult = gps_loc;
-			handleState(LOCATION_OBTAINED);
+			handleResult(LOCATION_OBTAINED);
 			return;
 		} else if (net_loc != null) {
 			locationResult = net_loc;
-			handleState(LOCATION_OBTAINED);
+			handleResult(LOCATION_OBTAINED);
 			return;
 		}
-		locationResult = null;
-		handleState(LOCATION_FAILED);
+		handleResult(LOCATION_FAILED);
 	}
 
-	// Delegates handling the current state of the task to the PhotoManager
-	// object
-	private void handleState(int state) {
+	/*
+	 * Passes the location state to the ThreadPool object.
+	 */
+	private void handleResult(int state) {
+		int outState;
 		if (sActieManager != null) {
-			Log.d("ActieManager", "MyLocation handleState called");
+
+			// Converts the Location state to the overall state.
+			switch (state) {
+			case MyLocation.LOCATION_OBTAINED:
+				outState = ActieManager.LOCATION_OBTAINED;
+				break;
+			case MyLocation.LOCATION_FAILED:
+			default:
+				outState = ActieManager.LOCATION_FAILED;
+				break;
+			}
 
 			// Passes the state to the ThreadPool object.
-			sActieManager.handleLocationResult(locationResult, state);
+			sActieManager.handleState(locationResult, outState);
 			sActieManager = null;
 		}
 	}

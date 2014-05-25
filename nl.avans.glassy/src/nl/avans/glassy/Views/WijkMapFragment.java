@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -25,48 +24,52 @@ public class WijkMapFragment extends Fragment {
 	private WebView webView;
 	private webClientListener mywebListener;
 	private Boolean listenerset = false;
-	private Actie thisActie;
 
+	// private Actie thisActie;
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO: Not needed yet. Just a try to get the map to load faster.
-		super.onCreate(savedInstanceState);		
+		super.onCreate(savedInstanceState);
 
-		Bundle bundle = this.getArguments();
-		thisActie = (Actie) bundle.getParcelable("ActieObject");
+		// Bundle bundle = this.getArguments();
+		// thisActie = (Actie) bundle.getParcelable("ActieObject");
 
-		//get required size based on screen size
+		// get required size based on screen size
 		DisplayMetrics display = this.getResources().getDisplayMetrics();
 		mapHeight = display.heightPixels / 2;
 		mapWidth = display.widthPixels;
 
-		//Set the right size programmatically + various settings for what is allowed
+		// Set the right size programmatically + various settings for what is
+		// allowed
 		webviewSetup();
-		connectWebViewClient();	
+		connectWebViewClient();
 
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
-		View rootView = (ViewGroup) inflater.inflate(R.layout.wijkmap_fragment, container, false);
-		RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.container);		
+		View rootView = (ViewGroup) inflater.inflate(R.layout.wijkmap_fragment,
+				container, false);
+		RelativeLayout layout = (RelativeLayout) rootView
+				.findViewById(R.id.container);
 
 		layout.addView(webView);
 		createProgressSpinner(rootView);
 
 		// Set WebView URL
-		webView.loadUrl(URL + thisActie.getWijk_id());
+		webView.loadUrl(URL + 0);
 		return rootView;
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		//koppel de activity aan de listener
-		try {					
+		// koppel de activity aan de listener
+		try {
 			mywebListener = (webClientListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
@@ -74,41 +77,40 @@ public class WijkMapFragment extends Fragment {
 		}
 	}
 
-	public void createProgressSpinner(View view)
-	{
-		//Find progressbar 
+	public void createProgressSpinner(View view) {
+		// Find progressbar
 		mPbar = (ProgressBar) view.findViewById(R.id.web_view_progress);
-		//set the size
-		RelativeLayout.LayoutParams webViewLayout = new RelativeLayout.LayoutParams(mapWidth, mapHeight);
+		// set the size
+		RelativeLayout.LayoutParams webViewLayout = new RelativeLayout.LayoutParams(
+				mapWidth, mapHeight);
 		webViewLayout.addRule(RelativeLayout.BELOW, R.id.mapTitel);
 		mPbar.setLayoutParams(webViewLayout);
 	}
-	
-	public void webviewSetup()
-	{
+
+	public void webviewSetup() {
 		// Create new WebView object.
-				webView = new WebView(getActivity());
-				webView.setVisibility(View.GONE);			
+		webView = new WebView(getActivity());
+		webView.setVisibility(View.GONE);
 
-				// Enable different settings
-				// Alert: If the App doesn't need JavaScript setJavaScriptEnabled should
-				// be false.
-				webView.getSettings().setJavaScriptEnabled(true);
-				webView.getSettings().setLoadWithOverviewMode(true);
-				webView.getSettings().setUseWideViewPort(true);
+		// Enable different settings
+		// Alert: If the App doesn't need JavaScript setJavaScriptEnabled should
+		// be false.
+		webView.getSettings().setJavaScriptEnabled(true);
+		webView.getSettings().setLoadWithOverviewMode(true);
+		webView.getSettings().setUseWideViewPort(true);
 
-				// Create layout, padding and other settings.
-				RelativeLayout.LayoutParams webViewLayout = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, mapHeight);
-				webViewLayout.addRule(RelativeLayout.BELOW, R.id.mapTitel);
-				webView.setLayoutParams(webViewLayout);
+		// Create layout, padding and other settings.
+		RelativeLayout.LayoutParams webViewLayout = new RelativeLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, mapHeight);
+		webViewLayout.addRule(RelativeLayout.BELOW, R.id.mapTitel);
+		webView.setLayoutParams(webViewLayout);
 
-				float scale = getResources().getDisplayMetrics().density;
-				int dpAsPixels = (int) (5 * scale + 0.5f);
-				webView.setPadding(dpAsPixels, 0, dpAsPixels, 0);	
+		float scale = getResources().getDisplayMetrics().density;
+		int dpAsPixels = (int) (5 * scale + 0.5f);
+		webView.setPadding(dpAsPixels, 0, dpAsPixels, 0);
 	}
-	
-	public void connectWebViewClient()
-	{
+
+	public void connectWebViewClient() {
 		// create own custom webviewclient
 		WebViewClient customWebViewClient = new WebViewClient() {
 			@Override
@@ -121,8 +123,7 @@ public class WijkMapFragment extends Fragment {
 			public void onPageFinished(WebView view, final String url) {
 				webView.setVisibility(View.VISIBLE);
 				mPbar.setVisibility(View.GONE);
-				if(!listenerset)
-				{
+				if (!listenerset) {
 					setlisteners();
 					listenerset = true;
 				}
@@ -130,20 +131,19 @@ public class WijkMapFragment extends Fragment {
 		};
 		webView.setWebViewClient(customWebViewClient);
 	}
-	
-	private void setlisteners()
-	{
+
+	private void setlisteners() {
 		webView.setOnLongClickListener(new View.OnLongClickListener() {
-			
+
 			@Override
 			public boolean onLongClick(View v) {
-				mywebListener.onTouchMap(URL + thisActie.getWijk_id());
+				mywebListener.onTouchMap(URL + 0);
 				return true;
 			}
 		});
 	}
-	
-	//Interface that the activity implements to listen to events
+
+	// Interface that the activity implements to listen to events
 	public interface webClientListener {
 		public void onTouchMap(String URL);
 	}

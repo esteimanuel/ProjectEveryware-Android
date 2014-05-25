@@ -19,7 +19,7 @@ public class WijkGoededoelenFragment extends Fragment{
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO: Not needed yet. Just a try to get the map to load faster.
 		super.onCreate(savedInstanceState);		
-		Bundle bundle = this.getArguments();
+	//	Bundle bundle = this.getArguments();
 
 	}
 	

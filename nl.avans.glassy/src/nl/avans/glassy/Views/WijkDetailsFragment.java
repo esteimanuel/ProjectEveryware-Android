@@ -17,9 +17,6 @@ public class WijkDetailsFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		Bundle bundle = this.getArguments();
-		thisActie = (Actie) bundle.getParcelable("ActieObject");
 	}
 
 	@Override
@@ -28,12 +25,11 @@ public class WijkDetailsFragment extends Fragment {
 
 		rootView = (ViewGroup) inflater.inflate(R.layout.wijkdetails_fragment,
 				container, false);
-		init();
 		return rootView;
 	}
 
-	private void init() {
+	public void setWijkNaam(String wijkNaam) {
 		TextView wijkTitel = (TextView) rootView.findViewById(R.id.wijkTitel);
-		wijkTitel.setText(thisActie.getWijk_naam());
+		wijkTitel.setText(wijkNaam);
 	}
 }
