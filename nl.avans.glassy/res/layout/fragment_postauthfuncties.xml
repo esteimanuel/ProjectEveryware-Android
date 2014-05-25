@@ -28,7 +28,7 @@
         android:clickable="true"
         android:text="Instellingen" />
 	
-	<nl.avans.glassy.Utils.CustomTextView
+	<nl.avans.glassy.Utils.TextViewHelveticaLight
         android:id="@+id/uitloggen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

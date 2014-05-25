@@ -5,6 +5,7 @@ import java.util.List;
 
 import nl.avans.glassy.R;
 import nl.avans.glassy.Models.Actie;
+import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Views.WijkDetailsFragment.OnSpecialButtonPressListener;
 import nl.avans.glassy.Views.WijkGoededoelenFragment.wijkgoededoelenListener;
@@ -12,6 +13,7 @@ import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
 
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,7 +42,7 @@ public class WijkActivity extends AccountFunctieActivity  implements webClientLi
 		mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -142,7 +145,9 @@ public class WijkActivity extends AccountFunctieActivity  implements webClientLi
 	public void volgendeActieStapUitvoeren() {
 
 		WijkFragment huidigeWijk = ((WijkFragment) mPagerAdapter.getItem(mPager.getCurrentItem()));
-		Actie actieVanHuidigeWijk = huidigeWijk.getActie();
+		JSONObject actieVanHuidigeWijk = huidigeWijk.getActie().getActieJSON();
+		
+		Log.i("actie json", actieVanHuidigeWijk.toString());
 
 		SharedPreferences preferences = getApplicationContext().getSharedPreferences("GLASSY", 0);
 		
@@ -151,12 +156,23 @@ public class WijkActivity extends AccountFunctieActivity  implements webClientLi
 			JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
 			JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
 			
-//			if(gebruiker.getInt("actie_id") == null) {
-//				
-//				
-//			} else if() {
-//				
-//			} 
+			if(gebruiker.getString("actie_id") != null) {
+				
+				Gebruiker.aanmeldenBijWijk(getApplicationContext(), account.getString("token"), actieVanHuidigeWijk.getString("wijk_id"));
+				
+			} else if( gebruiker.getBoolean("borg_betaald") != true) {
+				
+//				gebruiker.BetaalBorg();
+				
+			} else if( gebruiker.getInt("pakket_id") < 0) {
+				
+//				gebruiker.KiesProviderPakket();
+			}
+			
+		} catch(NullPointerException nullpointer) {
+			
+			// TODO aanmelden
+			nullpointer.printStackTrace();
 			
 		} catch(Exception e) {
 			

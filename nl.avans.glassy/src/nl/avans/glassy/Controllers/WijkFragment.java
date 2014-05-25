@@ -7,8 +7,10 @@ import nl.avans.glassy.Interfaces.ScrollViewListener;
 import nl.avans.glassy.Models.Actie;
 import nl.avans.glassy.Views.WijkDeelnemersFragment;
 import nl.avans.glassy.Views.WijkDetailsFragment;
+import nl.avans.glassy.Views.WijkFaqFragment;
 import nl.avans.glassy.Views.WijkGoededoelenFragment;
 import nl.avans.glassy.Views.WijkMapFragment;
+import nl.avans.glassy.Views.WijkStappenFragment;
 import nl.avans.glassy.Views.WijkVideoFragment;
 import android.content.Context;
 import android.graphics.Point;
@@ -110,8 +112,8 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 
 		fragmentTransaction.commit();
 		
-		wijkActie = (Actie) bundle.getParcelable("ActieObject");;
-
+		wijkActie = (Actie) bundle.getParcelable("ActieObject");
+				
 		return rootView;
 	}
 
