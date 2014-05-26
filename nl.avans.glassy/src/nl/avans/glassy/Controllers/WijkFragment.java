@@ -122,13 +122,12 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 		// wijkDeelnemersFragment = new WijkDeelnemersFragment();
 		// fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment,
 		// "wijkDeelnemers");
-		startLoadingFragmentInfo();
+		startLoadingFaq();
 		fragmentTransaction.commit();
-
 		return rootView;
 	}
 
-	private void startLoadingFragmentInfo() {
+	private void startLoadingFaq() {
 		Faq.loadFaq(getActivity().getApplicationContext(), this);
 	}
 
