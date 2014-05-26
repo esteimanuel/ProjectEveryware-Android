@@ -1,10 +1,14 @@
 package nl.avans.glassy.Controllers;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.ScrollViewListener;
 import nl.avans.glassy.Models.Actie;
+import nl.avans.glassy.Models.Faq;
+import nl.avans.glassy.Models.Faq.faqListener;
+import nl.avans.glassy.Models.GoedeDoelen.goededoelenListener;
 import nl.avans.glassy.Views.WijkDeelnemersFragment;
 import nl.avans.glassy.Views.WijkDetailsFragment;
 import nl.avans.glassy.Views.WijkFaqFragment;
@@ -28,7 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-public class WijkFragment extends Fragment implements ScrollViewListener {
+public class WijkFragment extends Fragment implements ScrollViewListener, faqListener, goededoelenListener {
 
 	private float oldAlpha = 1.00f;
 	private ImageView background;
@@ -109,12 +113,16 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 		// wijkDeelnemersFragment = new WijkDeelnemersFragment();
 		// fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment,
 		// "wijkDeelnemers");
-
+		startLoadingFragmentInfo();
 		fragmentTransaction.commit();
 		
 		wijkActie = (Actie) bundle.getParcelable("ActieObject");
 				
 		return rootView;
+	}
+
+	private void startLoadingFragmentInfo() {
+		Faq.loadFaq(getActivity().getApplicationContext(), this);
 	}
 
 	@Override
@@ -181,5 +189,15 @@ public class WijkFragment extends Fragment implements ScrollViewListener {
 	public Actie getActie() {
 		
 		return wijkActie;
+	}
+
+	@Override
+	public void onFaqLoaded(ArrayList<String> questions, ArrayList<String> answers) {
+		wijkFaqFragment.updateText(questions, answers);		
+	}
+
+	@Override
+	public void onGoededoelenLoaded(String goededoel, int status) {
+		wijkGoededoelenFragment.updateText(goededoel, status);		
 	}
 }

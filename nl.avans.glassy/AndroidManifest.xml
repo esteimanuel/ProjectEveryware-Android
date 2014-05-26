@@ -74,6 +74,11 @@
             android:name="nl.avans.glassy.Controllers.FaqActivity"
             android:label="@string/title_activity_faq" >
         </activity>
+        
+        <activity
+            android:name="nl.avans.glassy.Controllers.DetailGoededoelenActivity"
+            android:label="@string/title_activity_faq" >
+        </activity>
 
     </application>
 

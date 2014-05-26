@@ -8,6 +8,7 @@ import nl.avans.glassy.Models.Actie;
 import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Views.WijkDetailsFragment.OnSpecialButtonPressListener;
+import nl.avans.glassy.Views.WijkFaqFragment.wijkFaqListener;
 import nl.avans.glassy.Views.WijkGoededoelenFragment.wijkgoededoelenListener;
 import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
 
@@ -26,7 +27,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-public class WijkActivity extends AccountFunctieActivity  implements webClientListener, wijkgoededoelenListener, OnSpecialButtonPressListener {
+public class WijkActivity extends AccountFunctieActivity  implements webClientListener, wijkgoededoelenListener, wijkFaqListener, OnSpecialButtonPressListener {
 			
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -134,12 +135,7 @@ public class WijkActivity extends AccountFunctieActivity  implements webClientLi
 		mPagerAdapter.addFragmentToAdapter(tempFragment);
 	}
 
-	@Override
-	public void onTouchGoededoelen(String infofull) {
-		Intent myIntent = new Intent(this, DetailMapActivity.class);
-		myIntent.putExtra("info", infofull); 
-		this.startActivity(myIntent);	
-	}
+	
 
 	@Override
 	public void volgendeActieStapUitvoeren() {
@@ -178,6 +174,20 @@ public class WijkActivity extends AccountFunctieActivity  implements webClientLi
 			
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void onTouchFaq() {
+		Intent myIntent = new Intent(this, FaqActivity.class);
+		this.startActivity(myIntent);
+		
+	}
+	
+	@Override
+	public void onTouchGoededoelen(String infofull) {
+		Intent myIntent = new Intent(this, DetailGoededoelenActivity.class);
+		myIntent.putExtra("info", infofull); 
+		this.startActivity(myIntent);	
 	}
 	
 }

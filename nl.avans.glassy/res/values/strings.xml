@@ -37,5 +37,6 @@
     <string name="stap3">3. Provider kiezen</string>
     <string name="stap4">4. Glasvezel aanleggen</string>
     <string name="stap5">5. Overstappen naar glasvezel</string>
+    <string name="temp">Dit is een test string</string>
 
 </resources>

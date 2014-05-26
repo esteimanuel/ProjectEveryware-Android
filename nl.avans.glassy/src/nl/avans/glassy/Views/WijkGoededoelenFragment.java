@@ -7,14 +7,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class WijkGoededoelenFragment extends Fragment{
 	
-	private String myInfo = "Als er meer dan 70% van de wijk meedoet dan zal iedereen in de wijk 50% korting bij alle providers krijgen." +
-			"\ndus waar wacht je nog op ? doe ook mee en overtuig gelijk de buren";
+	private String myInfo = "laden...";
 	private wijkgoededoelenListener myGoededoelenListener;
 	private View clickableLayout;
+	private TextView goededoelenInfo;
+	private ProgressBar status;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO: Not needed yet. Just a try to get the map to load faster.
@@ -27,9 +29,10 @@ public class WijkGoededoelenFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View rootView = (ViewGroup) inflater.inflate(R.layout.wijkgoededoelen_fragment, container, false);
-		TextView text = (TextView) rootView.findViewById(R.id.goededoelenInfo);		
+		goededoelenInfo = (TextView) rootView.findViewById(R.id.goededoelenInfo);	
+		status = (ProgressBar) rootView.findViewById(R.id.goededoelen_view_progress);
 	    clickableLayout = rootView.findViewById(R.id.goededoelenLayout);
-		text.setText(myInfo);
+	    updateText(myInfo, 0);
 		setlisteners();
 		return rootView;
 	}
@@ -45,7 +48,12 @@ public class WijkGoededoelenFragment extends Fragment{
 					+ " must implement goedeDoelenListenerr");
 		}
 	}
-
+	
+	public void updateText(String infoFull, int progressPercentage)
+	{
+		goededoelenInfo.setText(infoFull);
+		status.setProgress(progressPercentage);
+	}
 	
 	private void setlisteners()
 	{
