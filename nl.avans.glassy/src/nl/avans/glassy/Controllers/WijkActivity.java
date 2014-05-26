@@ -92,14 +92,14 @@ public class WijkActivity extends AccountFunctieActivity implements
 	// Implementations of the ontouchlistener from wijkMapFragment
 	@Override
 	public void onTouchMap(String URL) {
-		// TODO deze wordt 3 keer aangeroepen. -leon
+		//TODO FIX
 		Intent myIntent = new Intent(this, DetailMapActivity.class);
 		myIntent.putExtra("url", URL);
 		this.startActivity(myIntent);
 	}
 	@Override
 	public void onTouchGoededoelen(String infofull) {
-		Intent myIntent = new Intent(this, DetailMapActivity.class);
+		Intent myIntent = new Intent(this, DetailGoededoelenActivity.class);
 		myIntent.putExtra("info", infofull);
 		this.startActivity(myIntent);
 	}

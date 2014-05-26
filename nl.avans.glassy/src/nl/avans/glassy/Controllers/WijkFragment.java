@@ -37,7 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
 public class WijkFragment extends Fragment implements ScrollViewListener,
-		faqListener, goededoelenListener {
+		faqListener {
 	private ActieManager sActieManager;
 	private ActieTask mDownloadThread;
 
@@ -224,11 +224,6 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 	public void onFaqLoaded(ArrayList<String> questions,
 			ArrayList<String> answers) {
 		wijkFaqFragment.updateText(questions, answers);
-	}
-
-	@Override
-	public void onGoededoelenLoaded(String goededoel, int status) {
-		wijkGoededoelenFragment.updateText(goededoel, status);
 	}
 
 }

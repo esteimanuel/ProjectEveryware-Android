@@ -60,7 +60,8 @@ public class WijkMapFragment extends Fragment {
 		createProgressSpinner(rootView);
 
 		// Set WebView URL
-		webView.loadUrl(URL + 0);
+		//TODO map
+		webView.loadUrl(URL + 1);
 		return rootView;
 	}
 
@@ -136,7 +137,8 @@ public class WijkMapFragment extends Fragment {
 
 			@Override
 			public boolean onLongClick(View v) {
-				mywebListener.onTouchMap(URL + 0);
+				//TODO id
+				mywebListener.onTouchMap(URL + 1);
 				return true;
 			}
 		});
