@@ -3,7 +3,6 @@ package nl.avans.glassy.Views;
 import java.util.ArrayList;
 
 import nl.avans.glassy.R;
-import nl.avans.glassy.Views.WijkGoededoelenFragment.wijkgoededoelenListener;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

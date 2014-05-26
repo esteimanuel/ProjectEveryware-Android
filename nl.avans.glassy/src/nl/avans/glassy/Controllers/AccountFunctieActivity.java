@@ -2,17 +2,18 @@ package nl.avans.glassy.Controllers;
 
 import java.util.Arrays;
 
-import org.json.JSONObject;
-
 import nl.avans.glassy.R;
 import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Views.AccountFunctiesFragment;
-import nl.avans.glassy.Views.PostAuthFragment;
-import nl.avans.glassy.Views.ProfielBewerkenFragment;
 import nl.avans.glassy.Views.AccountFunctiesFragment.ToggleFunctiesManager;
 import nl.avans.glassy.Views.AuthFragment.AuthManager;
+import nl.avans.glassy.Views.PostAuthFragment;
 import nl.avans.glassy.Views.PostAuthFragment.AccountLinkManager;
+import nl.avans.glassy.Views.ProfielBewerkenFragment;
 import nl.avans.glassy.Views.ProfielBewerkenFragment.ProfielBewerkingManager;
+
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;

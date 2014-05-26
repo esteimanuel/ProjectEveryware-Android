@@ -1,7 +1,6 @@
 package nl.avans.glassy.Views;
 
 import nl.avans.glassy.R;
-import nl.avans.glassy.Models.Actie;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;

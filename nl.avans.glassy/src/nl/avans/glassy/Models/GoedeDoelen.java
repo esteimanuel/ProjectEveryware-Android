@@ -1,11 +1,7 @@
 package nl.avans.glassy.Models;
 
-import java.util.ArrayList;
-
-import nl.avans.glassy.Models.Faq.faqListener;
 import nl.avans.glassy.Utils.ApiCommunicator;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;

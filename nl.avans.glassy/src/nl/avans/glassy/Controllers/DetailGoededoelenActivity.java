@@ -2,8 +2,6 @@ package nl.avans.glassy.Controllers;
 
 import nl.avans.glassy.R;
 import nl.avans.glassy.Views.DetailGoededoelenFragment;
-import nl.avans.glassy.Views.DetailMapFragment;
-import nl.avans.glassy.Views.FaqFragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

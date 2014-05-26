@@ -22,7 +22,7 @@
        	    android:layout_height="40dp"
        	    android:src="@drawable/default_avatar" />
        	
-       	<nl.avans.glassy.Utils.CustomTextView
+       	<nl.avans.glassy.Utils.TextViewHelveticaLight
        	    android:id="@+id/gebruikersnaam"
        	    android:layout_marginLeft="5dp"
        	    android:layout_width="wrap_content"
@@ -45,8 +45,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/user_util"
         android:layout_marginTop="10dp" />
-        
-    <!-- <fragment 
-        android:id="@+id/postAuthFuncties"/> --> 
-    
+            
 </RelativeLayout>

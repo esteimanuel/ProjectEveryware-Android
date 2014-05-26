@@ -8,8 +8,6 @@ import nl.avans.glassy.Utils.ApiCommunicator;
 
 import org.json.JSONObject;
 
-import android.util.Log;
-
 public class ActieTask implements TaskRunnableDownloadMethods {
 
 	/*

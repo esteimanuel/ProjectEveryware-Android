@@ -2,11 +2,17 @@ package nl.avans.glassy.Controllers;
 
 import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.PagerAdapter;
+import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Threads.ActieManager;
+import nl.avans.glassy.Views.WijkDetailsFragment.OnSpecialButtonPressListener;
 import nl.avans.glassy.Views.WijkFaqFragment.wijkFaqListener;
 import nl.avans.glassy.Views.WijkGoededoelenFragment.wijkgoededoelenListener;
 import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
+
+import org.json.JSONObject;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -107,5 +113,41 @@ public class WijkActivity extends AccountFunctieActivity implements
 		Intent myIntent = new Intent(this, FaqActivity.class);
 		this.startActivity(myIntent);
 		
+	}
+
+	@Override
+	public void volgendeActieStapUitvoeren() {
+
+		WijkFragment huidigeWijk = ((WijkFragment) mPagerAdapter.getItem(mPager.getCurrentItem()));
+
+		SharedPreferences preferences = getApplicationContext().getSharedPreferences("GLASSY", 0);
+
+		try {
+
+			JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
+			JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
+
+			if(gebruiker.getString("actie_id") != null) {
+
+				Gebruiker.aanmeldenBijWijk(getApplicationContext(), account.getString("token"), Integer.toString(huidigeWijk.getWijkId()));
+
+			} else if( gebruiker.getBoolean("borg_betaald") != true) {
+
+//				gebruiker.BetaalBorg();
+
+			} else if( gebruiker.getInt("pakket_id") < 0) {
+
+//				gebruiker.KiesProviderPakket();
+			}
+
+		} catch(NullPointerException nullpointer) {
+
+			// TODO aanmelden
+			nullpointer.printStackTrace();
+
+		} catch(Exception e) {
+
+			e.printStackTrace();
+		}
 	}
 }

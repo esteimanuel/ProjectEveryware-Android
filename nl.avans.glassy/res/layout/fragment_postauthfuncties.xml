@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-     <nl.avans.glassy.Utils.CustomTextView
+     <nl.avans.glassy.Utils.TextViewHelveticaLight
         android:id="@+id/profiel_link"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,7 +12,7 @@
         android:clickable="true"
         android:text="Profiel" />
     
-	<nl.avans.glassy.Utils.CustomTextView
+	<nl.avans.glassy.Utils.TextViewHelveticaLight
         android:id="@+id/mijn_wijk_link"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,12 +20,20 @@
         android:clickable="true"
         android:text="Mijn Wijk" />
     
-	<nl.avans.glassy.Utils.CustomTextView
+	<nl.avans.glassy.Utils.TextViewHelveticaLight
         android:id="@+id/instellingen_link"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:clickable="true"
         android:text="Instellingen" />
+	
+	<nl.avans.glassy.Utils.TextViewHelveticaLight
+        android:id="@+id/uitloggen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:clickable="true"
+        android:text="Uitloggen" />
 
 </LinearLayout>

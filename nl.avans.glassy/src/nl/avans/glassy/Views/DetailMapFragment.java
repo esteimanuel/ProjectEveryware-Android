@@ -1,7 +1,6 @@
 package nl.avans.glassy.Views;
 
 import nl.avans.glassy.R;
-import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 
 public class DetailMapFragment extends Fragment {	
 	private final String URL = "http://glassy-web.avans-project.nl/?wijk=";

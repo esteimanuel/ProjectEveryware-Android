@@ -1,10 +1,5 @@
 package nl.avans.glassy.Views;
 
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-import com.google.android.youtube.player.YouTubePlayer.Provider;
-
 import nl.avans.glassy.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +8,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayer.Provider;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 public class WijkVideoFragment extends Fragment implements
 		YouTubePlayer.OnInitializedListener {

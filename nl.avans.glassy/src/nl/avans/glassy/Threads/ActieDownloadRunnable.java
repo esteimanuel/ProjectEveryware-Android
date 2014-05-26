@@ -4,8 +4,6 @@ import nl.avans.glassy.Utils.ApiCommunicator;
 
 import org.json.JSONObject;
 
-import android.util.Log;
-
 public class ActieDownloadRunnable extends ApiCommunicator {
     // Sets a tag for this class
     @SuppressWarnings("unused")

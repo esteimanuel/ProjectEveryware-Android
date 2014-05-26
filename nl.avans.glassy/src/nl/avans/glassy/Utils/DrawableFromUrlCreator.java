@@ -5,7 +5,6 @@ import java.net.URL;
 
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.widget.ImageView;
 
 public class DrawableFromUrlCreator extends AsyncTask<String, Void, Drawable> {
 	

@@ -7,7 +7,6 @@ import nl.avans.glassy.Utils.ApiCommunicator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Context;
 
 public class Faq {

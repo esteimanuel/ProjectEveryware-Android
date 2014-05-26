@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
 public class GoogleServicesActivity extends FragmentActivity {
 
 	public static final String EXTRA_MESSAGE = "message";
