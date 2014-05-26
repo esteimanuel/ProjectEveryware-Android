@@ -49,10 +49,10 @@ public class MyLocation {
 		// don't start listeners if no provider is enabled
 		if (!gps_enabled && !network_enabled)
 			return false;
-		else if (network_enabled)
+		if (network_enabled)
 			lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
 					locationListenerNetwork);
-		else if (gps_enabled)
+		if (gps_enabled)
 			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
 					locationListenerGps);
 
