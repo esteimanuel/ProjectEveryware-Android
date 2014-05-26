@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.ScrollViewListener;
-import nl.avans.glassy.Models.Actie;
 import nl.avans.glassy.Models.Faq;
 import nl.avans.glassy.Models.Faq.faqListener;
 import nl.avans.glassy.Models.GoedeDoelen.goededoelenListener;
@@ -13,8 +12,10 @@ import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Threads.ActieTask;
 import nl.avans.glassy.Views.WijkDeelnemersFragment;
 import nl.avans.glassy.Views.WijkDetailsFragment;
+import nl.avans.glassy.Views.WijkFaqFragment;
 import nl.avans.glassy.Views.WijkGoededoelenFragment;
 import nl.avans.glassy.Views.WijkMapFragment;
+import nl.avans.glassy.Views.WijkStappenFragment;
 import nl.avans.glassy.Views.WijkVideoFragment;
 
 import org.json.JSONException;
@@ -35,7 +36,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-public class WijkFragment extends Fragment implements ScrollViewListener, faqListener, goededoelenListener {
+public class WijkFragment extends Fragment implements ScrollViewListener,
+		faqListener, goededoelenListener {
 	private ActieManager sActieManager;
 	private ActieTask mDownloadThread;
 
@@ -50,6 +52,9 @@ public class WijkFragment extends Fragment implements ScrollViewListener, faqLis
 	private WijkMapFragment wijkMapFragment;
 	private WijkDeelnemersFragment wijkDeelnemersFragment;
 	private WijkGoededoelenFragment wijkGoededoelenFragment;
+
+	private WijkStappenFragment wijkStappenFragment;
+	private WijkFaqFragment wijkFaqFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +74,7 @@ public class WijkFragment extends Fragment implements ScrollViewListener, faqLis
 
 		// Starts filling this fragment.
 		ActieManager.startFragmentInitialization(this);
-		
+
 		fragmentManager = getChildFragmentManager();
 		fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -102,6 +107,16 @@ public class WijkFragment extends Fragment implements ScrollViewListener, faqLis
 		// wijkGoededoelenFragment.setArguments(bundle);
 		fragmentTransaction.replace(R.id.goededoelen, wijkGoededoelenFragment,
 				"wijkgoededoelen");
+
+		// New faq Fragment
+		wijkFaqFragment = new WijkFaqFragment();
+		fragmentTransaction.replace(R.id.faq, wijkFaqFragment, "wijkfaq");
+
+		// New stappen Fragment
+		wijkStappenFragment = new WijkStappenFragment();
+
+		fragmentTransaction.replace(R.id.stappen, wijkStappenFragment,
+				"wijkstappen");
 
 		// New WijkDeelnemers Fragment
 		// wijkDeelnemersFragment = new WijkDeelnemersFragment();
@@ -140,7 +155,6 @@ public class WijkFragment extends Fragment implements ScrollViewListener, faqLis
 	public int getWijkId() {
 		return wijkId;
 	}
-	
 
 	/**
 	 * Sets the detail information downloaded by the ActieManager
@@ -148,7 +162,7 @@ public class WijkFragment extends Fragment implements ScrollViewListener, faqLis
 	 * @return a int
 	 */
 	public void setDetail(JSONObject results) {
-		//Log.d("ActieManager", results.toString());
+		// Log.d("ActieManager", results.toString());
 		String wijkNaam = "";
 		try {
 			wijkNaam = results.getString("wijk_naam");
@@ -158,7 +172,7 @@ public class WijkFragment extends Fragment implements ScrollViewListener, faqLis
 		}
 
 		wijkDetails.setWijkNaam(wijkNaam);
-		
+
 	}
 
 	// Get usable device height (not counting statusbar ect.)
@@ -182,43 +196,40 @@ public class WijkFragment extends Fragment implements ScrollViewListener, faqLis
 		return height;
 	}
 
-//	public void onScrollChanged(ObservableScrollView scrollView, int x, int y,
-//			int oldx, int oldy) {
-//		// Log.d("scolling", "Scrolling");
-//
-//		float neededBlur = 1.00f;
-//		if (y < 50) {
-//			// ScrollView on top
-//			neededBlur = 1.00f;
-//		} else if (y >= 50 && y <= 200) {
-//			// ScrollView in fading zone
-//			neededBlur -= ((y - 50.00f) / 150.00f);
-//		} else {
-//			// ScrollView scrolling past fading zone
-//			neededBlur = 0.00f;
-//		}
-//
-//		// Log.d("neededBlur", Double.toString(neededAlpha));
-//
-//		if (neededBlur != oldAlpha) {
-//			// background.setImageBitmap();
-//		}
-//
-//		oldAlpha = neededBlur;
-//	}
-	
-	public Actie getActie() {
-		
-		return wijkActie;
+	public void onScrollChanged(ObservableScrollView scrollView, int x, int y,
+			int oldx, int oldy) {
+		// // Log.d("scolling", "Scrolling");
+		//
+		// float neededBlur = 1.00f;
+		// if (y < 50) {
+		// // ScrollView on top
+		// neededBlur = 1.00f;
+		// } else if (y >= 50 && y <= 200) {
+		// // ScrollView in fading zone
+		// neededBlur -= ((y - 50.00f) / 150.00f);
+		// } else {
+		// // ScrollView scrolling past fading zone
+		// neededBlur = 0.00f;
+		// }
+		//
+		// // Log.d("neededBlur", Double.toString(neededAlpha));
+		//
+		// if (neededBlur != oldAlpha) {
+		// // background.setImageBitmap();
+		// }
+		//
+		// oldAlpha = neededBlur;
 	}
 
 	@Override
-	public void onFaqLoaded(ArrayList<String> questions, ArrayList<String> answers) {
-		wijkFaqFragment.updateText(questions, answers);		
+	public void onFaqLoaded(ArrayList<String> questions,
+			ArrayList<String> answers) {
+		wijkFaqFragment.updateText(questions, answers);
 	}
 
 	@Override
 	public void onGoededoelenLoaded(String goededoel, int status) {
-		wijkGoededoelenFragment.updateText(goededoel, status);		
+		wijkGoededoelenFragment.updateText(goededoel, status);
 	}
+
 }
