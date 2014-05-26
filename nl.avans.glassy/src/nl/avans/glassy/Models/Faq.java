@@ -19,14 +19,14 @@ public class Faq {
 		
 	}
 	
-	public static void loadFaq(Context context, Activity activity) {
+	public static void loadFaq(Context context, Object activity) {
 
 		final faqListener myListener;		
 		try {		
 			myListener = (faqListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-					+ " must implement BoardListListener");
+					+ " must implement faqListener");
 		}
 		
 		String[] params = {

@@ -3,6 +3,7 @@ package nl.avans.glassy.Controllers;
 import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.PagerAdapter;
 import nl.avans.glassy.Threads.ActieManager;
+import nl.avans.glassy.Views.WijkFaqFragment.wijkFaqListener;
 import nl.avans.glassy.Views.WijkGoededoelenFragment.wijkgoededoelenListener;
 import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
 import android.content.Intent;
@@ -13,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 public class WijkActivity extends AccountFunctieActivity implements
-		webClientListener, wijkgoededoelenListener {
+		webClientListener, wijkgoededoelenListener, wijkFaqListener, OnSpecialButtonPressListener {
 	private ActieManager mActieManager;
 
 	/**
@@ -90,7 +91,6 @@ public class WijkActivity extends AccountFunctieActivity implements
 		myIntent.putExtra("url", URL);
 		this.startActivity(myIntent);
 	}
-
 	@Override
 	public void onTouchGoededoelen(String infofull) {
 		Intent myIntent = new Intent(this, DetailMapActivity.class);
@@ -101,5 +101,11 @@ public class WijkActivity extends AccountFunctieActivity implements
 	public PagerAdapter getViewPagerAdapter() {
 		return mPagerAdapter;
 	}
-
+	
+	@Override
+	public void onTouchFaq() {
+		Intent myIntent = new Intent(this, FaqActivity.class);
+		this.startActivity(myIntent);
+		
+	}
 }

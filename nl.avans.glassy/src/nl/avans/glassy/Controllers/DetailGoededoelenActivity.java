@@ -16,6 +16,7 @@ public class DetailGoededoelenActivity extends Activity {
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction().add(R.id.container, new DetailGoededoelenFragment()).commit();
 		}
+		setText();
 	}
 	
 	public void setText()

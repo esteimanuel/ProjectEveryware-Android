@@ -30,5 +30,13 @@
     <string name="hello_world">Hello world!</string>
     <string name="goededoelen">Goede doelen</string>
     <string name="title_activity_faq">FAQ</string>
+    <string name="stappenTitel">Stappen</string>
+    <string name="faqTitel">Veel gestelde vragen</string>
+    <string name="stap1">1. Bewoners verzamelen</string>
+    <string name="stap2">2. Inschrijven</string>
+    <string name="stap3">3. Provider kiezen</string>
+    <string name="stap4">4. Glasvezel aanleggen</string>
+    <string name="stap5">5. Overstappen naar glasvezel</string>
+    <string name="temp">Dit is een test string</string>
 
 </resources>

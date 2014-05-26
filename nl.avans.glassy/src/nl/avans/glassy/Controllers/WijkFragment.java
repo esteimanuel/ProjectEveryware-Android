@@ -1,8 +1,14 @@
 package nl.avans.glassy.Controllers;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import nl.avans.glassy.R;
+import nl.avans.glassy.Interfaces.ScrollViewListener;
+import nl.avans.glassy.Models.Actie;
+import nl.avans.glassy.Models.Faq;
+import nl.avans.glassy.Models.Faq.faqListener;
+import nl.avans.glassy.Models.GoedeDoelen.goededoelenListener;
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Threads.ActieTask;
 import nl.avans.glassy.Views.WijkDeelnemersFragment;
@@ -20,7 +26,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +35,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-public class WijkFragment extends Fragment {
+public class WijkFragment extends Fragment implements ScrollViewListener, faqListener, goededoelenListener {
 	private ActieManager sActieManager;
 	private ActieTask mDownloadThread;
 
@@ -102,10 +107,14 @@ public class WijkFragment extends Fragment {
 		// wijkDeelnemersFragment = new WijkDeelnemersFragment();
 		// fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment,
 		// "wijkDeelnemers");
-
+		startLoadingFragmentInfo();
 		fragmentTransaction.commit();
 
 		return rootView;
+	}
+
+	private void startLoadingFragmentInfo() {
+		Faq.loadFaq(getActivity().getApplicationContext(), this);
 	}
 
 	@Override
@@ -171,5 +180,45 @@ public class WijkFragment extends Fragment {
 		}
 
 		return height;
+	}
+
+//	public void onScrollChanged(ObservableScrollView scrollView, int x, int y,
+//			int oldx, int oldy) {
+//		// Log.d("scolling", "Scrolling");
+//
+//		float neededBlur = 1.00f;
+//		if (y < 50) {
+//			// ScrollView on top
+//			neededBlur = 1.00f;
+//		} else if (y >= 50 && y <= 200) {
+//			// ScrollView in fading zone
+//			neededBlur -= ((y - 50.00f) / 150.00f);
+//		} else {
+//			// ScrollView scrolling past fading zone
+//			neededBlur = 0.00f;
+//		}
+//
+//		// Log.d("neededBlur", Double.toString(neededAlpha));
+//
+//		if (neededBlur != oldAlpha) {
+//			// background.setImageBitmap();
+//		}
+//
+//		oldAlpha = neededBlur;
+//	}
+	
+	public Actie getActie() {
+		
+		return wijkActie;
+	}
+
+	@Override
+	public void onFaqLoaded(ArrayList<String> questions, ArrayList<String> answers) {
+		wijkFaqFragment.updateText(questions, answers);		
+	}
+
+	@Override
+	public void onGoededoelenLoaded(String goededoel, int status) {
+		wijkGoededoelenFragment.updateText(goededoel, status);		
 	}
 }
