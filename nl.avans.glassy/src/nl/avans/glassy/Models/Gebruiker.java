@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.facebook.model.GraphUser;
 
@@ -21,6 +22,8 @@ public class Gebruiker {
 				API_CONTROLLER + "login?email="+ email +"&wachtwoord=" + password
 		};
 
+		Log.i("URL", params[1]);
+		
 		new ApiCommunicator(context){
 
 			@Override
@@ -50,12 +53,16 @@ public class Gebruiker {
 				"{email:"+ email +", wachtwoord:"+ password +"}"
 		};
 
+		Log.i("URL", params[1]);
+		
 		new ApiCommunicator(context){
 
 			@Override
 			protected void onPostExecute(JSONObject result) {
 
 				try {
+					
+					Log.i("RESULT", result.toString());
 
 					SharedPreferences sp = getContext().getSharedPreferences("GLASSY", 0);
 					SharedPreferences.Editor editor = sp.edit();
@@ -79,6 +86,8 @@ public class Gebruiker {
 			"GET",
 			API_CONTROLLER + "loginFacebook?fid=" + user.getId() + "&femail=" + user.getProperty("email").toString()
 		};
+
+		Log.i("URL", params[1]);
 
 		new ApiCommunicator(context) {
 

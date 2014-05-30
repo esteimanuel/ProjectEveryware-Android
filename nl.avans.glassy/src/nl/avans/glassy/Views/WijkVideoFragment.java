@@ -34,16 +34,16 @@ public class WijkVideoFragment extends Fragment implements
 
 		ViewGroup rootView = (ViewGroup) inflater.inflate(
 				R.layout.wijkvideo_fragment, container, false);		
-		
+
 		fragmentInitialization("vkgRqz2lLAs");
 
 		return rootView;
 	}
-	
+
 	private void fragmentInitialization(String VIDEO_ID){
 		//Set video URL
 		this.VIDEO_ID = VIDEO_ID;
-		
+
 		fragmentManager = getChildFragmentManager();
 		fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -54,7 +54,7 @@ public class WijkVideoFragment extends Fragment implements
 				"youtubePlayer");
 
 		fragmentTransaction.commit();
-		
+
 	}
 
 	@Override

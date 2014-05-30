@@ -42,6 +42,7 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 	private ActieTask mDownloadThread;
 
 	private int wijkId;
+	private int actieId;
 
 	private FragmentManager fragmentManager;
 	private FragmentTransaction fragmentTransaction;
@@ -63,6 +64,17 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 		Bundle bundle = this.getArguments();
 
 		wijkId = bundle.getInt("wijk_id");
+		
+		int actie_id = -1;
+		try {
+			
+			actie_id = bundle.getInt("actie_id");
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		actieId = actie_id;
 	}
 
 	@Override
@@ -153,6 +165,10 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 	 */
 	public int getWijkId() {
 		return wijkId;
+	}
+	
+	public int getActieId() {
+		return actieId;
 	}
 
 	/**

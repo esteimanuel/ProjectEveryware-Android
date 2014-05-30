@@ -191,12 +191,7 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 					@Override
 					public void onCompleted(GraphUser user, Response response) {
 						
-						// TODO JSONObject in shared preferences gooien
-//						SharedPreferences sp = getApplicationContext().getSharedPreferences("GLASSY", 0);
-//						SharedPreferences.Editor editor = sp.edit();
-//						editor.putString("ACCOUNT", user.toString());
-//						
-//						editor.commit();
+						Gebruiker.facebookLogin(getApplicationContext(), user);
 					}
 					
 				}).executeAsync();

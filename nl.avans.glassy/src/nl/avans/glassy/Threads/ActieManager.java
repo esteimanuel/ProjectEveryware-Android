@@ -382,6 +382,7 @@ public class ActieManager {
 	 */
 	private void parseJSONResult(JSONObject result) {
 		try {
+			Log.i("CLOSEBY", result.toString());
 			handleState(result.getJSONArray("entries"), ACTIE_INIT_START);
 		} catch (JSONException e) {
 			Log.d("ActieManager", "parseJSONResult, unable to parse result");
@@ -409,6 +410,9 @@ public class ActieManager {
 				WijkFragment tempFragment = new WijkFragment();
 				Bundle bundle = new Bundle();
 				bundle.putInt("wijk_id", temp.getInt("wijk_id"));
+				
+				bundle = tryToAddActie(bundle, temp); // het toevoegen van een actie_id als de wijk een actie heeft
+				
 				tempFragment.setArguments(bundle);
 
 				scrollPagerAdapter.addFragmentToAdapter(tempFragment);
@@ -418,6 +422,30 @@ public class ActieManager {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * actie id van de meest recente actie toevoegen aan de opgegeven bundel.
+	 * 
+	 * @param Bundle bundle
+	 * @param JSONObject closebyWijk 
+	 * @return Bundle retval
+	 */
+	private Bundle tryToAddActie(Bundle bundle, JSONObject closebyWijk) {
+		
+		Bundle retval = bundle;
+		
+		try {
+			
+			JSONArray acties = closebyWijk.getJSONArray("actie");
+			retval.putInt("actie_id", acties.getJSONObject(0).getInt("actie_id"));
+			
+		} catch(Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return retval;
 	}
 
 	/**

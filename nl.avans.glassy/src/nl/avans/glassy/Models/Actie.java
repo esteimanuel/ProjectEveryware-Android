@@ -17,6 +17,7 @@ public class Actie implements Parcelable {
 	private int wijk_id;
 	private int target;
 	private int aantal_huishoudens;
+	private int actie_id = -1;
 	private String wijk_naam;
 
 	public Actie() {
