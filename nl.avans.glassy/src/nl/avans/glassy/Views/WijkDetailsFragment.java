@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,7 +23,7 @@ public class WijkDetailsFragment extends Fragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 
-		if(activity instanceof OnSpecialButtonPressListener) {
+		if (activity instanceof OnSpecialButtonPressListener) {
 
 			listener = (OnSpecialButtonPressListener) activity;
 
@@ -38,27 +39,31 @@ public class WijkDetailsFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
 		rootView = (ViewGroup) inflater.inflate(R.layout.wijkdetails_fragment,
 				container, false);
 
-		rootView.findViewById(R.id.ikDoeMeeButton).setOnClickListener(new OnClickListener() {
+		rootView.findViewById(R.id.ikDoeMeeButton).setOnClickListener(
+				new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
+					@Override
+					public void onClick(View v) {
 
-				listener.volgendeActieStapUitvoeren();
-			}
-		});
+						listener.volgendeActieStapUitvoeren();
+					}
+				});
 
 		init();
 		return rootView;
 	}
 
 	private void init() {
-		Button ikDoeMeeButton = (Button) rootView.findViewById(R.id.ikDoeMeeButton);
-		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "Fonts/HelveticaNeue_Lt.ttf");
+		Button ikDoeMeeButton = (Button) rootView
+				.findViewById(R.id.ikDoeMeeButton);
+		Typeface font = Typeface.createFromAsset(getActivity().getAssets(),
+				"Fonts/HelveticaNeue_Lt.ttf");
 		ikDoeMeeButton.setTypeface(font);
 	}
 
@@ -75,5 +80,14 @@ public class WijkDetailsFragment extends Fragment {
 	public void setWijkNaam(String wijkNaam) {
 		TextView wijkTitel = (TextView) rootView.findViewById(R.id.wijkTitel);
 		wijkTitel.setText(wijkNaam);
+	}
+
+	public void setDeelnemersCount(int length, int percentage) {
+		TextView deelnemersCount = (TextView) rootView
+				.findViewById(R.id.deelnemersCount);
+		deelnemersCount.setText(Integer.toString(length));
+		TextView deelnemersPercentage = (TextView) rootView
+				.findViewById(R.id.percentage);
+		deelnemersPercentage.setText(Integer.toString(percentage));
 	}
 }
