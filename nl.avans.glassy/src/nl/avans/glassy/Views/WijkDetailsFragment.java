@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -80,6 +79,7 @@ public class WijkDetailsFragment extends Fragment {
 	public void setWijkNaam(String wijkNaam) {
 		TextView wijkTitel = (TextView) rootView.findViewById(R.id.wijkTitel);
 		wijkTitel.setText(wijkNaam);
+		wijkTitel.setVisibility(View.VISIBLE);
 	}
 
 	public void setDeelnemersCount(int length, int percentage) {
@@ -89,5 +89,7 @@ public class WijkDetailsFragment extends Fragment {
 		TextView deelnemersPercentage = (TextView) rootView
 				.findViewById(R.id.percentage);
 		deelnemersPercentage.setText(Integer.toString(percentage));
+		
+		rootView.findViewById(R.id.wijkDetails).setVisibility(View.VISIBLE);
 	}
 }

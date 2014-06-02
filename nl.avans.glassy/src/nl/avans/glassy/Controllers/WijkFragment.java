@@ -220,7 +220,7 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 				"dimen", "android");
 		if (resourceId > 0) {
 			result = getResources().getDimensionPixelSize(resourceId);
-			height = height - result - 50;
+			height = height - result - 70;
 		}
 
 		return height;
