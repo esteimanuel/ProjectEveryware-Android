@@ -169,6 +169,8 @@ public class Gebruiker {
 				"{ _token:" + token + ", actie_id:" + wijk.getActieId() + "}"
 		};
 		
+		Log.d("wijkaanmelden url", params[2]);
+		
 		final WijkFragment ditislelijk = wijk;
 
 		new ApiCommunicator(context){

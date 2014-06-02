@@ -410,9 +410,11 @@ public class ActieManager {
 				WijkFragment tempFragment = new WijkFragment();
 				Bundle bundle = new Bundle();
 				bundle.putInt("wijk_id", temp.getInt("wijk_id"));
-				
-				bundle = tryToAddActie(bundle, temp); // het toevoegen van een actie_id als de wijk een actie heeft
-				
+
+				bundle = tryToAddActie(bundle, temp); // het toevoegen van een
+														// actie_id als de wijk
+														// een actie heeft
+
 				tempFragment.setArguments(bundle);
 
 				scrollPagerAdapter.addFragmentToAdapter(tempFragment);
@@ -423,29 +425,31 @@ public class ActieManager {
 			}
 		}
 	}
-	
+
 	/**
 	 * actie id van de meest recente actie toevoegen aan de opgegeven bundel.
 	 * 
-	 * @param Bundle bundle
-	 * @param JSONObject closebyWijk 
+	 * @param Bundle
+	 *            bundle
+	 * @param JSONObject
+	 *            closebyWijk
 	 * @return Bundle retval
 	 */
 	private Bundle tryToAddActie(Bundle bundle, JSONObject closebyWijk) {
-		
+
 		Bundle retval = bundle;
-		
+
 		try {
-			
+
 			JSONArray acties = closebyWijk.getJSONArray("actie");
-			
+	
 			retval.putInt("actie_id", acties.getJSONObject(0).getInt("actie_id"));
-			
-		} catch(Exception e) {
-			
+
+		} catch (Exception e) {
 			e.printStackTrace();
+			retval.putInt("actie_id", -1);
 		}
-		
+
 		return retval;
 	}
 
@@ -464,15 +468,15 @@ public class ActieManager {
 		 * Gets a task from the pool of tasks, returning null if the pool is
 		 * empty
 		 */
-		ActieTask downloadTask = sInstance.mActieTaskWorkQueue.poll();
+		ActieTask detailTask = sInstance.mActieTaskWorkQueue.poll();
 
 		// If the queue was empty, create a new task instead.
-		if (null == downloadTask) {
-			downloadTask = new ActieTask();
+		if (null == detailTask) {
+			detailTask = new ActieTask();
 		}
 
 		// Initializes the task
-		downloadTask.initializeDownloaderTask(ActieManager.sInstance,
+		detailTask.initializeDownloaderTask(ActieManager.sInstance,
 				wijkFragment);
 
 		// Start the general wijk information download
@@ -480,10 +484,39 @@ public class ActieManager {
 		/*
 		 * Start the detail initialization Dit request in global class zetten
 		 */
-		downloadTask.setTask("DETAIL");
-		String API_CONTROLLER = "wijk/?id=" + downloadTask.getWijkID();
-		String[] params = { "GET", API_CONTROLLER };
-		downloadTask.getDownloadRunnable().execute(params);
+		detailTask.setTask("DETAIL");
+		String API_DETAIL = "wijk/?id=" + detailTask.getWijkID();
+		String[] detailParams = { "GET", API_DETAIL };
+		detailTask.getDownloadRunnable().execute(detailParams);
+
+		if (wijkFragment.getActieId() != -1) {
+			/*
+			 * Gets a task from the pool of tasks, returning null if the pool is
+			 * empty
+			 */
+			ActieTask deelnemerTask = sInstance.mActieTaskWorkQueue.poll();
+
+			// If the queue was empty, create a new task instead.
+			if (null == deelnemerTask) {
+				deelnemerTask = new ActieTask();
+			}
+
+			// Initializes the task
+			deelnemerTask.initializeDownloaderTask(ActieManager.sInstance,
+					wijkFragment);
+
+			// Start the general wijk information download
+
+			/*
+			 * Start the Deelneer initialization Dit request in global class
+			 * zetten
+			 */
+			deelnemerTask.setTask("DEELNEMER");
+			String API_DEELNEMER = "actie/users/?id="
+					+ wijkFragment.getActieId();
+			String[] deelnemerParams = { "GET", API_DEELNEMER };
+			deelnemerTask.getDownloadRunnable().execute(deelnemerParams);
+		}
 	}
 
 	private void handleResult(ActieTask actieObject) {
@@ -491,6 +524,18 @@ public class ActieManager {
 		if (task == "DETAIL") {
 			WijkFragment tempLink = actieObject.getWijkFragment();
 			tempLink.setDetail(actieObject.getResult());
+		} else if (task == "DEELNEMER") {
+			WijkFragment tempLink = actieObject.getWijkFragment();
+
+			JSONArray deelnemersArray;
+			try {
+				deelnemersArray = (JSONArray) actieObject.getResult()
+						.getJSONArray("entries");
+				tempLink.setDeelnemers(deelnemersArray);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

@@ -19,6 +19,7 @@ import nl.avans.glassy.Views.WijkMapFragment;
 import nl.avans.glassy.Views.WijkStappenFragment;
 import nl.avans.glassy.Views.WijkVideoFragment;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,6 +29,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +46,9 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 	private ActieTask mDownloadThread;
 
 	private int wijkId;
-	private int actieId;
+	private int actieId = 0;
+	private int houseHolds;
+	private int target;
 
 	private FragmentManager fragmentManager;
 	private FragmentTransaction fragmentTransaction;
@@ -55,7 +59,6 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 	private WijkMapFragment wijkMapFragment;
 	private WijkDeelnemersFragment wijkDeelnemersFragment;
 	private WijkGoededoelenFragment wijkGoededoelenFragment;
-
 	private WijkStappenFragment wijkStappenFragment;
 	private WijkFaqFragment wijkFaqFragment;
 
@@ -66,14 +69,14 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 		Bundle bundle = this.getArguments();
 
 		wijkId = bundle.getInt("wijk_id");
-		
+
 		int actie_id = -1;
 		try {
-			
+
 			actie_id = bundle.getInt("actie_id");
-			
+
 		} catch (Exception e) {
-			
+
 			e.printStackTrace();
 		}
 		actieId = actie_id;
@@ -133,9 +136,9 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 				"wijkstappen");
 
 		// New WijkDeelnemers Fragment
-		// wijkDeelnemersFragment = new WijkDeelnemersFragment();
-		// fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment,
-		// "wijkDeelnemers");
+		wijkDeelnemersFragment = new WijkDeelnemersFragment();
+		fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment,
+				"wijkDeelnemers");
 		startLoadingFaq();
 		fragmentTransaction.commit();
 		return rootView;
@@ -168,7 +171,7 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 	public int getWijkId() {
 		return wijkId;
 	}
-	
+
 	public int getActieId() {
 		return actieId;
 	}
@@ -179,16 +182,26 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 	 * @return a int
 	 */
 	public void setDetail(JSONObject results) {
-		// Log.d("ActieManager", results.toString());
+		Log.d("ActieManager", results.toString());
 		String wijkNaam = "";
 		try {
 			wijkNaam = results.getString("wijk_naam");
+			houseHolds = Integer.parseInt(results
+					.getString("aantal_huishoudens"));
+			target = Integer.parseInt(results.getString("target"));
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		wijkDetails.setWijkNaam(wijkNaam);
+	}
+
+	public void setDeelnemers(JSONArray result) {
+		Log.d("ActieManager", result.toString());
+
+		int percentage = (int) (((float) result.length() / (float) target) * 100);
+		wijkDetails.setDeelnemersCount(result.length(), percentage);
+		wijkDeelnemersFragment.setDeelnemersCount(result.length(), percentage);
 
 	}
 
