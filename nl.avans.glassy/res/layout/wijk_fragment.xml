@@ -55,49 +55,57 @@
                 android:paddingRight="5dp" >
             </FrameLayout>
 
-            <FrameLayout
-                android:id="@+id/goededoelen"
-                android:name="nl.avans.glassy.Views.WijkGoededoelenFragment"
+            <LinearLayout
+                android:id="@+id/actieSpecefiek"
                 android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:paddingBottom="20dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp" >
-            </FrameLayout>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone" >
 
-            <FrameLayout
-                android:id="@+id/stappen"
-                android:name="nl.avans.glassy.Views.WijkStappenFragment"
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:paddingBottom="20dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp" >
-            </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/goededoelen"
+                    android:name="nl.avans.glassy.Views.WijkGoededoelenFragment"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" >
+                </FrameLayout>
 
-            <FrameLayout
-                android:id="@+id/faq"
-                android:name="nl.avans.glassy.Views.WijkFaqFragment"
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:paddingBottom="20dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp" >
-            </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/stappen"
+                    android:name="nl.avans.glassy.Views.WijkStappenFragment"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" >
+                </FrameLayout>
 
-            <FrameLayout
-                android:id="@+id/deelnemers"
-                android:name="nl.avans.glassy.Views.WijkDeelnemersFragment"
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:paddingBottom="20dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp" >
-            </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/faq"
+                    android:name="nl.avans.glassy.Views.WijkFaqFragment"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" >
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/deelnemers"
+                    android:name="nl.avans.glassy.Views.WijkDeelnemersFragment"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" >
+                </FrameLayout>
+            </LinearLayout>
         </LinearLayout>
     </nl.avans.glassy.Controllers.ObservableScrollView>
 

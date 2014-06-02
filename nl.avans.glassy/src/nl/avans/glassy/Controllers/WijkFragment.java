@@ -4,11 +4,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import nl.avans.glassy.R;
-import nl.avans.glassy.Interfaces.ScrollViewListener;
 import nl.avans.glassy.Models.Faq;
 import nl.avans.glassy.Models.Faq.faqListener;
 import nl.avans.glassy.Models.Gebruiker;
-import nl.avans.glassy.Models.GoedeDoelen.goededoelenListener;
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Threads.ActieTask;
 import nl.avans.glassy.Views.WijkDeelnemersFragment;
@@ -40,14 +38,14 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-public class WijkFragment extends Fragment implements ScrollViewListener,
-		faqListener {
+public class WijkFragment extends Fragment implements faqListener {
+	private ViewGroup rootView;
+
 	private ActieManager sActieManager;
 	private ActieTask mDownloadThread;
 
 	private int wijkId;
 	private int actieId = 0;
-	private int houseHolds;
 	private int target;
 
 	private FragmentManager fragmentManager;
@@ -86,8 +84,8 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		ViewGroup rootView = (ViewGroup) inflater.inflate(
-				R.layout.wijk_fragment, container, false);
+		rootView = (ViewGroup) inflater.inflate(R.layout.wijk_fragment,
+				container, false);
 
 		// Starts filling this fragment.
 		ActieManager.startFragmentInitialization(this);
@@ -105,47 +103,19 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 
 		// New WijkDetails Fragment
 		wijkDetails = new WijkDetailsFragment();
-		// wijkDetails.setArguments(bundle);
 		fragmentTransaction.replace(R.id.details, wijkDetails, "wijkDetails");
 
 		// New youtubePlayer SupportFragment
 		wijkVideoFragment = new WijkVideoFragment();
-		// wijkVideoFragment.setArguments(bundle);
 		fragmentTransaction.replace(R.id.youtube, wijkVideoFragment,
 				"youtubePlayer");
 
 		// New Webview Fragment
 		wijkMapFragment = new WijkMapFragment();
-		// wijkMapFragment.setArguments(bundle);
 		fragmentTransaction.replace(R.id.map, wijkMapFragment, "wijkMap");
 
-		// New Webview Fragment
-		wijkGoededoelenFragment = new WijkGoededoelenFragment();
-		// wijkGoededoelenFragment.setArguments(bundle);
-		fragmentTransaction.replace(R.id.goededoelen, wijkGoededoelenFragment,
-				"wijkgoededoelen");
-
-		// New faq Fragment
-		wijkFaqFragment = new WijkFaqFragment();
-		fragmentTransaction.replace(R.id.faq, wijkFaqFragment, "wijkfaq");
-
-		// New stappen Fragment
-		wijkStappenFragment = new WijkStappenFragment();
-
-		fragmentTransaction.replace(R.id.stappen, wijkStappenFragment,
-				"wijkstappen");
-
-		// New WijkDeelnemers Fragment
-		wijkDeelnemersFragment = new WijkDeelnemersFragment();
-		fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment,
-				"wijkDeelnemers");
-		startLoadingFaq();
 		fragmentTransaction.commit();
 		return rootView;
-	}
-
-	private void startLoadingFaq() {
-		Faq.loadFaq(getActivity().getApplicationContext(), this);
 	}
 
 	@Override
@@ -186,14 +156,46 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 		String wijkNaam = "";
 		try {
 			wijkNaam = results.getString("wijk_naam");
-			houseHolds = Integer.parseInt(results
-					.getString("aantal_huishoudens"));
 			target = Integer.parseInt(results.getString("target"));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
 		wijkDetails.setWijkNaam(wijkNaam);
+	}
+
+	public void setActieData(JSONObject result) {
+		Log.d("ActieManager", result.toString());
+
+		fragmentManager = getChildFragmentManager();
+		fragmentTransaction = fragmentManager.beginTransaction();
+		// New Webview Fragment
+		wijkGoededoelenFragment = new WijkGoededoelenFragment();
+		fragmentTransaction.replace(R.id.goededoelen, wijkGoededoelenFragment,
+				"wijkgoededoelen");
+
+		// New faq Fragment
+		wijkFaqFragment = new WijkFaqFragment();
+		fragmentTransaction.replace(R.id.faq, wijkFaqFragment, "wijkfaq");
+
+		// New stappen Fragment
+		wijkStappenFragment = new WijkStappenFragment();
+		fragmentTransaction.replace(R.id.stappen, wijkStappenFragment,
+				"wijkstappen");
+
+		// New WijkDeelnemers Fragment
+		wijkDeelnemersFragment = new WijkDeelnemersFragment();
+		fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment,
+				"wijkDeelnemers");
+		startLoadingFaq();
+
+		fragmentTransaction.commit();
+
+		rootView.findViewById(R.id.actieSpecefiek).setVisibility(View.VISIBLE);
+	}
+
+	private void startLoadingFaq() {
+		Faq.loadFaq(getActivity().getApplicationContext(), this);
 	}
 
 	public void setDeelnemers(JSONArray result) {
@@ -226,75 +228,52 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 		return height;
 	}
 
-	public void onScrollChanged(ObservableScrollView scrollView, int x, int y,
-			int oldx, int oldy) {
-		// // Log.d("scolling", "Scrolling");
-		//
-		// float neededBlur = 1.00f;
-		// if (y < 50) {
-		// // ScrollView on top
-		// neededBlur = 1.00f;
-		// } else if (y >= 50 && y <= 200) {
-		// // ScrollView in fading zone
-		// neededBlur -= ((y - 50.00f) / 150.00f);
-		// } else {
-		// // ScrollView scrolling past fading zone
-		// neededBlur = 0.00f;
-		// }
-		//
-		// // Log.d("neededBlur", Double.toString(neededAlpha));
-		//
-		// if (neededBlur != oldAlpha) {
-		// // background.setImageBitmap();
-		// }
-		//
-		// oldAlpha = neededBlur;
-	}
-
 	@Override
 	public void onFaqLoaded(ArrayList<String> questions,
 			ArrayList<String> answers) {
 		wijkFaqFragment.updateText(questions, answers);
 	}
-	
+
 	public void onStart() {
-		
+
 		super.onStart();
 		evalActieButton();
 	}
-	
+
 	public void onResume() {
-		
+
 		super.onResume();
 		evalActieButton();
 	}
-	
+
 	public void evalActieButton() {
-		
-		Button actieButton = (Button) getView().findViewById(R.id.ikDoeMeeButton);
-			
-		if(getActieId() <= 0) {
-			
-			actieButton.setText("Geen actie? Wel Glasvezel!");		
-			
-		} else if(Gebruiker.zitInWelkeActie(getActivity().getApplicationContext()) == getActieId()) {
-			
-			if(Gebruiker.heeftBetaald(getActivity().getApplicationContext())) {
 
-				actieButton.setText("Provider voorkeur opgeven");	
-			
+		Button actieButton = (Button) getView().findViewById(
+				R.id.ikDoeMeeButton);
+
+		if (getActieId() <= 0) {
+
+			actieButton.setText("Geen actie? Wel Glasvezel!");
+
+		} else if (Gebruiker.zitInWelkeActie(getActivity()
+				.getApplicationContext()) == getActieId()) {
+
+			if (Gebruiker.heeftBetaald(getActivity().getApplicationContext())) {
+
+				actieButton.setText("Provider voorkeur opgeven");
+
 			} else {
-				
-				actieButton.setText("Betalen pannekoek!");				
-			}			
-			
-		} else if(Gebruiker.zitInActie(getActivity().getApplicationContext())) {
 
-			if(Gebruiker.zitInWelkeActie(getActivity().getApplicationContext()) != getActieId()) {
-			
+				actieButton.setText("Betalen pannekoek!");
+			}
+
+		} else if (Gebruiker.zitInActie(getActivity().getApplicationContext())) {
+
+			if (Gebruiker
+					.zitInWelkeActie(getActivity().getApplicationContext()) != getActieId()) {
+
 				actieButton.setVisibility(View.GONE);
-			}			
-		} 
+			}
+		}
 	}
-
 }
