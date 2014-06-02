@@ -1,4 +1,4 @@
-package nl.avans.glassy.Models;
+package nl.avans.glassy.Threads;
 
 import nl.avans.glassy.Utils.ApiCommunicator;
 
@@ -9,7 +9,7 @@ import android.content.Context;
 public class GoedeDoelen {
 
 	//TODO api goededoelen
-	private static String API_CONTROLLER = "goededoelen";
+	private static String API_CONTROLLER = "goededoel";
 	
 	public static void loadGoededoelen(Context context, Object activity, int id) {
 
@@ -20,10 +20,10 @@ public class GoedeDoelen {
 			throw new ClassCastException(activity.toString()
 					+ " must implement goededoelenListener");
 		}
-		
+		//TODO wat als er geen goededoel is.
 		String[] params = {
 				"GET",
-				API_CONTROLLER
+				API_CONTROLLER + "?id=" + id
 		};
 
 
@@ -34,10 +34,11 @@ public class GoedeDoelen {
 			protected void onPostExecute(JSONObject result) {
 
 				try {
-				    //TODO goede api location en kijken welke data ik terug krijg
-					String text = "Als 90% van de buurt mee doet dan krijgt de hele wijk 1 jaar gratis internet.";
-					int status = 50;					
-					myListener.onGoededoelenLoaded(text, status);
+				    //TODO status eruit, die word ergens anders ingeladen.
+					String title = result.getString("title");
+					String description = result.getString("description");
+					String message = result.getString("message");
+					myListener.onGoededoelenLoaded(title ,description, message);
 
 				} catch(Exception e) {
 
@@ -47,6 +48,6 @@ public class GoedeDoelen {
 	}
 	
 	public interface goededoelenListener {
-		public void onGoededoelenLoaded(String goededoel, int status);
+		public void onGoededoelenLoaded(String title, String description, String message);
 	}
 }

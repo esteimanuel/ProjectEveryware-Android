@@ -102,10 +102,13 @@ public class WijkActivity extends AccountFunctieActivity implements
 		myIntent.putExtra("url", URL);
 		this.startActivity(myIntent);
 	}
+
 	@Override
-	public void onTouchGoededoelen(String infofull) {
+	public void onTouchGoededoelen(String title, String description, String message) {
 		Intent myIntent = new Intent(this, DetailGoededoelenActivity.class);
-		myIntent.putExtra("info", infofull);
+		myIntent.putExtra("title", title);
+		myIntent.putExtra("description", description);
+		myIntent.putExtra("message", message);
 		this.startActivity(myIntent);
 	}
 
@@ -184,5 +187,8 @@ public class WijkActivity extends AccountFunctieActivity implements
 			e.printStackTrace();
 		}
 	}
+
+
+
 	
 }

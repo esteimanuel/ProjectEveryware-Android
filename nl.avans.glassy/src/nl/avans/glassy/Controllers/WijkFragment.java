@@ -4,11 +4,13 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import nl.avans.glassy.R;
-import nl.avans.glassy.Models.Faq;
-import nl.avans.glassy.Models.Faq.faqListener;
 import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Threads.ActieTask;
+import nl.avans.glassy.Threads.Faq;
+import nl.avans.glassy.Threads.Faq.faqListener;
+import nl.avans.glassy.Threads.GoedeDoelen;
+import nl.avans.glassy.Threads.GoedeDoelen.goededoelenListener;
 import nl.avans.glassy.Views.WijkDeelnemersFragment;
 import nl.avans.glassy.Views.WijkDetailsFragment;
 import nl.avans.glassy.Views.WijkFaqFragment;
@@ -38,9 +40,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-public class WijkFragment extends Fragment implements faqListener {
+public class WijkFragment extends Fragment implements faqListener,
+		goededoelenListener {
 	private ViewGroup rootView;
-
 	private ActieManager sActieManager;
 	private ActieTask mDownloadThread;
 
@@ -70,11 +72,8 @@ public class WijkFragment extends Fragment implements faqListener {
 
 		int actie_id = -1;
 		try {
-
 			actie_id = bundle.getInt("actie_id");
-
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		}
 		actieId = actie_id;
@@ -187,20 +186,21 @@ public class WijkFragment extends Fragment implements faqListener {
 		wijkDeelnemersFragment = new WijkDeelnemersFragment();
 		fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment,
 				"wijkDeelnemers");
-		startLoadingFaq();
+		startLoadingInfo();
 
 		fragmentTransaction.commit();
 
 		rootView.findViewById(R.id.actieSpecefiek).setVisibility(View.VISIBLE);
 	}
 
-	private void startLoadingFaq() {
+	private void startLoadingInfo() {
 		Faq.loadFaq(getActivity().getApplicationContext(), this);
+		GoedeDoelen.loadGoededoelen(getActivity().getApplicationContext(),
+				this, wijkId);
 	}
 
 	public void setDeelnemers(JSONArray result) {
 		Log.d("ActieManager", result.toString());
-
 		int percentage = (int) (((float) result.length() / (float) target) * 100);
 		wijkDetails.setDeelnemersCount(result.length(), percentage);
 		wijkDeelnemersFragment.setDeelnemersCount(result.length(), percentage);
@@ -226,12 +226,6 @@ public class WijkFragment extends Fragment implements faqListener {
 		}
 
 		return height;
-	}
-
-	@Override
-	public void onFaqLoaded(ArrayList<String> questions,
-			ArrayList<String> answers) {
-		wijkFaqFragment.updateText(questions, answers);
 	}
 
 	public void onStart() {
@@ -275,5 +269,18 @@ public class WijkFragment extends Fragment implements faqListener {
 				actieButton.setVisibility(View.GONE);
 			}
 		}
+	}
+
+	@Override
+	public void onFaqLoaded(ArrayList<String> questions,
+			ArrayList<String> answers) {
+		wijkFaqFragment.updateText(questions, answers);
+	}
+
+	@Override
+	public void onGoededoelenLoaded(String title, String description,
+			String message) {
+		// TODO Auto-generated method stub
+		wijkGoededoelenFragment.updateText(title, description, message);
 	}
 }
