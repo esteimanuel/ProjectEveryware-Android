@@ -9,11 +9,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 public class WijkFaqFragment extends Fragment{
 	private TextView faqContent;
-    private wijkFaqListener myfaqListener;
+	private wijkFaqListener myfaqListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,7 @@ public class WijkFaqFragment extends Fragment{
 		super.onCreate(savedInstanceState);		
 		Bundle bundle = this.getArguments();
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -31,9 +32,9 @@ public class WijkFaqFragment extends Fragment{
 		setlisteners();
 		return rootView;
 	}
-	
+
 	public void updateText(ArrayList<String> questions,	ArrayList<String> answers) {
-		
+
 		if(questions.size() > 2)
 		{
 			String textviewinfo = "";
@@ -46,7 +47,7 @@ public class WijkFaqFragment extends Fragment{
 			faqContent.setText(textviewinfo);		
 		}
 	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -58,19 +59,20 @@ public class WijkFaqFragment extends Fragment{
 					+ " must implement wijkfaqListenerr");
 		}
 	}
-	
+
 	private void setlisteners()
 	{
-		faqContent.setOnLongClickListener(new View.OnLongClickListener() {
-			
-			@Override
-			public boolean onLongClick(View v) {				
-				myfaqListener.onTouchFaq();
-				return true;
-			}
-		});
+		faqContent.setOnClickListener(
+				new OnClickListener(){
+
+					@Override
+					public void onClick(View v) {
+						myfaqListener.onTouchFaq();
+					}
+
+				});
 	}
-	
+
 	//Interface that the activity implements to listen to events
 	public interface wijkFaqListener {		
 		public void onTouchFaq();

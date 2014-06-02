@@ -111,6 +111,7 @@ public class WijkFragment extends Fragment implements faqListener,
 
 		// New Webview Fragment
 		wijkMapFragment = new WijkMapFragment();
+		wijkMapFragment.setWijkid(wijkId);
 		fragmentTransaction.replace(R.id.map, wijkMapFragment, "wijkMap");
 
 		fragmentTransaction.commit();

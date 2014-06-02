@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -19,6 +20,7 @@ public class WijkMapFragment extends Fragment {
 	private final String URL = "http://glassy-web.avans-project.nl/?wijk=";
 	private int mapHeight;
 	private int mapWidth;
+	private int wijkId;
 	private ProgressBar mPbar = null;
 	private WebView webView;
 	private webClientListener mywebListener;
@@ -61,7 +63,7 @@ public class WijkMapFragment extends Fragment {
 
 		// Set WebView URL
 		//TODO map
-		webView.loadUrl(URL + 1);
+		webView.loadUrl(URL + wijkId);
 		return rootView;
 	}
 
@@ -132,20 +134,22 @@ public class WijkMapFragment extends Fragment {
 		webView.setWebViewClient(customWebViewClient);
 	}
 
-	private void setlisteners() {
-		webView.setOnLongClickListener(new View.OnLongClickListener() {
-
-			@Override
-			public boolean onLongClick(View v) {
-				//TODO id
-				mywebListener.onTouchMap(URL + 1);
-				return true;
-			}
-		});
+	private void setlisteners() {		
+		webView.setOnClickListener(
+				new OnClickListener(){
+					@Override
+					public void onClick(View v) {
+						mywebListener.onTouchMap(URL + wijkId);
+					}
+				});
 	}
 
 	// Interface that the activity implements to listen to events
 	public interface webClientListener {
 		public void onTouchMap(String URL);
+	}
+
+	public void setWijkid(int wijkId) {
+		this.wijkId = wijkId;
 	}
 }
