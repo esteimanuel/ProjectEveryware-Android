@@ -11,10 +11,13 @@ import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
 
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +51,8 @@ public class WijkActivity extends AccountFunctieActivity implements
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
+		
+				
 	}
 
 	@Override
@@ -118,27 +123,56 @@ public class WijkActivity extends AccountFunctieActivity implements
 	@Override
 	public void volgendeActieStapUitvoeren() {
 
-		WijkFragment huidigeWijk = ((WijkFragment) mPagerAdapter.getItem(mPager.getCurrentItem()));
-
+		final WijkFragment huidigeWijk = ((WijkFragment) mPagerAdapter.getItem(mPager.getCurrentItem()));
 		SharedPreferences preferences = getApplicationContext().getSharedPreferences("GLASSY", 0);
 
+		Log.d("volgende actie", "click");
+		
 		try {
 
 			JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
-			JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
+			
+			final String token = account.getString("token");
+			
+			int actie_id = huidigeWijk.getActieId();
 
-			if(gebruiker.getString("actie_id") != null) {
+			if(!Gebruiker.zitInActie(getApplicationContext())) {
 
-				Gebruiker.aanmeldenBijWijk(getApplicationContext(), account.getString("token"), Integer.toString(huidigeWijk.getWijkId()));
+				Gebruiker.aanmeldenBijWijk(getApplicationContext(), token, huidigeWijk);
+				return;
 
-			} else if( gebruiker.getBoolean("borg_betaald") != true) {
+			} else if(!Gebruiker.heeftBetaald(getApplicationContext())) {
 
-//				gebruiker.BetaalBorg();
-
-			} else if( gebruiker.getInt("pakket_id") < 0) {
-
-//				gebruiker.KiesProviderPakket();
-			}
+				new AlertDialog.Builder(this)
+							   .setTitle("Contributie")
+							   .setMessage("Om de kabelexploitanten relevante informatie te geven, verwachten wij een tijdelijke contributie. Deze wordt zowel als de onderhandelingen lukken als mislukken terug gegeven.")
+							   .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						Gebruiker.betaalBorg(getApplicationContext(), token);
+						huidigeWijk.evalActieButton();
+						return;
+					}
+				}).show();
+	
+			} //else if(!Gebruiker.heeftPakketGekozen(getApplicationContext())) {
+//				
+//				new AlertDialog.Builder(this)
+//				   .setTitle("Provider kiezen")
+//				   .setMessage("Kies de provider die jij zou willen hebben")
+//				   .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//		
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						
+//						Gebruiker.betaalBorg(getApplicationContext(), token);
+//						huidigeWijk.evalActieButton();
+//						return;
+//					}
+//				}).show();
+//			}
 
 		} catch(NullPointerException nullpointer) {
 
@@ -150,4 +184,5 @@ public class WijkActivity extends AccountFunctieActivity implements
 			e.printStackTrace();
 		}
 	}
+	
 }

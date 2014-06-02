@@ -438,6 +438,7 @@ public class ActieManager {
 		try {
 			
 			JSONArray acties = closebyWijk.getJSONArray("actie");
+			
 			retval.putInt("actie_id", acties.getJSONObject(0).getInt("actie_id"));
 			
 		} catch(Exception e) {

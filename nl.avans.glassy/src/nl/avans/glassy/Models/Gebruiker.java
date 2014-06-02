@@ -1,7 +1,10 @@
 package nl.avans.glassy.Models;
 
+import nl.avans.glassy.Controllers.WijkFragment;
 import nl.avans.glassy.Utils.ApiCommunicator;
+import nl.avans.glassy.Views.WijkFaqFragment;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -158,13 +161,15 @@ public class Gebruiker {
 		}.execute(params);
 	}
 
-	public static void aanmeldenBijWijk(Context context, String token, String actieId) {
+	public static void aanmeldenBijWijk(Context context, String token, WijkFragment wijk) {
 
 		String[] params = {
 				"PUT",
 				"gebruiker",
-				"{ _token:" + token + ", actie_id:" + actieId + "}"
+				"{ _token:" + token + ", actie_id:" + wijk.getActieId() + "}"
 		};
+		
+		final WijkFragment ditislelijk = wijk;
 
 		new ApiCommunicator(context){
 
@@ -175,7 +180,49 @@ public class Gebruiker {
 
 					SharedPreferences sp = getContext().getSharedPreferences("GLASSY", 0);
 					SharedPreferences.Editor editor = sp.edit();
-					editor.putString("ACCOUNT", result.get("account").toString()); // if account is null exception will be caught
+
+					JSONObject account = new JSONObject(sp.getString("ACCOUNT", null));
+					account.put("gebruiker", result.get("model").toString());
+
+					editor.putString("ACCOUNT", account.toString());
+
+					editor.commit();
+					
+					ditislelijk.evalActieButton();
+
+				} catch(Exception e) {
+
+					e.printStackTrace();
+				}
+			}
+
+		}.execute(params);
+	}
+	
+	public static void betaalBorg(Context context, String token) {
+		
+		String[] params = {
+				"PUT",
+				"gebruiker",
+				"{ _token:" + token + ", borg_betaald:" + true + "}"
+		};
+		
+		Log.d("Volgende Stap Uitvoeren", params[2]);
+
+		new ApiCommunicator(context){
+
+			@Override
+			protected void onPostExecute(JSONObject result) {
+
+				try {
+
+					SharedPreferences sp = getContext().getSharedPreferences("GLASSY", 0);
+					SharedPreferences.Editor editor = sp.edit();
+
+					JSONObject account = new JSONObject(sp.getString("ACCOUNT", null));
+					account.put("gebruiker", result.get("model").toString());
+
+					editor.putString("ACCOUNT", account.toString());
 
 					editor.commit();
 
@@ -201,4 +248,72 @@ public class Gebruiker {
 		}
 	}
 
+	public static Boolean zitInActie(Context context) {
+		
+		Boolean retval = false;
+		
+		try {
+			
+			JSONObject gebruiker = getGebruikerUitContext(context);
+			
+			if(!gebruiker.getString("actie_id").equals("null")) {
+				
+				retval = true;
+			}
+		
+		} catch(Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return retval;
+	}
+	
+	public static int zitInWelkeActie(Context context) {
+		
+		int retval = -2;
+		
+		try {
+
+			JSONObject gebruiker = getGebruikerUitContext(context);
+			
+			if(!gebruiker.getString("actie_id").equals("null")) {
+				
+				retval = gebruiker.getInt("actie_id");
+			}
+			
+		} catch(Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return retval;		
+	}
+	
+	public static boolean heeftBetaald(Context context) {
+		
+		Boolean retval = false;
+		
+		try {
+			
+			JSONObject gebruiker = getGebruikerUitContext(context);
+			
+			retval = gebruiker.getString("borg_betaald").toLowerCase().equals("true");
+			
+		} catch(Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		Log.d("Gebruiker.heeftBetaald()", "" + retval);
+		
+		return retval;
+	}
+	
+	private static JSONObject getGebruikerUitContext(Context context) throws JSONException {
+		
+		SharedPreferences preferences = context.getSharedPreferences("GLASSY", 0);
+		JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
+		return new JSONObject(account.getString("gebruiker"));
+	}
 }

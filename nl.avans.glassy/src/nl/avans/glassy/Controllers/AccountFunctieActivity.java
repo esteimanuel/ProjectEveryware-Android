@@ -6,6 +6,7 @@ import nl.avans.glassy.R;
 import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Views.AccountFunctiesFragment;
 import nl.avans.glassy.Views.AccountFunctiesFragment.ToggleFunctiesManager;
+import nl.avans.glassy.Views.AuthFragment;
 import nl.avans.glassy.Views.AuthFragment.AuthManager;
 import nl.avans.glassy.Views.PostAuthFragment;
 import nl.avans.glassy.Views.PostAuthFragment.AccountLinkManager;
@@ -97,6 +98,30 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 	public void gaNaarInstellingen() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override 
+	public void uitloggen() {
+		
+		try {
+				
+				SharedPreferences sp = getApplicationContext().getSharedPreferences("GLASSY", 0);
+				SharedPreferences.Editor editor = sp.edit();
+		 		editor.putString("ACCOUNT", null); 
+		 		
+		 		editor.commit();
+		 		
+		 		facebookLogout();
+		 		
+		 		Log.i("uitloggen", sp.getString("ACCOUNT", "niks"));
+		 		
+		 	} catch(Exception e) {
+		 		
+		 		e.printStackTrace(); // log it
+		 	}
+		 
+		 	AccountFunctiesFragment.getInstance().setIngelogd(false);
+		 	AccountFunctiesFragment.getInstance().veranderFragment(new AuthFragment());
 	}
 
 	@Override
@@ -330,5 +355,11 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 
 		AccountFunctiesFragment.getInstance().veranderFragment(new PostAuthFragment());
 		AccountFunctiesFragment.getInstance().setIngelogd(true);
+	}
+	
+	private void facebookLogout() {
+		
+		Session session = Session.getActiveSession();
+		session.closeAndClearTokenInformation();
 	}
 }

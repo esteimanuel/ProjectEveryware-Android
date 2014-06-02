@@ -53,14 +53,24 @@ public class PostAuthFragment extends Fragment {
 			});
 		
 		view.findViewById(R.id.instellingen_link)
-			.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-	
-					manager.gaNaarInstellingen();					
-				}
-			});
+		.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				manager.gaNaarInstellingen();					
+			}
+		});
+		
+		view.findViewById(R.id.uitloggen)
+		.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				manager.uitloggen();					
+			}
+		});
 		
 		return view;
 	}
@@ -72,6 +82,8 @@ public class PostAuthFragment extends Fragment {
 		public void gaNaarMijnWijk();
 		
 		public void gaNaarInstellingen();
+		
+		public void uitloggen();
 	}
 	
 }

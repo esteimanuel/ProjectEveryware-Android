@@ -7,6 +7,7 @@ import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.ScrollViewListener;
 import nl.avans.glassy.Models.Faq;
 import nl.avans.glassy.Models.Faq.faqListener;
+import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Models.GoedeDoelen.goededoelenListener;
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Threads.ActieTask;
@@ -32,6 +33,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -240,6 +242,46 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 	public void onFaqLoaded(ArrayList<String> questions,
 			ArrayList<String> answers) {
 		wijkFaqFragment.updateText(questions, answers);
+	}
+	
+	public void onStart() {
+		
+		super.onStart();
+		evalActieButton();
+	}
+	
+	public void onResume() {
+		
+		super.onResume();
+		evalActieButton();
+	}
+	
+	public void evalActieButton() {
+		
+		Button actieButton = (Button) getView().findViewById(R.id.ikDoeMeeButton);
+			
+		if(getActieId() <= 0) {
+			
+			actieButton.setText("Geen actie? Wel Glasvezel!");		
+			
+		} else if(Gebruiker.zitInWelkeActie(getActivity().getApplicationContext()) == getActieId()) {
+			
+			if(Gebruiker.heeftBetaald(getActivity().getApplicationContext())) {
+
+				actieButton.setText("Provider voorkeur opgeven");	
+			
+			} else {
+				
+				actieButton.setText("Betalen pannekoek!");				
+			}			
+			
+		} else if(Gebruiker.zitInActie(getActivity().getApplicationContext())) {
+
+			if(Gebruiker.zitInWelkeActie(getActivity().getApplicationContext()) != getActieId()) {
+			
+				actieButton.setVisibility(View.GONE);
+			}			
+		} 
 	}
 
 }
