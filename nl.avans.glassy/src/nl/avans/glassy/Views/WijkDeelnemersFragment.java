@@ -28,10 +28,6 @@ public class WijkDeelnemersFragment extends Fragment {
 		TextView deelnemerView = (TextView) rootView
 				.findViewById(R.id.deelnemerCount);
 		deelnemerView.setText(String.valueOf(deelnemers));
-		TextView procentCount = (TextView) rootView
-				.findViewById(R.id.procentCount);
-		procentCount.setText(String.valueOf(deelnemers));
-
 		return rootView;
 	}
 
@@ -39,8 +35,5 @@ public class WijkDeelnemersFragment extends Fragment {
 		TextView deelnemerView = (TextView) rootView
 				.findViewById(R.id.deelnemerCount);
 		deelnemerView.setText(Integer.toString(length));
-		TextView procentCount = (TextView) rootView
-				.findViewById(R.id.procentCount);
-		procentCount.setText(Integer.toString(percentage));
 	}
 }

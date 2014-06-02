@@ -22,29 +22,13 @@
         android:textColor="@color/white"
         android:textSize="20sp" />
 
-    <nl.avans.glassy.Utils.TextViewHelveticaThin
-        android:id="@+id/procentCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/deelnemersText"
-        android:textColor="@color/white"
-        android:textSize="32sp" />
-
-    <nl.avans.glassy.Utils.TextViewHelveticaThin
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/procentCount"
-        android:text="@string/procent"
-        android:textColor="@color/white"
-        android:textSize="32sp" />
-
     <View
         android:id="@+id/serperator"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:paddingBottom="5dp"
         android:layout_below="@id/deelnemerCount"
-        android:background="@color/blackTransparent" />
+        android:background="@color/white" />
 
     <GridView
         android:id="@+id/deelnemerGrid"
