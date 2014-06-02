@@ -524,6 +524,9 @@ public class ActieManager {
 		if (task == "DETAIL") {
 			WijkFragment tempLink = actieObject.getWijkFragment();
 			tempLink.setDetail(actieObject.getResult());
+		} else if (task == "STATS") {
+			WijkFragment tempLink = actieObject.getWijkFragment();
+			//TODO: STATS
 		} else if (task == "DEELNEMER") {
 			WijkFragment tempLink = actieObject.getWijkFragment();
 

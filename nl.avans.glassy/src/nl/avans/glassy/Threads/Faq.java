@@ -1,4 +1,4 @@
-package nl.avans.glassy.Models;
+package nl.avans.glassy.Threads;
 
 import java.util.ArrayList;
 

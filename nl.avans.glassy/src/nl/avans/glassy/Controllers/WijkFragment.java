@@ -5,12 +5,13 @@ import java.util.ArrayList;
 
 import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.ScrollViewListener;
-import nl.avans.glassy.Models.Faq;
-import nl.avans.glassy.Models.Faq.faqListener;
 import nl.avans.glassy.Models.Gebruiker;
-import nl.avans.glassy.Models.GoedeDoelen.goededoelenListener;
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Threads.ActieTask;
+import nl.avans.glassy.Threads.Faq;
+import nl.avans.glassy.Threads.GoedeDoelen;
+import nl.avans.glassy.Threads.Faq.faqListener;
+import nl.avans.glassy.Threads.GoedeDoelen.goededoelenListener;
 import nl.avans.glassy.Views.WijkDeelnemersFragment;
 import nl.avans.glassy.Views.WijkDetailsFragment;
 import nl.avans.glassy.Views.WijkFaqFragment;
@@ -41,7 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
 public class WijkFragment extends Fragment implements ScrollViewListener,
-		faqListener {
+		faqListener, goededoelenListener {
 	private ActieManager sActieManager;
 	private ActieTask mDownloadThread;
 
@@ -139,13 +140,14 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 		wijkDeelnemersFragment = new WijkDeelnemersFragment();
 		fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment,
 				"wijkDeelnemers");
-		startLoadingFaq();
+		startLoadingInfo();
 		fragmentTransaction.commit();
 		return rootView;
 	}
 
-	private void startLoadingFaq() {
+	private void startLoadingInfo() {
 		Faq.loadFaq(getActivity().getApplicationContext(), this);
+		GoedeDoelen.loadGoededoelen(getActivity().getApplicationContext(), this, wijkId);
 	}
 
 	@Override
@@ -198,7 +200,6 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 
 	public void setDeelnemers(JSONArray result) {
 		Log.d("ActieManager", result.toString());
-
 		int percentage = (int) (((float) result.length() / (float) target) * 100);
 		wijkDetails.setDeelnemersCount(result.length(), percentage);
 		wijkDeelnemersFragment.setDeelnemersCount(result.length(), percentage);
@@ -250,12 +251,6 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 		//
 		// oldAlpha = neededBlur;
 	}
-
-	@Override
-	public void onFaqLoaded(ArrayList<String> questions,
-			ArrayList<String> answers) {
-		wijkFaqFragment.updateText(questions, answers);
-	}
 	
 	public void onStart() {
 		
@@ -296,5 +291,20 @@ public class WijkFragment extends Fragment implements ScrollViewListener,
 			}			
 		} 
 	}
+
+
+	
+	@Override
+	public void onFaqLoaded(ArrayList<String> questions, ArrayList<String> answers) {
+		wijkFaqFragment.updateText(questions, answers);
+	}
+
+	@Override
+	public void onGoededoelenLoaded(String title, String description, String message) {
+		// TODO Auto-generated method stub
+		wijkGoededoelenFragment.updateText(title, description, message);
+	}
+
+
 
 }

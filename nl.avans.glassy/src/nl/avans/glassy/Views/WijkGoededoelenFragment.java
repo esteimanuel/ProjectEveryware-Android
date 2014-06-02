@@ -13,6 +13,9 @@ import android.widget.TextView;
 public class WijkGoededoelenFragment extends Fragment{
 	
 	private String myInfo = "laden...";
+	private String title;
+	private String description;
+	private String message;
 	private wijkgoededoelenListener myGoededoelenListener;
 	private View clickableLayout;
 	private TextView goededoelenInfo;
@@ -31,8 +34,7 @@ public class WijkGoededoelenFragment extends Fragment{
 		View rootView = (ViewGroup) inflater.inflate(R.layout.wijkgoededoelen_fragment, container, false);
 		goededoelenInfo = (TextView) rootView.findViewById(R.id.goededoelenInfo);	
 		status = (ProgressBar) rootView.findViewById(R.id.goededoelen_view_progress);
-	    clickableLayout = rootView.findViewById(R.id.goededoelenLayout);
-	    updateText(myInfo, 0);
+	    clickableLayout = rootView.findViewById(R.id.goededoelenLayout);	    
 		setlisteners();
 		return rootView;
 	}
@@ -49,9 +51,16 @@ public class WijkGoededoelenFragment extends Fragment{
 		}
 	}
 	
-	public void updateText(String infoFull, int progressPercentage)
+	public void updateText(String title, String description, String message)
 	{
-		goededoelenInfo.setText(infoFull);
+		goededoelenInfo.setText(description);
+		this.title = title;
+		this.description = description;
+		this.message = message;		
+	}
+	
+	public void updateStatus(int progressPercentage)
+	{
 		status.setProgress(progressPercentage);
 	}
 	
@@ -61,7 +70,7 @@ public class WijkGoededoelenFragment extends Fragment{
 			
 			@Override
 			public boolean onLongClick(View v) {				
-				myGoededoelenListener.onTouchGoededoelen(myInfo);
+				myGoededoelenListener.onTouchGoededoelen(title, description, message);
 				return true;
 			}
 		});
@@ -69,6 +78,6 @@ public class WijkGoededoelenFragment extends Fragment{
 	
 	//Interface that the activity implements to listen to events
 	public interface wijkgoededoelenListener {		
-		public void onTouchGoededoelen(String infofull);
+		public void onTouchGoededoelen(String title, String description, String message);
 	}
 }
