@@ -5,23 +5,21 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 
 public class WijkMapFragment extends Fragment {
 	private final String URL = "http://glassy-web.avans-project.nl/?wijk=";
-	private int mapHeight;
-	private int mapWidth;
 	private int wijkId;
 	private ProgressBar mPbar = null;
+	private RelativeLayout mapLayout;
 	private WebView webView;
 	private webClientListener mywebListener;
 	private Boolean listenerset = false;
@@ -33,36 +31,21 @@ public class WijkMapFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO: Not needed yet. Just a try to get the map to load faster.
 		super.onCreate(savedInstanceState);
+	}
 
-		// Bundle bundle = this.getArguments();
-		// thisActie = (Actie) bundle.getParcelable("ActieObject");
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		// get required size based on screen size
-		DisplayMetrics display = this.getResources().getDisplayMetrics();
-		mapHeight = display.heightPixels / 2;
-		mapWidth = display.widthPixels;
-
+		View rootView = (ViewGroup) inflater.inflate(R.layout.wijkmap_fragment,	container, false);
+		mapLayout = (RelativeLayout) rootView.findViewById(R.id.mapLayout);
+		webView = (WebView) rootView.findViewById(R.id.web_view);
+		mPbar = (ProgressBar) rootView.findViewById(R.id.web_view_progress);
 		// Set the right size programmatically + various settings for what is
 		// allowed
 		webviewSetup();
 		connectWebViewClient();
-
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-
-		View rootView = (ViewGroup) inflater.inflate(R.layout.wijkmap_fragment,
-				container, false);
-		RelativeLayout layout = (RelativeLayout) rootView
-				.findViewById(R.id.container);
-
-		layout.addView(webView);
-		createProgressSpinner(rootView);
-
+		
 		// Set WebView URL
-		//TODO map
 		webView.loadUrl(URL + wijkId);
 		return rootView;
 	}
@@ -79,21 +62,9 @@ public class WijkMapFragment extends Fragment {
 		}
 	}
 
-	public void createProgressSpinner(View view) {
-		// Find progressbar
-		mPbar = (ProgressBar) view.findViewById(R.id.web_view_progress);
-		// set the size
-		RelativeLayout.LayoutParams webViewLayout = new RelativeLayout.LayoutParams(
-				mapWidth, mapHeight);
-		webViewLayout.addRule(RelativeLayout.BELOW, R.id.mapTitel);
-		mPbar.setLayoutParams(webViewLayout);
-	}
 
 	public void webviewSetup() {
-		// Create new WebView object.
-		webView = new WebView(getActivity());
 		webView.setVisibility(View.GONE);
-
 		// Enable different settings
 		// Alert: If the App doesn't need JavaScript setJavaScriptEnabled should
 		// be false.
@@ -101,19 +72,11 @@ public class WijkMapFragment extends Fragment {
 		webView.getSettings().setLoadWithOverviewMode(true);
 		webView.getSettings().setUseWideViewPort(true);
 
-		// Create layout, padding and other settings.
-		RelativeLayout.LayoutParams webViewLayout = new RelativeLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, mapHeight);
-		webViewLayout.addRule(RelativeLayout.BELOW, R.id.mapTitel);
-		webView.setLayoutParams(webViewLayout);
-
-		float scale = getResources().getDisplayMetrics().density;
-		int dpAsPixels = (int) (5 * scale + 0.5f);
-		webView.setPadding(dpAsPixels, 0, dpAsPixels, 0);
 	}
 
 	public void connectWebViewClient() {
 		// create own custom webviewclient
+		
 		WebViewClient customWebViewClient = new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -130,18 +93,26 @@ public class WijkMapFragment extends Fragment {
 					listenerset = true;
 				}
 			}
-		};
+		};		
 		webView.setWebViewClient(customWebViewClient);
 	}
 
 	private void setlisteners() {		
-		webView.setOnClickListener(
+		mapLayout.setOnClickListener(
 				new OnClickListener(){
 					@Override
 					public void onClick(View v) {
 						mywebListener.onTouchMap(URL + wijkId);
 					}
 				});
+		//overwriten to disable events		
+		webView.setOnTouchListener(new View.OnTouchListener() {
+		    @Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				return true;
+			}
+		});
 	}
 
 	// Interface that the activity implements to listen to events

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="250dp"
-    android:background="@color/transparent" >   
-    
-    
+    android:background="@color/transparent" >
+
     <nl.avans.glassy.Utils.TextViewHelveticaLight
         android:id="@+id/mapTitel"
         android:layout_width="wrap_content"
@@ -15,12 +13,24 @@
         android:text="@string/map"
         android:textColor="@color/white"
         android:textSize="20sp" />
-    
-    <ProgressBar
-        android:id="@+id/web_view_progress"        
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+    <RelativeLayout
+        android:id="@+id/mapLayout"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
         android:layout_below="@id/mapTitel"
-        android:background="@drawable/wijkbackgroundbox"/>   
-        
+        android:background="@drawable/wijkbackgroundbox"
+        android:orientation="horizontal">
+
+        <ProgressBar
+            android:id="@+id/web_view_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <WebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
 </RelativeLayout>
