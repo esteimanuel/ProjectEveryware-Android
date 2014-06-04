@@ -1,6 +1,12 @@
 package nl.avans.glassy.Controllers;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import nl.avans.glassy.R;
@@ -24,7 +30,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -37,6 +46,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
@@ -152,7 +162,6 @@ public class WijkFragment extends Fragment implements faqListener,
 	 * @return a int
 	 */
 	public void setDetail(JSONObject results) {
-		Log.d("ActieManager", results.toString());
 		String wijkNaam = "";
 		try {
 			wijkNaam = results.getString("wijk_naam");
@@ -165,7 +174,25 @@ public class WijkFragment extends Fragment implements faqListener,
 	}
 
 	public void setActieData(JSONObject result) {
-		Log.d("ActieManager", result.toString());
+		try {
+			JSONArray media = result.getJSONArray("media");
+			for (int i = 0; i < media.length(); i++) {
+				JSONObject object = (JSONObject) media.get(i);
+				String type = object.get("type").toString();
+				if (type.equals("image")) {
+					String url = null;
+
+					url = object.get("url").toString();
+					new DownloadImageTask(
+							(ImageView) rootView
+									.findViewById(R.id.backgroundImage))
+							.execute(url);
+					break;
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 
 		fragmentManager = getChildFragmentManager();
 		fragmentTransaction = fragmentManager.beginTransaction();
@@ -190,7 +217,7 @@ public class WijkFragment extends Fragment implements faqListener,
 		startLoadingInfo();
 
 		fragmentTransaction.commit();
-
+		ActieManager.startDeelnemersInitialization(this);
 		rootView.findViewById(R.id.actieSpecefiek).setVisibility(View.VISIBLE);
 	}
 
@@ -201,10 +228,9 @@ public class WijkFragment extends Fragment implements faqListener,
 	}
 
 	public void setDeelnemers(JSONArray result) {
-		Log.d("ActieManager", result.toString());
 		int percentage = (int) (((float) result.length() / (float) target) * 100);
 		wijkDetails.setDeelnemersCount(result.length(), percentage);
-		wijkDeelnemersFragment.setDeelnemersCount(result.length(), percentage);
+		wijkDeelnemersFragment.setDeelnemersCount(result.length());
 
 	}
 
@@ -281,7 +307,46 @@ public class WijkFragment extends Fragment implements faqListener,
 	@Override
 	public void onGoededoelenLoaded(String title, String description,
 			String message) {
-		// TODO Auto-generated method stub
 		wijkGoededoelenFragment.updateText(title, description, message);
+	}
+
+	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+		ImageView bmImage;
+
+		public DownloadImageTask(ImageView bmImage) {
+			this.bmImage = bmImage;
+		}
+
+		protected Bitmap doInBackground(String... urls) {
+			String urldisplay = urls[0];
+			URL imageUrl = null;
+			try {
+				imageUrl = new URL(urldisplay);
+			} catch (MalformedURLException e1) {
+				Log.d("DownloadImageTask", "Cannot parse URL");
+				e1.printStackTrace();
+			}
+			Bitmap mIcon11 = null;
+			try {
+				URLConnection connection = imageUrl.openConnection();
+				InputStream input = connection.getInputStream();
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inSampleSize = 8;
+				Bitmap preview_bitmap = BitmapFactory.decodeStream(input, null,
+						options);
+				preview_bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+				mIcon11 = BitmapFactory.decodeStream(new ByteArrayInputStream(
+						out.toByteArray()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return mIcon11;
+		}
+
+		protected void onPostExecute(Bitmap result) {
+			if (result != null)
+				bmImage.setImageBitmap(result);
+		}
 	}
 }
