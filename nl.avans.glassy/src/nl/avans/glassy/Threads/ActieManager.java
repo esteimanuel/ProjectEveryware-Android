@@ -434,21 +434,15 @@ public class ActieManager {
 	 * @param JSONObject
 	 *            closebyWijk
 	 * @return Bundle retval
+	 * @throws JSONException 
 	 */
-	private Bundle tryToAddActie(Bundle bundle, JSONObject closebyWijk) {
+	private Bundle tryToAddActie(Bundle bundle, JSONObject closebyWijk) throws JSONException {
 
 		Bundle retval = bundle;
 
-		try {
+		JSONArray acties = closebyWijk.getJSONArray("actie");
 
-			JSONArray acties = closebyWijk.getJSONArray("actie");
-	
-			retval.putInt("actie_id", acties.getJSONObject(0).getInt("actie_id"));
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			retval.putInt("actie_id", -1);
-		}
+		retval.putInt("actie_id", acties.getJSONObject(0).getInt("actie_id"));
 
 		return retval;
 	}
