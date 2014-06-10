@@ -12,17 +12,26 @@
         android:text="@string/faqTitel"
         android:textColor="@color/white"
         android:textSize="20sp" />
-    
-    <nl.avans.glassy.Utils.TextViewHelveticaLight
-        android:id="@+id/faqContent"
+
+    <RelativeLayout
+        android:id="@+id/goededoelenLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"        
-        android:textColor="@color/white"
-        android:layout_below="@+id/faqTitel"
-        android:textSize="20sp"
-        android:text="@string/temp"
-        android:background="@drawable/wijkbackgroundbox" 
-        android:maxLines="3"/>
-    
+        android:layout_below="@id/faqTitel"
+        android:background="@drawable/wijkbackgroundbox"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" >
+
+        <nl.avans.glassy.Utils.TextViewHelveticaLight
+            android:id="@+id/faqContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:paddingBottom="5dp"
+            android:text="@string/temp"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
 </RelativeLayout>

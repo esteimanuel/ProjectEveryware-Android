@@ -3,8 +3,8 @@ package nl.avans.glassy.Controllers;
 import java.util.ArrayList;
 
 import nl.avans.glassy.R;
-import nl.avans.glassy.Models.Faq;
-import nl.avans.glassy.Models.Faq.faqListener;
+import nl.avans.glassy.Threads.Faq;
+import nl.avans.glassy.Threads.Faq.faqListener;
 import nl.avans.glassy.Views.FaqFragment;
 import android.content.Context;
 import android.os.Bundle;

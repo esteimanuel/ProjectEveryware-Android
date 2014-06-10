@@ -30,7 +30,8 @@
             android:textSize="20sp" 
             android:paddingBottom="5dp"          
             android:textColor="@color/white" 
-            android:maxLines="2"
+            android:text="@string/temp"
+            android:maxLines="3"
              /> 
         <!--
              android:ellipsize="end"  toevoegen voor ... 

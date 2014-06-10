@@ -442,6 +442,9 @@ public class ActieManager {
 
 		JSONArray acties = closebyWijk.getJSONArray("actie");
 
+		retval.putInt("actie_id", acties.getJSONObject(0)
+				.getInt("actie_id"));
+
 		retval.putInt("actie_id", acties.getJSONObject(0).getInt("actie_id"));
 
 		return retval;
@@ -484,27 +487,28 @@ public class ActieManager {
 		detailTask.getDownloadRunnable().execute(detailParams);
 
 		if (wijkFragment.getActieId() != -1) {
-			/*
-			 * Gets a task from the pool of tasks, returning null if the pool is
-			 * empty
-			 */
-			ActieTask deelnemerTask = sInstance.mActieTaskWorkQueue.poll();
 
-			// If the queue was empty, create a new task instead.
+			ActieTask actieDataTask = sInstance.mActieTaskWorkQueue.poll();
+			if (null == actieDataTask) {
+				actieDataTask = new ActieTask();
+			}
+
+			actieDataTask.initializeDownloaderTask(ActieManager.sInstance,
+					wijkFragment);
+
+			actieDataTask.setTask("ACTIEDATA");
+			String API_ACTIEDATA = "actie/?id=" + wijkFragment.getActieId();
+			String[] actieDataParams = { "GET", API_ACTIEDATA };
+			actieDataTask.getDownloadRunnable().execute(actieDataParams);
+
+			ActieTask deelnemerTask = sInstance.mActieTaskWorkQueue.poll();
 			if (null == deelnemerTask) {
 				deelnemerTask = new ActieTask();
 			}
 
-			// Initializes the task
 			deelnemerTask.initializeDownloaderTask(ActieManager.sInstance,
 					wijkFragment);
 
-			// Start the general wijk information download
-
-			/*
-			 * Start the Deelneer initialization Dit request in global class
-			 * zetten
-			 */
 			deelnemerTask.setTask("DEELNEMER");
 			String API_DEELNEMER = "actie/users/?id="
 					+ wijkFragment.getActieId();
@@ -518,9 +522,14 @@ public class ActieManager {
 		if (task == "DETAIL") {
 			WijkFragment tempLink = actieObject.getWijkFragment();
 			tempLink.setDetail(actieObject.getResult());
+		} else if (task == "ACTIEDATA") {
+			WijkFragment tempLink = actieObject.getWijkFragment();
+			tempLink.setActieData(actieObject.getResult());
+		} else if (task == "STATS") {
+			WijkFragment tempLink = actieObject.getWijkFragment();
+			// TODO: STATS
 		} else if (task == "DEELNEMER") {
 			WijkFragment tempLink = actieObject.getWijkFragment();
-
 			JSONArray deelnemersArray;
 			try {
 				deelnemersArray = (JSONArray) actieObject.getResult()

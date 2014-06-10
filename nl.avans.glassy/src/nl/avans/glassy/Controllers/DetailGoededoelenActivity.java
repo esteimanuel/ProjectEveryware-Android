@@ -21,6 +21,6 @@ public class DetailGoededoelenActivity extends Activity {
 	{
 		Intent intent = getIntent();
 		DetailGoededoelenFragment fragment = (DetailGoededoelenFragment) getFragmentManager().findFragmentById(R.id.detailGoededoelenfragment);
-		fragment.setText(intent.getStringExtra("info"));
+		fragment.setText(intent.getStringExtra("title") + "\n" + intent.getStringExtra("description") + "\n" + intent.getStringExtra("message"));
 	}
 }

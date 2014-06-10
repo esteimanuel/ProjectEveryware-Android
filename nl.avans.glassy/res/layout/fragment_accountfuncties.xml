@@ -28,22 +28,23 @@
        	    android:layout_width="wrap_content"
        	    android:layout_height="match_parent"
        	    android:text="Anonieme Gebruiker"
-       	    android:gravity="center_vertical" />
-       	
+       	    android:gravity="center_vertical" />       	
+
     </LinearLayout>
     
-    <Button 
+   <ImageButton
         android:id="@+id/user_util"
-        android:text="\?"
+        android:src="@drawable/ic_action_search"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentRight="true" />
-    
+        android:layout_alignParentRight="true" />       	
+       	 
     <FrameLayout
         android:id="@+id/functies"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/user_util"
         android:layout_marginTop="10dp" />
+   
             
 </RelativeLayout>

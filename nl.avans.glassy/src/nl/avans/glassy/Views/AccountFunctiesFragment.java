@@ -60,7 +60,7 @@ public class AccountFunctiesFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 
-					toggleManager.showFAQ();
+					toggleManager.search();
 				}
 			});
 				
@@ -99,7 +99,7 @@ public class AccountFunctiesFragment extends Fragment {
 		
 		public void toggleFuncties();
 		
-		public void showFAQ();
+		public void search();
 	}
 	
 }
