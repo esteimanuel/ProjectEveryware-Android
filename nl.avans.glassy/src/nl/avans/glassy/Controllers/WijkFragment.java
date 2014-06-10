@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import nl.avans.glassy.R;
 import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Threads.ActieManager;
+import nl.avans.glassy.Threads.ActieStats;
+import nl.avans.glassy.Threads.ActieStats.actieStatsListener;
 import nl.avans.glassy.Threads.ActieTask;
 import nl.avans.glassy.Threads.Faq;
 import nl.avans.glassy.Threads.Faq.faqListener;
@@ -51,7 +53,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
 public class WijkFragment extends Fragment implements faqListener,
-		goededoelenListener {
+		goededoelenListener, actieStatsListener {
 	private ViewGroup rootView;
 	private ActieManager sActieManager;
 	private ActieTask mDownloadThread;
@@ -213,9 +215,9 @@ public class WijkFragment extends Fragment implements faqListener,
 		// New WijkDeelnemers Fragment
 		wijkDeelnemersFragment = new WijkDeelnemersFragment();
 		fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment,
-				"wijkDeelnemers");
-		startLoadingInfo();
+				"wijkDeelnemers");		
 
+		startLoadingInfo();
 		fragmentTransaction.commit();
 		ActieManager.startDeelnemersInitialization(this);
 		rootView.findViewById(R.id.actieSpecefiek).setVisibility(View.VISIBLE);
@@ -223,16 +225,16 @@ public class WijkFragment extends Fragment implements faqListener,
 
 	private void startLoadingInfo() {
 		Faq.loadFaq(getActivity().getApplicationContext(), this);
-		GoedeDoelen.loadGoededoelen(getActivity().getApplicationContext(),
-				this, wijkId);
+		GoedeDoelen.loadGoededoelen(getActivity().getApplicationContext(), this, wijkId);
+		ActieStats.loadFaq(getActivity().getApplicationContext(), this, wijkId);
 	}
 
 	public void setDeelnemers(JSONArray result) {
 		int percentage = (int) (((float) result.length() / (float) target) * 100);
 		wijkDetails.setDeelnemersCount(result.length(), percentage);
 		wijkDeelnemersFragment.setDeelnemersCount(result.length());
-
-	}
+	}	
+	
 
 	// Get usable device height (not counting statusbar ect.)
 	// Used for setting height of wijkDetails
@@ -309,6 +311,15 @@ public class WijkFragment extends Fragment implements faqListener,
 			String message) {
 		wijkGoededoelenFragment.updateText(title, description, message);
 	}
+	
+	@Override
+	public void onActieStatsLoaded(int participants, int houses, int target,
+			int totalPartPerc, int targetPartPerc, int paidTargetPerc,
+			int providerSelectPerc, int goedeDoelPartPerc) {
+		// TODO Auto-generated method stub
+		wijkStappenFragment.updateStatus(totalPartPerc, paidTargetPerc, providerSelectPerc, 0, 0);
+		wijkGoededoelenFragment.updateStatus(goedeDoelPartPerc);
+	}
 
 	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 		ImageView bmImage;
@@ -349,4 +360,6 @@ public class WijkFragment extends Fragment implements faqListener,
 				bmImage.setImageBitmap(result);
 		}
 	}
+
+	
 }

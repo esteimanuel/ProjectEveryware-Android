@@ -38,8 +38,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"             
             android:textSize="20sp" 
-            android:text="@string/stap3"
-            android:layout_below="@+id/progress1"
+            android:text="@string/stap2"
+            android:layout_below="@+id/stapprogress1"
             android:paddingBottom="5dp"          
             android:textColor="@color/white" 
              /> 
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"             
             android:textSize="20sp" 
             android:text="@string/stap3"
-            android:layout_below="@+id/progress2"
+            android:layout_below="@+id/stapprogress2"
             android:paddingBottom="5dp"          
             android:textColor="@color/white" 
              /> 
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"             
             android:textSize="20sp" 
             android:text="@string/stap4"
-            android:layout_below="@+id/progress3"
+            android:layout_below="@+id/stapprogress3"
             android:paddingBottom="5dp"          
             android:textColor="@color/white" 
              /> 
@@ -72,13 +72,13 @@
             android:layout_height="wrap_content"             
             android:textSize="20sp" 
             android:text="@string/stap5"
-            android:layout_below="@+id/progress4"
+            android:layout_below="@+id/stapprogress4"
             android:paddingBottom="5dp"          
             android:textColor="@color/white" 
              /> 
              
         <ProgressBar
-            android:id="@+id/progress1"
+            android:id="@+id/stapprogress1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/stapText1"
@@ -90,7 +90,7 @@
             android:progressDrawable="@drawable/custom_progressbar" />
         
         <ProgressBar
-            android:id="@+id/progress2"
+            android:id="@+id/stapprogress2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/stapText2"
@@ -102,7 +102,7 @@
             android:progressDrawable="@drawable/custom_progressbar" />
         
         <ProgressBar
-            android:id="@+id/progress3"
+            android:id="@+id/stapprogress3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/stapText3"
@@ -114,7 +114,7 @@
             android:progressDrawable="@drawable/custom_progressbar" />
         
         <ProgressBar
-            android:id="@+id/progress4"
+            android:id="@+id/stapprogress4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/stapText4"
@@ -126,7 +126,7 @@
             android:progressDrawable="@drawable/custom_progressbar" />
         
         <ProgressBar
-            android:id="@+id/progress5"
+            android:id="@+id/stapprogress5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/stapText5"

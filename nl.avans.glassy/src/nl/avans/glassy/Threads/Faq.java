@@ -14,8 +14,7 @@ public class Faq {
 	private static String API_CONTROLLER = "faq";
 	
 	public Faq()
-	{
-		
+	{	
 	}
 	
 	public static void loadFaq(Context context, Object activity) {
@@ -30,11 +29,8 @@ public class Faq {
 		
 		String[] params = {
 				"GET",
-				API_CONTROLLER
-		};
-
-
-		
+				API_CONTROLLER 
+		};		
 		new ApiCommunicator(context){
 
 			@Override
