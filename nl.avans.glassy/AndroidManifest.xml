@@ -47,12 +47,14 @@
         </activity>
         <activity
             android:name="nl.avans.glassy.Controllers.FaqActivity"
-            android:label="@string/title_activity_faq" >
+            android:label="@string/title_activity_faq" 
+            android:theme="@style/TransparentDetail">
         </activity>
         
         <activity
             android:name="nl.avans.glassy.Controllers.DetailGoededoelenActivity"
-            android:label="@string/title_activity_faq" >
+            android:label="@string/title_activity_goededoelen" 
+            android:theme="@android:style/Theme.NoTitleBar">
         </activity>
 
     </application>

@@ -4,7 +4,8 @@
     <color name="white">#FFFFFF</color>
     <color name="whiteTransparent">#80FFFFFF</color>
     <color name="transparent">#00000000 </color>
-    <color name="blackTransparent">#80000000</color>    
+    <color name="blackTransparent">#7F000000</color>    
+    <color name="blackSemiTransparent">#CC000000</color>
 	<color name="black">#000000</color>
 	<color name="blue">#007CF7</color>
 
