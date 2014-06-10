@@ -117,11 +117,6 @@ public class WijkFragment extends Fragment implements faqListener,
 		wijkDetails = new WijkDetailsFragment();
 		fragmentTransaction.replace(R.id.details, wijkDetails, "wijkDetails");
 
-		// New youtubePlayer SupportFragment
-		wijkVideoFragment = new WijkVideoFragment();
-		fragmentTransaction.replace(R.id.youtube, wijkVideoFragment,
-				"youtubePlayer");
-
 		// New Webview Fragment
 		wijkMapFragment = new WijkMapFragment();
 		wijkMapFragment.setWijkid(wijkId);
@@ -178,11 +173,12 @@ public class WijkFragment extends Fragment implements faqListener,
 
 	public void setActieData(JSONObject result) {
 		try {
+			boolean videoFound = false, backgroundFound = false;
 			JSONArray media = result.getJSONArray("media");
 			for (int i = 0; i < media.length(); i++) {
 				JSONObject object = (JSONObject) media.get(i);
 				String type = object.get("type").toString();
-				if (type.equals("image")) {
+				if (type.equals("image") && backgroundFound == false) {
 					String url = null;
 
 					url = object.get("url").toString();
@@ -190,7 +186,12 @@ public class WijkFragment extends Fragment implements faqListener,
 							(ImageView) rootView
 									.findViewById(R.id.backgroundImage))
 							.execute(url);
-					break;
+					backgroundFound = true;
+				}
+				if (type.equals("video") && videoFound == false) {
+						setYoutubePlayer(object.get("url").toString());
+						videoFound = true;
+
 				}
 			}
 		} catch (JSONException e) {
@@ -216,7 +217,7 @@ public class WijkFragment extends Fragment implements faqListener,
 		// New WijkDeelnemers Fragment
 		wijkDeelnemersFragment = new WijkDeelnemersFragment();
 		fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment,
-				"wijkDeelnemers");		
+				"wijkDeelnemers");
 
 		startLoadingInfo();
 		fragmentTransaction.commit();
@@ -224,9 +225,27 @@ public class WijkFragment extends Fragment implements faqListener,
 		rootView.findViewById(R.id.actieSpecefiek).setVisibility(View.VISIBLE);
 	}
 
+	private void setYoutubePlayer(String url) {
+		String[] seperated = url.split("=");
+		
+	    Bundle bundle = new Bundle();
+	    bundle.putString("url", seperated[1]);
+
+		// New youtubePlayer SupportFragment
+		wijkVideoFragment = new WijkVideoFragment();
+		wijkVideoFragment.setArguments(bundle);
+
+		fragmentManager = getChildFragmentManager();
+		fragmentTransaction = fragmentManager.beginTransaction();
+		fragmentTransaction.replace(R.id.youtube, wijkVideoFragment,
+				"youtubePlayer");
+		fragmentTransaction.commit();
+	}
+
 	private void startLoadingInfo() {
 		Faq.loadFaq(getActivity().getApplicationContext(), this);
-		GoedeDoelen.loadGoededoelen(getActivity().getApplicationContext(), this, wijkId);
+		GoedeDoelen.loadGoededoelen(getActivity().getApplicationContext(),
+				this, wijkId);
 		ActieStats.loadFaq(getActivity().getApplicationContext(), this, wijkId);
 	}
 
@@ -235,19 +254,18 @@ public class WijkFragment extends Fragment implements faqListener,
 		int percentage = (int) (((float) result.length() / (float) target) * 100);
 		wijkDetails.setDeelnemersCount(result.length(), percentage);
 		wijkDeelnemersFragment.setDeelnemersCount(result.length());
-		if(result.length() > 0){
-		for(int i =0; i< result.length(); i++){
-			try {
-				deelnemersArray.add(new Deelnemer(result.getJSONObject(i)));
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}			
-		}
-		wijkDeelnemersFragment.addDeelnemers(deelnemersArray);
+		if (result.length() > 0) {
+			for (int i = 0; i < result.length(); i++) {
+				try {
+					deelnemersArray.add(new Deelnemer(result.getJSONObject(i)));
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			wijkDeelnemersFragment.addDeelnemers(deelnemersArray);
 		}
 
-	}	
-	
+	}
 
 	// Get usable device height (not counting statusbar ect.)
 	// Used for setting height of wijkDetails
@@ -324,13 +342,14 @@ public class WijkFragment extends Fragment implements faqListener,
 			String message) {
 		wijkGoededoelenFragment.updateText(title, description, message);
 	}
-	
+
 	@Override
 	public void onActieStatsLoaded(int participants, int houses, int target,
 			int totalPartPerc, int targetPartPerc, int paidTargetPerc,
 			int providerSelectPerc, int goedeDoelPartPerc) {
 		// TODO Auto-generated method stub
-		wijkStappenFragment.updateStatus(totalPartPerc, paidTargetPerc, providerSelectPerc, 0, 0);
+		wijkStappenFragment.updateStatus(totalPartPerc, paidTargetPerc,
+				providerSelectPerc, 0, 0);
 		wijkGoededoelenFragment.updateStatus(goedeDoelPartPerc);
 	}
 
@@ -374,5 +393,4 @@ public class WijkFragment extends Fragment implements faqListener,
 		}
 	}
 
-	
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +32,10 @@ public class WijkVideoFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
 		ViewGroup rootView = (ViewGroup) inflater.inflate(
 				R.layout.wijkvideo_fragment, container, false);		
 
-		fragmentInitialization("vkgRqz2lLAs");
+		fragmentInitialization(getArguments().getString("url"));
 
 		return rootView;
 	}

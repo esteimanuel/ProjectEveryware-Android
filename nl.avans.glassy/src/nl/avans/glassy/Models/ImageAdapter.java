@@ -52,7 +52,6 @@ public class ImageAdapter extends BaseAdapter {
 		} else {
 			imageView = (ImageView) convertView;
 		}
-		Log.d("ActieManager", Integer.toString(deelnemers.size()));
 		Deelnemer deelnemer = deelnemers.get(position);
 
 		imageView.setImageResource(R.drawable.profile1);
