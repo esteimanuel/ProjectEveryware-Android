@@ -8,11 +8,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class FaqFragment extends Fragment {
 	private TextView faqinfo;
-	private View mPbar;
+	private ImageButton closeb;
+
 
 	public FaqFragment() {
 	}
@@ -20,8 +23,17 @@ public class FaqFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.faq_fragment, container, false);
-		mPbar = rootView.findViewById(R.id.faq_view_progress);
 		faqinfo = (TextView) rootView.findViewById(R.id.faqInfo);
+		closeb = (ImageButton) rootView.findViewById(R.id.faq_view_button);
+		closeb.setOnClickListener(
+				new OnClickListener(){
+
+					@Override
+					public void onClick(View v) {
+						getActivity().finish();
+					}
+
+				});
 		return rootView;
 	}
 
@@ -38,8 +50,7 @@ public class FaqFragment extends Fragment {
 				textviewinfo = textviewinfo + info;				
 			}
 			
-			faqinfo.setText(textviewinfo);			
-     		mPbar.setVisibility(View.GONE);		
+			faqinfo.setText(textviewinfo);				
 		}
 	}
 	

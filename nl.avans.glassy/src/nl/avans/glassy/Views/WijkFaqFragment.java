@@ -34,18 +34,16 @@ public class WijkFaqFragment extends Fragment{
 	}
 
 	public void updateText(ArrayList<String> questions,	ArrayList<String> answers) {
-
-		if(questions.size() > 2)
-		{
+	
 			String textviewinfo = "";
-			for(int i = 0; i < 3; i++)
+			for(int i = 0; i < 3 && i < questions.size() && i < answers.size(); i++)
 			{
 				String info = null;
 				info = questions.get(i) + "\n";
 				textviewinfo = textviewinfo + info;				
 			}
 			faqContent.setText(textviewinfo);		
-		}
+		
 	}
 
 	@Override

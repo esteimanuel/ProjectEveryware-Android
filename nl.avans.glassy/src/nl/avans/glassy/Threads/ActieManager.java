@@ -247,6 +247,7 @@ public class ActieManager {
 						+ " DOWNLOAD_COMPLETE");
 
 				handleResult(actieObject);
+				actieObject.recycle();
 				break;
 			// Unable to parse JSON
 			case DECODE_FAILED:
@@ -500,21 +501,23 @@ public class ActieManager {
 			String API_ACTIEDATA = "actie/?id=" + wijkFragment.getActieId();
 			String[] actieDataParams = { "GET", API_ACTIEDATA };
 			actieDataTask.getDownloadRunnable().execute(actieDataParams);
-
-			ActieTask deelnemerTask = sInstance.mActieTaskWorkQueue.poll();
-			if (null == deelnemerTask) {
-				deelnemerTask = new ActieTask();
-			}
-
-			deelnemerTask.initializeDownloaderTask(ActieManager.sInstance,
-					wijkFragment);
-
-			deelnemerTask.setTask("DEELNEMER");
-			String API_DEELNEMER = "actie/users/?id="
-					+ wijkFragment.getActieId();
-			String[] deelnemerParams = { "GET", API_DEELNEMER };
-			deelnemerTask.getDownloadRunnable().execute(deelnemerParams);
 		}
+	}
+
+	public static void startDeelnemersInitialization(WijkFragment wijkFragment) {
+
+		ActieTask deelnemerTask = sInstance.mActieTaskWorkQueue.poll();
+		if (null == deelnemerTask) {
+			deelnemerTask = new ActieTask();
+		}
+
+		deelnemerTask.initializeDownloaderTask(ActieManager.sInstance,
+				wijkFragment);
+
+		deelnemerTask.setTask("DEELNEMER");
+		String API_DEELNEMER = "actie/users/?id=" + wijkFragment.getActieId();
+		String[] deelnemerParams = { "GET", API_DEELNEMER };
+		deelnemerTask.getDownloadRunnable().execute(deelnemerParams);
 	}
 
 	private void handleResult(ActieTask actieObject) {

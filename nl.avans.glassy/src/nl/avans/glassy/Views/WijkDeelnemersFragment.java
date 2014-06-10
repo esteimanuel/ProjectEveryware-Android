@@ -3,6 +3,7 @@ package nl.avans.glassy.Views;
 import nl.avans.glassy.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +32,9 @@ public class WijkDeelnemersFragment extends Fragment {
 		return rootView;
 	}
 
-	public void setDeelnemersCount(int length, int percentage) {
-		TextView deelnemerView = (TextView) rootView
+	public void setDeelnemersCount(int length) {
+		TextView deelnemerCount = (TextView) rootView
 				.findViewById(R.id.deelnemerCount);
-		deelnemerView.setText(Integer.toString(length));
+		deelnemerCount.setText("" + length);
 	}
 }

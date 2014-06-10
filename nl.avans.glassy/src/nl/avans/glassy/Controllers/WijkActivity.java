@@ -4,6 +4,9 @@ import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.PagerAdapter;
 import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Threads.ActieManager;
+import nl.avans.glassy.Threads.ActieStats;
+import nl.avans.glassy.Threads.Faq;
+import nl.avans.glassy.Threads.GoedeDoelen;
 import nl.avans.glassy.Views.WijkDetailsFragment.OnSpecialButtonPressListener;
 import nl.avans.glassy.Views.WijkFaqFragment.wijkFaqListener;
 import nl.avans.glassy.Views.WijkGoededoelenFragment.wijkgoededoelenListener;
@@ -188,7 +191,4 @@ public class WijkActivity extends AccountFunctieActivity implements
 		}
 	}
 
-
-
-	
 }

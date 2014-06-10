@@ -189,9 +189,7 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 	
 	@Override
 	public void search() {
-		
-		Intent intent = new Intent(this, FaqActivity.class);
-		startActivity(intent);
+		//TODO Search
 	}
 	
 	/**

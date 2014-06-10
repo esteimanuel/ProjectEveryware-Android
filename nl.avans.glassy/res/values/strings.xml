@@ -30,6 +30,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="goededoelen">Goede doelen</string>
     <string name="title_activity_faq">FAQ</string>
+    <string name="title_activity_goededoelen">Goededoelen</string>
     <string name="stappenTitel">Stappen</string>
     <string name="faqTitel">Veel gestelde vragen</string>
     <string name="stap1">1. Bewoners verzamelen</string>

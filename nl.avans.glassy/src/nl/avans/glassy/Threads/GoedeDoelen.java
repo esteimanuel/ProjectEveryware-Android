@@ -11,7 +11,7 @@ public class GoedeDoelen {
 	//TODO api goededoelen
 	private static String API_CONTROLLER = "goededoel";
 	
-	public static void loadGoededoelen(Context context, Object activity, int id) {
+	public static void loadGoededoelen(Context context, Object activity, int actieId) {
 
 		final goededoelenListener myListener;		
 		try {		
@@ -23,7 +23,7 @@ public class GoedeDoelen {
 		//TODO wat als er geen goededoel is.
 		String[] params = {
 				"GET",
-				API_CONTROLLER + "?id=" + id
+				API_CONTROLLER + "?id=" + actieId
 		};
 
 
