@@ -1,9 +1,12 @@
 package nl.avans.glassy.Views;
 
+import java.util.ArrayList;
+
 import nl.avans.glassy.R;
+import nl.avans.glassy.Models.Deelnemer;
+import nl.avans.glassy.Models.ImageAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,8 @@ import android.widget.TextView;
 
 public class WijkDeelnemersFragment extends Fragment {
 	private ViewGroup rootView;
+	private GridView gridview;
+	private ImageAdapter mAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -20,10 +25,8 @@ public class WijkDeelnemersFragment extends Fragment {
 		rootView = (ViewGroup) inflater.inflate(
 				R.layout.wijkdeelnemers_fragments, container, false);
 
-		GridView gridview = (GridView) rootView
+		gridview = (GridView) rootView
 				.findViewById(R.id.deelnemerGrid);
-		gridview.setAdapter(new nl.avans.glassy.Models.ImageAdapter(
-				getActivity()));
 
 		int deelnemers = 0;
 		TextView deelnemerView = (TextView) rootView
@@ -36,5 +39,10 @@ public class WijkDeelnemersFragment extends Fragment {
 		TextView deelnemerCount = (TextView) rootView
 				.findViewById(R.id.deelnemerCount);
 		deelnemerCount.setText("" + length);
+	}
+
+	public void addDeelnemers(ArrayList<Deelnemer> deelnemersArray) {
+		mAdapter = new ImageAdapter(getActivity(), deelnemersArray);
+		gridview.setAdapter(mAdapter);
 	}
 }

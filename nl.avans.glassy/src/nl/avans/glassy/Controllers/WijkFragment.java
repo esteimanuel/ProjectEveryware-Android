@@ -10,6 +10,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import nl.avans.glassy.R;
+import nl.avans.glassy.Models.Deelnemer;
 import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Threads.ActieStats;
@@ -230,9 +231,21 @@ public class WijkFragment extends Fragment implements faqListener,
 	}
 
 	public void setDeelnemers(JSONArray result) {
+		ArrayList<Deelnemer> deelnemersArray = new ArrayList<Deelnemer>();
 		int percentage = (int) (((float) result.length() / (float) target) * 100);
 		wijkDetails.setDeelnemersCount(result.length(), percentage);
 		wijkDeelnemersFragment.setDeelnemersCount(result.length());
+		if(result.length() > 0){
+		for(int i =0; i< result.length(); i++){
+			try {
+				deelnemersArray.add(new Deelnemer(result.getJSONObject(i)));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}			
+		}
+		wijkDeelnemersFragment.addDeelnemers(deelnemersArray);
+		}
+
 	}	
 	
 

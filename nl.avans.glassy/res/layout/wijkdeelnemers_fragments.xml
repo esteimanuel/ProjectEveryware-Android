@@ -37,7 +37,7 @@
         android:layout_below="@id/serperator"
         android:columnWidth="90sp"
         android:gravity="fill"
-        android:numColumns="5"
+        android:numColumns="5"  
         android:stretchMode="columnWidth" />
 
 </RelativeLayout>
