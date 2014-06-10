@@ -84,7 +84,7 @@ public class ImageAdapter extends BaseAdapter {
 				InputStream input = connection.getInputStream();
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				BitmapFactory.Options options = new BitmapFactory.Options();
-				options.inSampleSize = 8;
+//				options.inSampleSize = 8;
 				Bitmap preview_bitmap = BitmapFactory.decodeStream(input, null,
 						options);
 				preview_bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
