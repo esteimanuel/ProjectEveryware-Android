@@ -3,9 +3,42 @@ package nl.avans.glassy.Models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 public class Deelnemer {
+	private class Buddy {
+		private String tijd_vanaf = "", tijd_tot = "", locatie = "",
+				contact_tel = "", contact_email = "";
+
+		public Buddy(JSONObject buddyData) {
+
+		}
+
+		public String tijd_vanaf() {
+			return tijd_vanaf;
+		}
+
+		public String tijd_tot() {
+			return tijd_tot;
+		}
+
+		public String locatie() {
+			return locatie;
+		}
+
+		public String contact_tel() {
+			return contact_tel;
+		}
+
+		public String contact_email() {
+			return contact_email;
+		}
+	}
+
 	private String voornaam = "", tussenvoegsel = "", achternaam = "";
 	private String fotoLink = "";
+	private Buddy buddyData;
+	private Boolean isBuddy = false;
 
 	public Deelnemer(JSONObject data) {
 		try {
@@ -36,6 +69,13 @@ public class Deelnemer {
 			e.printStackTrace();
 		}
 
+		try {
+			JSONObject buddy = data.getJSONObject("buddy");
+			isBuddy = true;
+			buddyData = new Buddy(buddy);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String getVoornaam() {
@@ -52,5 +92,13 @@ public class Deelnemer {
 
 	public String getFotoLink() {
 		return fotoLink;
+	}
+
+	public Boolean isBuddy() {
+		return isBuddy;
+	}
+	
+	public Buddy getBuddy(){
+		return buddyData;
 	}
 }

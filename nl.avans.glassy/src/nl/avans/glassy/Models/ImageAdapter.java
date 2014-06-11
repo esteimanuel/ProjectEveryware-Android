@@ -49,7 +49,7 @@ public class ImageAdapter extends BaseAdapter {
 		if (convertView == null) { // if it's not recycled, initialize some
 									// attributes
 			imageView = new ImageView(mContext);
-			imageView.setLayoutParams(new GridView.LayoutParams(92, 92));
+			imageView.setLayoutParams(new GridView.LayoutParams(90, 90));
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		} else {
 			imageView = (ImageView) convertView;
@@ -59,6 +59,11 @@ public class ImageAdapter extends BaseAdapter {
 		imageView.setImageResource(R.drawable.profile1);
 		if (deelnemer.getFotoLink() != "null") {
 			new DownloadImageTask(imageView).execute(deelnemer.getFotoLink());
+		}
+
+		if (deelnemer.isBuddy()) {
+			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+			imageView.setBackgroundResource(R.drawable.image_border);
 		}
 		return imageView;
 	}
