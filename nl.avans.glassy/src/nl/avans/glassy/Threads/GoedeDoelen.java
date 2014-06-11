@@ -34,11 +34,16 @@ public class GoedeDoelen {
 			protected void onPostExecute(JSONObject result) {
 
 				try {
-				    //TODO status eruit, die word ergens anders ingeladen.
-					String title = result.getString("title");
-					String description = result.getString("description");
-					String message = result.getString("message");
-					myListener.onGoededoelenLoaded(title ,description, message);
+					if(result != null && result.length() != 0)
+					{
+						String title = result.getString("title");
+						String description = result.getString("description");
+						String message = result.getString("message");
+						myListener.onGoededoelenLoaded(title ,description, message);
+					} else
+					{
+						myListener.onGoededoelenLoaded("" ,"Geen goede doel in deze wijk", "");
+					}
 
 				} catch(Exception e) {
 

@@ -12,11 +12,11 @@ import android.content.Context;
 public class Faq {
 
 	private static String API_CONTROLLER = "faq";
-	
+
 	public Faq()
 	{	
 	}
-	
+
 	public static void loadFaq(Context context, Object activity) {
 
 		final faqListener myListener;		
@@ -26,7 +26,7 @@ public class Faq {
 			throw new ClassCastException(activity.toString()
 					+ " must implement faqListener");
 		}
-		
+
 		String[] params = {
 				"GET",
 				API_CONTROLLER 
@@ -37,17 +37,19 @@ public class Faq {
 			protected void onPostExecute(JSONObject result) {
 
 				try {
-				
-					JSONArray faqarray = result.getJSONArray("entries");
+
 					ArrayList<String> questions = new ArrayList<String>();
 					ArrayList<String> answers = new ArrayList<String>();
-					
-					for(int i=0;i<faqarray.length(); i++){
-						JSONObject faqinfo = faqarray.getJSONObject(i); 
-	                    questions.add(faqinfo.getString("question"));
-	                    answers.add(faqinfo.getString("answer"));	                    	                    
-	                }
-					
+					if(result != null && result.length() != 0)
+					{
+						JSONArray faqarray = result.getJSONArray("entries");
+						for(int i=0;i<faqarray.length(); i++){
+							JSONObject faqinfo = faqarray.getJSONObject(i); 
+							questions.add(faqinfo.getString("question"));
+							answers.add(faqinfo.getString("answer"));	                    	                    
+						}
+					}
+
 					myListener.onFaqLoaded(questions, answers);
 
 				} catch(Exception e) {
@@ -56,7 +58,7 @@ public class Faq {
 				}
 			}		}.execute(params);
 	}
-	
+
 	public interface faqListener {
 		public void onFaqLoaded(ArrayList<String> questions, ArrayList<String> answers);
 	}

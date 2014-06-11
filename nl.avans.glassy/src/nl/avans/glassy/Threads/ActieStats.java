@@ -40,7 +40,8 @@ public class ActieStats {
 			protected void onPostExecute(JSONObject result) {
 
 				try {
-
+					if(result != null && result.length() != 0)
+					{
 					int participants = result.getInt("participants");
 					int houses = result.getInt("houses");
 					int target = result.getInt("target");
@@ -50,9 +51,13 @@ public class ActieStats {
 					//TODO opletten! "providerSelecPerc" stond zo in database, typ fout
 					int providerSelectPerc = result.getInt("providerSelecPerc");
 					int goedeDoelPartPerc = result.getInt("goedeDoelPartPerc");
-
 					myListener.onActieStatsLoaded(participants, houses, target, totalPartPerc, targetPartPerc, paidTargetPerc, providerSelectPerc, goedeDoelPartPerc);
+					} else
+					{
+						myListener.onActieStatsLoaded(0, 0, 0, 0, 0, 0, 0, 0);
+					}
 
+					
 				} catch(Exception e) {
 
 					e.printStackTrace(); // log it
