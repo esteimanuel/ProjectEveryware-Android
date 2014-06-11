@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import nl.avans.glassy.R;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,18 +40,16 @@ public class FaqFragment extends Fragment {
 
 	public void updateText(ArrayList<String> questions,	ArrayList<String> answers) {
 	
-		//TODO netjes zetten
 		if(questions.size() == answers.size())
 		{
 			String textviewinfo = "";
 			for(int i = 0; i < questions.size(); i++)
 			{
 				String info = null;
-				info = questions.get(i) + "\n" + answers.get(i) + "\n\n";
+				info = "<p> <b>" + questions.get(i) + "</b> <br />" + answers.get(i) + "</p>";
 				textviewinfo = textviewinfo + info;				
 			}
-			
-			faqinfo.setText(textviewinfo);				
+			faqinfo.setText(Html.fromHtml(textviewinfo));				
 		}
 	}
 	
