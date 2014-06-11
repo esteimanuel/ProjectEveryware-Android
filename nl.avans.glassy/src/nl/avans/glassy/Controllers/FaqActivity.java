@@ -11,29 +11,29 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 public class FaqActivity extends FragmentActivity implements faqListener {
-	private Faq faq;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.faq_activity);
 		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction().add(R.id.container, new FaqFragment()).commit();
+			getFragmentManager().beginTransaction()
+					.add(R.id.container, new FaqFragment()).commit();
 		}
 		loadFaqInfo();
 	}
 
-	private void loadFaqInfo()
-	{
+	private void loadFaqInfo() {
 		Context context = getApplicationContext();
-		Faq.loadFaq(context, this);	
+		Faq.loadFaq(context, this);
 	}
 
 	@Override
-	public void onFaqLoaded(ArrayList<String> questions, ArrayList<String> answers) {
-		FaqFragment fragment = (FaqFragment) getFragmentManager().findFragmentById(R.id.faqfragment);
-		fragment.updateText(questions, answers);		
+	public void onFaqLoaded(ArrayList<String> questions,
+			ArrayList<String> answers) {
+		FaqFragment fragment = (FaqFragment) getFragmentManager()
+				.findFragmentById(R.id.faqfragment);
+		fragment.updateText(questions, answers);
 	}
-
 
 }

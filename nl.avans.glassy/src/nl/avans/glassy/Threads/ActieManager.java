@@ -348,7 +348,7 @@ public class ActieManager {
 	 */
 	private void startClosebyDownload(String[] params) {
 		// Initializes ApiCommunicator with custom onPostExecute
-		final ApiCommunicator mApiComm = new ApiCommunicator(myActivity) {
+		final ApiCommunicator mApiComm = new ApiCommunicator(null) {
 
 			@Override
 			protected void onPostExecute(JSONObject result) {
@@ -425,6 +425,8 @@ public class ActieManager {
 				e.printStackTrace();
 			}
 		}
+		scrollPagerAdapter = null;
+		myActivity = null;
 	}
 
 	/**
@@ -562,17 +564,6 @@ public class ActieManager {
 		if (null == decodeTask) {
 			decodeTask = new ActieTask();
 		}
-
-		// Initializes the task
-		// decodeTask.initializeDecodeTask(ActieManager.sInstance, actieClass);
-
-		/*
-		 * "Executes" the tasks' decode Runnable in order to decode the JSON. If
-		 * no Threads are available in the thread pool, the Runnable waits in
-		 * the queue.
-		 */
-		// sInstance.mDecodeThreadPool
-		// .execute(decodeTask.getActieDecodeRunnable());
 
 		// Returns a task object, either newly-created or one from the task pool
 		return decodeTask;

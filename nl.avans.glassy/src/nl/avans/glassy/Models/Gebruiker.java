@@ -2,7 +2,6 @@ package nl.avans.glassy.Models;
 
 import nl.avans.glassy.Controllers.WijkFragment;
 import nl.avans.glassy.Utils.ApiCommunicator;
-import nl.avans.glassy.Views.WijkFaqFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -12,6 +12,8 @@ import nl.avans.glassy.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -68,6 +70,15 @@ public class ImageAdapter extends BaseAdapter {
 			this.bmImage = bmImage;
 		}
 
+		private Bitmap convert(Bitmap bitmap, Bitmap.Config config) {
+			Bitmap convertedBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+					bitmap.getHeight(), config);
+			Canvas canvas = new Canvas(convertedBitmap);
+			Paint paint = new Paint();
+			canvas.drawBitmap(bitmap, 0, 0, paint);
+			return convertedBitmap;
+		}
+
 		protected Bitmap doInBackground(String... urls) {
 			String urldisplay = urls[0];
 			URL imageUrl = null;
@@ -89,6 +100,8 @@ public class ImageAdapter extends BaseAdapter {
 				preview_bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 				mIcon11 = BitmapFactory.decodeStream(new ByteArrayInputStream(
 						out.toByteArray()));
+				preview_bitmap.recycle();
+				mIcon11 = convert(mIcon11, Bitmap.Config.RGB_565);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

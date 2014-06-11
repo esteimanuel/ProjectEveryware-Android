@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -21,13 +21,6 @@ public class WijkGoededoelenFragment extends Fragment{
 	private View clickableLayout;
 	private TextView goededoelenInfo;
 	private ProgressBar status;
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		// TODO: Not needed yet. Just a try to get the map to load faster.
-		super.onCreate(savedInstanceState);		
-		//	Bundle bundle = this.getArguments();
-
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

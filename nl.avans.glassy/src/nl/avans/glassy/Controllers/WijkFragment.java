@@ -15,7 +15,6 @@ import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Threads.ActieStats;
 import nl.avans.glassy.Threads.ActieStats.actieStatsListener;
-import nl.avans.glassy.Threads.ActieTask;
 import nl.avans.glassy.Threads.Faq;
 import nl.avans.glassy.Threads.Faq.faqListener;
 import nl.avans.glassy.Threads.GoedeDoelen;
@@ -35,6 +34,8 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -56,8 +57,6 @@ import android.widget.LinearLayout.LayoutParams;
 public class WijkFragment extends Fragment implements faqListener,
 		goededoelenListener, actieStatsListener {
 	private ViewGroup rootView;
-	private ActieManager sActieManager;
-	private ActieTask mDownloadThread;
 
 	private int wijkId;
 	private int actieId = 0;
@@ -189,8 +188,8 @@ public class WijkFragment extends Fragment implements faqListener,
 					backgroundFound = true;
 				}
 				if (type.equals("video") && videoFound == false) {
-						setYoutubePlayer(object.get("url").toString());
-						videoFound = true;
+					setYoutubePlayer(object.get("url").toString());
+					videoFound = true;
 
 				}
 			}
@@ -227,9 +226,9 @@ public class WijkFragment extends Fragment implements faqListener,
 
 	private void setYoutubePlayer(String url) {
 		String[] seperated = url.split("=");
-		
-	    Bundle bundle = new Bundle();
-	    bundle.putString("url", seperated[1]);
+
+		Bundle bundle = new Bundle();
+		bundle.putString("url", seperated[1]);
 
 		// New youtubePlayer SupportFragment
 		wijkVideoFragment = new WijkVideoFragment();
@@ -360,6 +359,15 @@ public class WijkFragment extends Fragment implements faqListener,
 			this.bmImage = bmImage;
 		}
 
+		private Bitmap convert(Bitmap bitmap, Bitmap.Config config) {
+			Bitmap convertedBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+					bitmap.getHeight(), config);
+			Canvas canvas = new Canvas(convertedBitmap);
+			Paint paint = new Paint();
+			canvas.drawBitmap(bitmap, 0, 0, paint);
+			return convertedBitmap;
+		}
+
 		protected Bitmap doInBackground(String... urls) {
 			String urldisplay = urls[0];
 			URL imageUrl = null;
@@ -375,12 +383,14 @@ public class WijkFragment extends Fragment implements faqListener,
 				InputStream input = connection.getInputStream();
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				BitmapFactory.Options options = new BitmapFactory.Options();
-//				options.inSampleSize = 8;
+				// options.inSampleSize = 8;
 				Bitmap preview_bitmap = BitmapFactory.decodeStream(input, null,
 						options);
 				preview_bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 				mIcon11 = BitmapFactory.decodeStream(new ByteArrayInputStream(
 						out.toByteArray()));
+				preview_bitmap.recycle();
+				mIcon11 = convert(mIcon11, Bitmap.Config.RGB_565);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -388,7 +398,7 @@ public class WijkFragment extends Fragment implements faqListener,
 		}
 
 		protected void onPostExecute(Bitmap result) {
-			if (result != null){
+			if (result != null) {
 				bmImage.setImageBitmap(result);
 				bmImage = null;
 			}

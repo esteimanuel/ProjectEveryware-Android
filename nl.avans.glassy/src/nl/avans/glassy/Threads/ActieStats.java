@@ -1,11 +1,7 @@
 package nl.avans.glassy.Threads;
 
-import java.util.ArrayList;
-
-import nl.avans.glassy.Threads.Faq.faqListener;
 import nl.avans.glassy.Utils.ApiCommunicator;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
