@@ -397,7 +397,7 @@ public class WijkFragment extends Fragment implements faqListener,
 				// options.inSampleSize = 8;
 				Bitmap preview_bitmap = BitmapFactory.decodeStream(input, null,
 						options);
-				preview_bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+				preview_bitmap.compress(Bitmap.CompressFormat.PNG, 60, out);
 				mIcon11 = BitmapFactory.decodeStream(new ByteArrayInputStream(
 						out.toByteArray()));
 				preview_bitmap.recycle();
