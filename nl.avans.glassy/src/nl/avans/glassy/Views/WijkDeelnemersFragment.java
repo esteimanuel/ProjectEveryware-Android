@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import nl.avans.glassy.R;
 import nl.avans.glassy.Models.Deelnemer;
 import nl.avans.glassy.Models.ImageAdapter;
+import nl.avans.glassy.Utils.ExtendingGridView;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.TextView;
 
 public class WijkDeelnemersFragment extends Fragment {
 	private ViewGroup rootView;
-	private GridView gridview;
+	private ExtendingGridView gridview;
 	private ImageAdapter mAdapter;
 
 	@Override
@@ -25,7 +25,7 @@ public class WijkDeelnemersFragment extends Fragment {
 		rootView = (ViewGroup) inflater.inflate(
 				R.layout.wijkdeelnemers_fragments, container, false);
 
-		gridview = (GridView) rootView
+		gridview = (ExtendingGridView) rootView
 				.findViewById(R.id.deelnemerGrid);
 
 		int deelnemers = 0;
@@ -44,5 +44,6 @@ public class WijkDeelnemersFragment extends Fragment {
 	public void addDeelnemers(ArrayList<Deelnemer> deelnemersArray) {
 		mAdapter = new ImageAdapter(getActivity(), deelnemersArray);
 		gridview.setAdapter(mAdapter);
+		gridview.setExpanded(true);
 	}
 }
