@@ -15,7 +15,7 @@ public class ActieStats {
 		
 	}
 	
-	public static void loadFaq(Context context, Object activity, int actieId) {
+	public static void loadStats(Context context, Object activity, int actieId) {
 
 		final actieStatsListener myListener;		
 		try {		

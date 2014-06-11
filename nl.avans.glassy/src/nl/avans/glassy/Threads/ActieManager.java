@@ -533,18 +533,15 @@ public class ActieManager {
 		} else if (task == "ACTIEDATA") {
 			WijkFragment tempLink = actieObject.getWijkFragment();
 			tempLink.setActieData(actieObject.getResult());
-		} else if (task == "STATS") {
-			WijkFragment tempLink = actieObject.getWijkFragment();
-			// TODO: STATS
-		} else if (task == "DEELNEMER") {
+		}  else if (task == "DEELNEMER") {			
 			WijkFragment tempLink = actieObject.getWijkFragment();
 			JSONArray deelnemersArray;
 			try {
 				deelnemersArray = (JSONArray) actieObject.getResult()
 						.getJSONArray("entries");
+				
 				tempLink.setDeelnemers(deelnemersArray);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

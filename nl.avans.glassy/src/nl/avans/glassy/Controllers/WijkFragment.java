@@ -244,14 +244,16 @@ public class WijkFragment extends Fragment implements faqListener,
 	private void startLoadingInfo() {
 		Faq.loadFaq(getActivity().getApplicationContext(), this);
 		GoedeDoelen.loadGoededoelen(getActivity().getApplicationContext(),
-				this, wijkId);
-		ActieStats.loadFaq(getActivity().getApplicationContext(), this, wijkId);
+				this, actieId);
+		ActieStats.loadStats(getActivity().getApplicationContext(), this, actieId);
 	}
 
+	
+	
 	public void setDeelnemers(JSONArray result) {
 		ArrayList<Deelnemer> deelnemersArray = new ArrayList<Deelnemer>();
-		int percentage = (int) (((float) result.length() / (float) target) * 100);
-		wijkDetails.setDeelnemersCount(result.length(), percentage);
+		//int percentage = (int) (((float) result.length() / (float) target) * 100);
+		//wijkDetails.setDeelnemersCount(result.length(), percentage);
 		wijkDeelnemersFragment.setDeelnemersCount(result.length());
 		if (result.length() > 0) {
 			for (int i = 0; i < result.length(); i++) {
@@ -264,7 +266,7 @@ public class WijkFragment extends Fragment implements faqListener,
 			wijkDeelnemersFragment.addDeelnemers(deelnemersArray);
 		}
 
-	}
+	} 
 
 	// Get usable device height (not counting statusbar ect.)
 	// Used for setting height of wijkDetails
@@ -346,10 +348,10 @@ public class WijkFragment extends Fragment implements faqListener,
 	public void onActieStatsLoaded(int participants, int houses, int target,
 			int totalPartPerc, int targetPartPerc, int paidTargetPerc,
 			int providerSelectPerc, int goedeDoelPartPerc) {
-		// TODO Auto-generated method stub
-		wijkStappenFragment.updateStatus(totalPartPerc, paidTargetPerc,
+		wijkStappenFragment.updateStatus(targetPartPerc, paidTargetPerc,
 				providerSelectPerc, 0, 0);
 		wijkGoededoelenFragment.updateStatus(goedeDoelPartPerc);
+		wijkDetails.setDeelnemersCount(participants, targetPartPerc);
 	}
 
 	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
