@@ -3,6 +3,7 @@ package nl.avans.glassy.Controllers;
 import java.util.ArrayList;
 
 import nl.avans.glassy.R;
+import nl.avans.glassy.Models.FaqInfo;
 import nl.avans.glassy.Threads.Faq;
 import nl.avans.glassy.Threads.Faq.faqListener;
 import nl.avans.glassy.Views.FaqFragment;
@@ -24,8 +25,15 @@ public class FaqActivity extends FragmentActivity implements faqListener {
 	}
 
 	private void loadFaqInfo() {
+		if(FaqInfo.answers.isEmpty() && FaqInfo.questions.isEmpty())
+		{
 		Context context = getApplicationContext();
 		Faq.loadFaq(context, this);
+		} else {
+			FaqFragment fragment = (FaqFragment) getFragmentManager()
+					.findFragmentById(R.id.faqfragment);
+			fragment.updateText(FaqInfo.questions, FaqInfo.answers);
+		}
 	}
 
 	@Override

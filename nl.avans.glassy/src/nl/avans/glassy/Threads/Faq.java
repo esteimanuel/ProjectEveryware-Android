@@ -46,7 +46,7 @@ public class Faq {
 						for(int i=0;i<faqarray.length(); i++){
 							JSONObject faqinfo = faqarray.getJSONObject(i); 
 							questions.add(faqinfo.getString("question"));
-							answers.add(faqinfo.getString("answer"));	                    	                    
+							answers.add(faqinfo.getString("answer"));	  							
 						}
 					}
 

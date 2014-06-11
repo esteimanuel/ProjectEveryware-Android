@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import nl.avans.glassy.R;
 import nl.avans.glassy.Models.Deelnemer;
+import nl.avans.glassy.Models.FaqInfo;
 import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Threads.ActieStats;
@@ -242,7 +243,13 @@ public class WijkFragment extends Fragment implements faqListener,
 	}
 
 	private void startLoadingInfo() {
-		Faq.loadFaq(getActivity().getApplicationContext(), this);
+		if(FaqInfo.answers.isEmpty() && FaqInfo.questions.isEmpty())
+		{
+			Faq.loadFaq(getActivity().getApplicationContext(), this);
+		} else
+		{
+			wijkFaqFragment.updateText(FaqInfo.questions, FaqInfo.answers);
+		}
 		GoedeDoelen.loadGoededoelen(getActivity().getApplicationContext(),
 				this, actieId);
 		ActieStats.loadStats(getActivity().getApplicationContext(), this, actieId);
@@ -335,6 +342,8 @@ public class WijkFragment extends Fragment implements faqListener,
 	@Override
 	public void onFaqLoaded(ArrayList<String> questions,
 			ArrayList<String> answers) {
+		FaqInfo.answers = answers;
+		FaqInfo.questions = questions;
 		wijkFaqFragment.updateText(questions, answers);
 	}
 
