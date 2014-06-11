@@ -383,7 +383,6 @@ public class ActieManager {
 	 */
 	private void parseJSONResult(JSONObject result) {
 		try {
-			Log.i("CLOSEBY", result.toString());
 			handleState(result.getJSONArray("entries"), ACTIE_INIT_START);
 		} catch (JSONException e) {
 			Log.d("ActieManager", "parseJSONResult, unable to parse result");
@@ -408,7 +407,6 @@ public class ActieManager {
 		for (int i = 0; i < actieArray.length(); i++) {
 			try {
 				JSONObject temp = actieArray.getJSONObject(i);
-				WijkFragment tempFragment = new WijkFragment();
 				Bundle bundle = new Bundle();
 				bundle.putInt("wijk_id", temp.getInt("wijk_id"));
 
@@ -416,9 +414,11 @@ public class ActieManager {
 														// actie_id als de wijk
 														// een actie heeft
 
-				tempFragment.setArguments(bundle);
-
-				scrollPagerAdapter.addFragmentToAdapter(tempFragment);
+				if (bundle != null) {
+					WijkFragment tempFragment = new WijkFragment();
+					tempFragment.setArguments(bundle);
+					scrollPagerAdapter.addFragmentToAdapter(tempFragment);
+				}
 			} catch (Exception e) {
 				Log.d("ActieManager",
 						"parseJSONResult, unable to parse actieArray");
@@ -435,20 +435,23 @@ public class ActieManager {
 	 * @param JSONObject
 	 *            closebyWijk
 	 * @return Bundle retval
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
-	private Bundle tryToAddActie(Bundle bundle, JSONObject closebyWijk) throws JSONException {
+	private Bundle tryToAddActie(Bundle bundle, JSONObject closebyWijk)
+			throws JSONException {
 
 		Bundle retval = bundle;
-
 		JSONArray acties = closebyWijk.getJSONArray("actie");
+		if (acties.toString().contains("actie_id")) {
+			retval.putInt("actie_id", acties.getJSONObject(0)
+					.getInt("actie_id"));
 
-		retval.putInt("actie_id", acties.getJSONObject(0)
-				.getInt("actie_id"));
+			retval.putInt("actie_id", acties.getJSONObject(0)
+					.getInt("actie_id"));
 
-		retval.putInt("actie_id", acties.getJSONObject(0).getInt("actie_id"));
-
-		return retval;
+			return retval;
+		}
+		return null;
 	}
 
 	/**

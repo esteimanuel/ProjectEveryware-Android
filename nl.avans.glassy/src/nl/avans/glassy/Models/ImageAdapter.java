@@ -22,7 +22,7 @@ import android.widget.ImageView;
 
 public class ImageAdapter extends BaseAdapter {
 	private Context mContext;
-	private ArrayList<Deelnemer>  deelnemers;
+	private ArrayList<Deelnemer> deelnemers;
 
 	public ImageAdapter(Context c, ArrayList<Deelnemer> deelnemers) {
 		mContext = c;
@@ -55,13 +55,12 @@ public class ImageAdapter extends BaseAdapter {
 		Deelnemer deelnemer = deelnemers.get(position);
 
 		imageView.setImageResource(R.drawable.profile1);
-		if(deelnemer.getFotoLink() != "null"){
-			new DownloadImageTask(imageView)
-					.execute(deelnemer.getFotoLink());
+		if (deelnemer.getFotoLink() != "null") {
+			new DownloadImageTask(imageView).execute(deelnemer.getFotoLink());
 		}
 		return imageView;
 	}
-	
+
 	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 		ImageView bmImage;
 
@@ -84,7 +83,7 @@ public class ImageAdapter extends BaseAdapter {
 				InputStream input = connection.getInputStream();
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				BitmapFactory.Options options = new BitmapFactory.Options();
-//				options.inSampleSize = 8;
+				options.inSampleSize = 8;
 				Bitmap preview_bitmap = BitmapFactory.decodeStream(input, null,
 						options);
 				preview_bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
@@ -97,8 +96,10 @@ public class ImageAdapter extends BaseAdapter {
 		}
 
 		protected void onPostExecute(Bitmap result) {
-			if (result != null)
+			if (result != null) {
 				bmImage.setImageBitmap(result);
+				bmImage = null;
+			}
 		}
 	}
 }

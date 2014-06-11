@@ -388,8 +388,10 @@ public class WijkFragment extends Fragment implements faqListener,
 		}
 
 		protected void onPostExecute(Bitmap result) {
-			if (result != null)
+			if (result != null){
 				bmImage.setImageBitmap(result);
+				bmImage = null;
+			}
 		}
 	}
 
