@@ -33,7 +33,7 @@
     <string name="title_activity_goededoelen">Goededoelen</string>
     <string name="stappenTitel">Stappen</string>
     <string name="faqTitel">Veel gestelde vragen</string>
-    <string name="stap1">1. Bewoners verzamelen</string>
+    <string name="stap1">1. Bewoners verzamelen</string>	
     <string name="stap2">2. Inschrijven</string>
     <string name="stap3">3. Provider kiezen</string>
     <string name="stap4">4. Glasvezel aanleggen</string>
