@@ -54,10 +54,9 @@ public class WijkDeelnemersFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
 				Deelnemer deelnemer = mAdapter.getDeelnemer(position);
-				if (deelnemer != null) {
+				if (deelnemer != null) {					
 				    Intent intent = new Intent(getActivity(), BuddyProfielActivity.class);
-				    //String message = editText.getText().toString();
-				    //intent.putExtra(EXTRA_MESSAGE, message);
+				    intent.putExtra("nl.avans.glassy.Models.Deelnemer", deelnemer);
 				    startActivity(intent);
 				}
 			}

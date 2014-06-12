@@ -20,49 +20,44 @@
         <activity
             android:name="nl.avans.glassy.Controllers.WijkActivity"
             android:label="@string/app_name"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="nl.avans.glassy.Controllers.MapDetailActivity"
             android:label="@string/title_activity_map_detail" >
         </activity>
-
         <activity android:name="com.facebook.LoginActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
 
-
         <activity
             android:name="nl.avans.glassy.Controllers.DetailMapActivity"
-            android:label="@string/title_activity_map_detail" 
-            android:theme="@android:style/Theme.NoTitleBar">
+            android:label="@string/title_activity_map_detail"
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
             android:name="nl.avans.glassy.Controllers.FaqActivity"
-            android:label="@string/title_activity_faq" 
-            android:theme="@style/TransparentDetail">
+            android:label="@string/title_activity_faq"
+            android:theme="@style/TransparentDetail" >
         </activity>
-        
         <activity
             android:name="nl.avans.glassy.Controllers.DetailGoededoelenActivity"
-            android:label="@string/title_activity_goededoelen" 
-            android:theme="@android:style/Theme.NoTitleBar">
+            android:label="@string/title_activity_goededoelen"
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
-        
-                <activity
+        <activity
             android:name="nl.avans.glassy.Controllers.BuddyProfielActivity"
-            android:label="@string/title_activity_buddyprofiel" 
-            android:theme="@android:style/Theme.NoTitleBar">
+            android:label="@string/title_activity_buddyprofiel"
+            android:theme="@style/CustomActionBarTheme" >
         </activity>
-
     </application>
 
 </manifest>
