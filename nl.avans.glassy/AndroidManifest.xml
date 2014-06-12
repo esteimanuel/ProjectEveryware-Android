@@ -56,6 +56,12 @@
             android:label="@string/title_activity_goededoelen" 
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
+        
+                <activity
+            android:name="nl.avans.glassy.Controllers.BuddyProfielActivity"
+            android:label="@string/title_activity_buddyprofiel" 
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
 
     </application>
 

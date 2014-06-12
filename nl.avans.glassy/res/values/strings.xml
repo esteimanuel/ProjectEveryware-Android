@@ -55,4 +55,6 @@
     <string name="postcode">Postcode</string>
     <string name="huisnummer_toevoeging">Huisnummer toevoeging</string>
 
+    <string name="title_activity_buddyprofiel">Buddy Profiel</string>
+
 </resources>

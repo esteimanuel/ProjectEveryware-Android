@@ -120,4 +120,11 @@ public class ImageAdapter extends BaseAdapter {
 			}
 		}
 	}
+
+	public Deelnemer getDeelnemer(int position) {
+		if (deelnemers.get(position).isBuddy()) {
+			return deelnemers.get(position);
+		}
+		return null;
+	}
 }

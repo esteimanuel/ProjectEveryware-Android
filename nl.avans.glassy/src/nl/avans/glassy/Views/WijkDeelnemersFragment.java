@@ -3,14 +3,18 @@ package nl.avans.glassy.Views;
 import java.util.ArrayList;
 
 import nl.avans.glassy.R;
+import nl.avans.glassy.Controllers.BuddyProfielActivity;
 import nl.avans.glassy.Models.Deelnemer;
 import nl.avans.glassy.Models.ImageAdapter;
 import nl.avans.glassy.Utils.ExtendingGridView;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 public class WijkDeelnemersFragment extends Fragment {
@@ -45,5 +49,18 @@ public class WijkDeelnemersFragment extends Fragment {
 		mAdapter = new ImageAdapter(getActivity(), deelnemersArray);
 		gridview.setAdapter(mAdapter);
 		gridview.setExpanded(true);
+
+		gridview.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v,
+					int position, long id) {
+				Deelnemer deelnemer = mAdapter.getDeelnemer(position);
+				if (deelnemer != null) {
+				    Intent intent = new Intent(getActivity(), BuddyProfielActivity.class);
+				    //String message = editText.getText().toString();
+				    //intent.putExtra(EXTRA_MESSAGE, message);
+				    startActivity(intent);
+				}
+			}
+		});
 	}
 }
