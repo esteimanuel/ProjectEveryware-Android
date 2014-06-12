@@ -40,5 +40,6 @@
     <string name="stap5">5. Overstappen naar glasvezel</string>
     <string name="temp">Laden&#8230;</string>
     <string name="closebutton">close</string>
+    <string name="title_activity_buddyprofiel">Buddy Profiel</string>
 
 </resources>
