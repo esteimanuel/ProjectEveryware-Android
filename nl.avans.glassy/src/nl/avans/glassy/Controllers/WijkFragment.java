@@ -304,30 +304,35 @@ public class WijkFragment extends Fragment implements faqListener,
 
 		Button actieButton = (Button) getView().findViewById(
 				R.id.ikDoeMeeButton);
+		Context context = getActivity().getApplicationContext();
 
-		if (getActieId() <= 0) {
-
-			actieButton.setText("Geen actie? Wel Glasvezel!");
-
-		} else if (Gebruiker.zitInWelkeActie(getActivity()
+		if (Gebruiker.zitInWelkeActie(getActivity()
 				.getApplicationContext()) == getActieId()) {
 
-			if (Gebruiker.heeftBetaald(getActivity().getApplicationContext())) {
+			if (Gebruiker.heeftBetaald(context)) {
 
-				actieButton.setText("Provider voorkeur opgeven");
+				actieButton.setText(R.string.provider_kiezen);
 
 			} else {
 
-				actieButton.setText("Betalen pannekoek!");
+				actieButton.setText(R.string.inschrijven);
 			}
 
-		} else if (Gebruiker.zitInActie(getActivity().getApplicationContext())) {
+		} else if (Gebruiker.zitInActie(context)) {
 
 			if (Gebruiker
-					.zitInWelkeActie(getActivity().getApplicationContext()) != getActieId()) {
+					.zitInWelkeActie(context) != getActieId()) {
 
 				actieButton.setVisibility(View.GONE);
 			}
+			
+		} else if (Gebruiker.heeftProviderGekozen(context)) {
+			
+			actieButton.setVisibility(View.GONE);
+			
+		} else {
+			
+			actieButton.setText(R.string.deelnemen);
 		}
 	}
 

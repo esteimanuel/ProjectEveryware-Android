@@ -4,9 +4,6 @@ import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.PagerAdapter;
 import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Threads.ActieManager;
-import nl.avans.glassy.Threads.ActieStats;
-import nl.avans.glassy.Threads.Faq;
-import nl.avans.glassy.Threads.GoedeDoelen;
 import nl.avans.glassy.Views.WijkDetailsFragment.OnSpecialButtonPressListener;
 import nl.avans.glassy.Views.WijkFaqFragment.wijkFaqListener;
 import nl.avans.glassy.Views.WijkGoededoelenFragment.wijkgoededoelenListener;
@@ -20,6 +17,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,7 +53,15 @@ public class WijkActivity extends AccountFunctieActivity implements
 		mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
 		
-				
+		mPager.setOnPageChangeListener(new SimpleOnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int position) {
+
+				WijkFragment wf = (WijkFragment) mPagerAdapter.getItem(position);
+				wf.evalActieButton();
+			}
+		});
 	}
 
 	@Override
@@ -139,8 +145,6 @@ public class WijkActivity extends AccountFunctieActivity implements
 			JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
 			
 			final String token = account.getString("token");
-			
-			int actie_id = huidigeWijk.getActieId();
 
 			if(!Gebruiker.zitInActie(getApplicationContext())) {
 
@@ -163,22 +167,22 @@ public class WijkActivity extends AccountFunctieActivity implements
 					}
 				}).show();
 	
-			} //else if(!Gebruiker.heeftPakketGekozen(getApplicationContext())) {
-//				
-//				new AlertDialog.Builder(this)
-//				   .setTitle("Provider kiezen")
-//				   .setMessage("Kies de provider die jij zou willen hebben")
-//				   .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//		
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//						
-//						Gebruiker.betaalBorg(getApplicationContext(), token);
-//						huidigeWijk.evalActieButton();
-//						return;
-//					}
-//				}).show();
-//			}
+			} else if(!Gebruiker.heeftProviderGekozen(getApplicationContext())) {
+				
+				new AlertDialog.Builder(this)
+				   .setTitle("Provider kiezen")
+				   .setMessage("Kies de provider die jij zou willen hebben")
+				   .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						Gebruiker.betaalBorg(getApplicationContext(), token);
+						huidigeWijk.evalActieButton();
+						return;
+					}
+				}).show();
+			}
 
 		} catch(NullPointerException nullpointer) {
 

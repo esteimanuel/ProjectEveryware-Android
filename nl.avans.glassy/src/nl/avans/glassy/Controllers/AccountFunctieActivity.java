@@ -93,12 +93,6 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void gaNaarInstellingen() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override 
 	public void uitloggen() {

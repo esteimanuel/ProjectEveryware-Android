@@ -318,4 +318,9 @@ public class Gebruiker {
 		JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
 		return new JSONObject(account.getString("gebruiker"));
 	}
+	
+	public static boolean heeftProviderGekozen(Context context) {
+		
+		return false;
+	}
 }

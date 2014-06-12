@@ -19,14 +19,6 @@
         android:padding="10dp"
         android:clickable="true"
         android:text="Mijn Wijk" />
-    
-	<nl.avans.glassy.Utils.TextViewHelveticaLight
-        android:id="@+id/instellingen_link"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:clickable="true"
-        android:text="Instellingen" />
 	
 	<nl.avans.glassy.Utils.TextViewHelveticaLight
         android:id="@+id/uitloggen"

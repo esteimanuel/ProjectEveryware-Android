@@ -39,5 +39,9 @@
     <string name="stap4">4. Glasvezel aanleggen</string>
     <string name="stap5">5. Overstappen naar glasvezel</string>
     <string name="temp">Laden...</string>
+    
+    <string name="deelnemen">Deelnemen</string>
+    <string name="inschrijven">Inschrijven</string>
+    <string name="provider_kiezen">Provider kiezen</string>
 
 </resources>
