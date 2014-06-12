@@ -11,11 +11,11 @@ import java.util.ArrayList;
 
 import nl.avans.glassy.R;
 import nl.avans.glassy.Models.Deelnemer;
+import nl.avans.glassy.Models.FaqInfo;
 import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Threads.ActieStats;
 import nl.avans.glassy.Threads.ActieStats.actieStatsListener;
-import nl.avans.glassy.Threads.ActieTask;
 import nl.avans.glassy.Threads.Faq;
 import nl.avans.glassy.Threads.Faq.faqListener;
 import nl.avans.glassy.Threads.GoedeDoelen;
@@ -35,6 +35,8 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -56,8 +58,6 @@ import android.widget.LinearLayout.LayoutParams;
 public class WijkFragment extends Fragment implements faqListener,
 		goededoelenListener, actieStatsListener {
 	private ViewGroup rootView;
-	private ActieManager sActieManager;
-	private ActieTask mDownloadThread;
 
 	private int wijkId;
 	private int actieId = 0;
@@ -189,8 +189,8 @@ public class WijkFragment extends Fragment implements faqListener,
 					backgroundFound = true;
 				}
 				if (type.equals("video") && videoFound == false) {
-						setYoutubePlayer(object.get("url").toString());
-						videoFound = true;
+					setYoutubePlayer(object.get("url").toString());
+					videoFound = true;
 
 				}
 			}
@@ -227,9 +227,9 @@ public class WijkFragment extends Fragment implements faqListener,
 
 	private void setYoutubePlayer(String url) {
 		String[] seperated = url.split("=");
-		
-	    Bundle bundle = new Bundle();
-	    bundle.putString("url", seperated[1]);
+
+		Bundle bundle = new Bundle();
+		bundle.putString("url", seperated[1]);
 
 		// New youtubePlayer SupportFragment
 		wijkVideoFragment = new WijkVideoFragment();
@@ -243,16 +243,24 @@ public class WijkFragment extends Fragment implements faqListener,
 	}
 
 	private void startLoadingInfo() {
-		Faq.loadFaq(getActivity().getApplicationContext(), this);
+		if(FaqInfo.answers.isEmpty() && FaqInfo.questions.isEmpty())
+		{
+			Faq.loadFaq(getActivity().getApplicationContext(), this);
+		} else
+		{
+			wijkFaqFragment.updateText(FaqInfo.questions, FaqInfo.answers);
+		}
 		GoedeDoelen.loadGoededoelen(getActivity().getApplicationContext(),
-				this, wijkId);
-		ActieStats.loadFaq(getActivity().getApplicationContext(), this, wijkId);
+				this, actieId);
+		ActieStats.loadStats(getActivity().getApplicationContext(), this, actieId);
 	}
 
+	
+	
 	public void setDeelnemers(JSONArray result) {
 		ArrayList<Deelnemer> deelnemersArray = new ArrayList<Deelnemer>();
-		int percentage = (int) (((float) result.length() / (float) target) * 100);
-		wijkDetails.setDeelnemersCount(result.length(), percentage);
+		//int percentage = (int) (((float) result.length() / (float) target) * 100);
+		//wijkDetails.setDeelnemersCount(result.length(), percentage);
 		wijkDeelnemersFragment.setDeelnemersCount(result.length());
 		if (result.length() > 0) {
 			for (int i = 0; i < result.length(); i++) {
@@ -265,7 +273,7 @@ public class WijkFragment extends Fragment implements faqListener,
 			wijkDeelnemersFragment.addDeelnemers(deelnemersArray);
 		}
 
-	}
+	} 
 
 	// Get usable device height (not counting statusbar ect.)
 	// Used for setting height of wijkDetails
@@ -339,6 +347,8 @@ public class WijkFragment extends Fragment implements faqListener,
 	@Override
 	public void onFaqLoaded(ArrayList<String> questions,
 			ArrayList<String> answers) {
+		FaqInfo.answers = answers;
+		FaqInfo.questions = questions;
 		wijkFaqFragment.updateText(questions, answers);
 	}
 
@@ -352,10 +362,10 @@ public class WijkFragment extends Fragment implements faqListener,
 	public void onActieStatsLoaded(int participants, int houses, int target,
 			int totalPartPerc, int targetPartPerc, int paidTargetPerc,
 			int providerSelectPerc, int goedeDoelPartPerc) {
-		// TODO Auto-generated method stub
-		wijkStappenFragment.updateStatus(totalPartPerc, paidTargetPerc,
+		wijkStappenFragment.updateStatus(targetPartPerc, paidTargetPerc,
 				providerSelectPerc, 0, 0);
 		wijkGoededoelenFragment.updateStatus(goedeDoelPartPerc);
+		wijkDetails.setDeelnemersCount(participants, targetPartPerc);
 	}
 
 	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -363,6 +373,15 @@ public class WijkFragment extends Fragment implements faqListener,
 
 		public DownloadImageTask(ImageView bmImage) {
 			this.bmImage = bmImage;
+		}
+
+		private Bitmap convert(Bitmap bitmap, Bitmap.Config config) {
+			Bitmap convertedBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+					bitmap.getHeight(), config);
+			Canvas canvas = new Canvas(convertedBitmap);
+			Paint paint = new Paint();
+			canvas.drawBitmap(bitmap, 0, 0, paint);
+			return convertedBitmap;
 		}
 
 		protected Bitmap doInBackground(String... urls) {
@@ -380,12 +399,14 @@ public class WijkFragment extends Fragment implements faqListener,
 				InputStream input = connection.getInputStream();
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				BitmapFactory.Options options = new BitmapFactory.Options();
-//				options.inSampleSize = 8;
+				// options.inSampleSize = 8;
 				Bitmap preview_bitmap = BitmapFactory.decodeStream(input, null,
 						options);
-				preview_bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+				preview_bitmap.compress(Bitmap.CompressFormat.PNG, 60, out);
 				mIcon11 = BitmapFactory.decodeStream(new ByteArrayInputStream(
 						out.toByteArray()));
+				preview_bitmap.recycle();
+				mIcon11 = convert(mIcon11, Bitmap.Config.RGB_565);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -393,7 +414,7 @@ public class WijkFragment extends Fragment implements faqListener,
 		}
 
 		protected void onPostExecute(Bitmap result) {
-			if (result != null){
+			if (result != null) {
 				bmImage.setImageBitmap(result);
 				bmImage = null;
 			}

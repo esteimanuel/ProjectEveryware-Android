@@ -1,11 +1,7 @@
 package nl.avans.glassy.Threads;
 
-import java.util.ArrayList;
-
-import nl.avans.glassy.Threads.Faq.faqListener;
 import nl.avans.glassy.Utils.ApiCommunicator;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -19,7 +15,7 @@ public class ActieStats {
 		
 	}
 	
-	public static void loadFaq(Context context, Object activity, int actieId) {
+	public static void loadStats(Context context, Object activity, int actieId) {
 
 		final actieStatsListener myListener;		
 		try {		

@@ -47,7 +47,6 @@ public class ActieTask implements TaskRunnableDownloadMethods {
 	 * downloading and decoding of the image.
 	 */
 	private ApiCommunicator mDownloadRunnable;
-	private Runnable mDecodeRunnable;
 
 	/**
 	 * Creates an ActieTask containing a download object and a decoder object.

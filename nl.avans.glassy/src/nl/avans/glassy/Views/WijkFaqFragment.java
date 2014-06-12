@@ -8,48 +8,46 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class WijkFaqFragment extends Fragment{
+public class WijkFaqFragment extends Fragment {
 	private TextView faqContent;
 	private wijkFaqListener myfaqListener;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		// TODO: Not needed yet. Just a try to get the map to load faster.
-		super.onCreate(savedInstanceState);		
-		Bundle bundle = this.getArguments();
-	}
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-		View rootView = (ViewGroup) inflater.inflate(R.layout.wijkfaq_fragment, container, false);
+		View rootView = (ViewGroup) inflater.inflate(R.layout.wijkfaq_fragment,
+				container, false);
 		faqContent = (TextView) rootView.findViewById(R.id.faqContent);
 		faqContent.setText("laden...");
 		setlisteners();
 		return rootView;
 	}
 
-	public void updateText(ArrayList<String> questions,	ArrayList<String> answers) {
-	
+	public void updateText(ArrayList<String> questions,
+			ArrayList<String> answers) {
+		try {
 			String textviewinfo = "";
-			for(int i = 0; i < 3 && i < questions.size() && i < answers.size(); i++)
-			{
+			for (int i = 0; i < 3 && i < questions.size() && i < answers.size(); i++) {
 				String info = null;
 				info = questions.get(i) + "\n";
-				textviewinfo = textviewinfo + info;				
+				textviewinfo = textviewinfo + info;
 			}
-			faqContent.setText(textviewinfo);		
-		
+			faqContent.setText(textviewinfo);
+		} catch (Exception e) {
+
+		}
+
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		//koppel de activity aan de listener
+		// koppel de activity aan de listener
 		try {
 			myfaqListener = (wijkFaqListener) activity;
 		} catch (ClassCastException e) {
@@ -58,21 +56,19 @@ public class WijkFaqFragment extends Fragment{
 		}
 	}
 
-	private void setlisteners()
-	{
-		faqContent.setOnClickListener(
-				new OnClickListener(){
+	private void setlisteners() {
+		faqContent.setOnClickListener(new OnClickListener() {
 
-					@Override
-					public void onClick(View v) {
-						myfaqListener.onTouchFaq();
-					}
+			@Override
+			public void onClick(View v) {
+				myfaqListener.onTouchFaq();
+			}
 
-				});
+		});
 	}
 
-	//Interface that the activity implements to listen to events
-	public interface wijkFaqListener {		
+	// Interface that the activity implements to listen to events
+	public interface wijkFaqListener {
 		public void onTouchFaq();
 	}
 }

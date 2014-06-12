@@ -11,7 +11,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/wijk_static" />
 
-    <nl.avans.glassy.Controllers.ObservableScrollView
+    <ScrollView
         android:id="@+id/scrollPanel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -107,6 +107,6 @@
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>
-    </nl.avans.glassy.Controllers.ObservableScrollView>
+    </ScrollView>
 
 </FrameLayout>

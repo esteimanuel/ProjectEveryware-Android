@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-   >
-
-    <nl.avans.glassy.Utils.TextViewHelveticaLight
-        android:id="@+id/faqInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="85sp"
-        android:textColor="@color/white"
-        android:textSize="20sp"/>
+    android:orientation="vertical" >
 
     <ImageButton
         android:id="@+id/faq_view_button"
-        android:layout_width="85dp"
-        android:layout_height="85dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" 
-        android:src="@drawable/ic_action_cancel"          
-        />
-        
-</ScrollView>
+        android:contentDescription="@string/closebutton"
+        android:src="@drawable/ic_action_cancel" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/faq_view_button" >
+
+        <nl.avans.glassy.Utils.TextViewHelveticaLight
+            android:id="@+id/faqInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </ScrollView>
+
+</RelativeLayout>

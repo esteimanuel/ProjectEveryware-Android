@@ -145,7 +145,6 @@ public class WijkActivity extends AccountFunctieActivity implements
 			JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
 			
 			final String token = account.getString("token");
-
 			if(!Gebruiker.zitInActie(getApplicationContext())) {
 
 				Gebruiker.aanmeldenBijWijk(getApplicationContext(), token, huidigeWijk);

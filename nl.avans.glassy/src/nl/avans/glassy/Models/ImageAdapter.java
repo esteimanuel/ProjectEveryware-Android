@@ -12,6 +12,8 @@ import nl.avans.glassy.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -47,7 +49,7 @@ public class ImageAdapter extends BaseAdapter {
 		if (convertView == null) { // if it's not recycled, initialize some
 									// attributes
 			imageView = new ImageView(mContext);
-			imageView.setLayoutParams(new GridView.LayoutParams(92, 92));
+			imageView.setLayoutParams(new GridView.LayoutParams(90, 90));
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		} else {
 			imageView = (ImageView) convertView;
@@ -58,6 +60,11 @@ public class ImageAdapter extends BaseAdapter {
 		if (deelnemer.getFotoLink() != "null") {
 			new DownloadImageTask(imageView).execute(deelnemer.getFotoLink());
 		}
+
+		if (deelnemer.isBuddy()) {
+			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+			imageView.setBackgroundResource(R.drawable.image_border);
+		}
 		return imageView;
 	}
 
@@ -66,6 +73,15 @@ public class ImageAdapter extends BaseAdapter {
 
 		public DownloadImageTask(ImageView bmImage) {
 			this.bmImage = bmImage;
+		}
+
+		private Bitmap convert(Bitmap bitmap, Bitmap.Config config) {
+			Bitmap convertedBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+					bitmap.getHeight(), config);
+			Canvas canvas = new Canvas(convertedBitmap);
+			Paint paint = new Paint();
+			canvas.drawBitmap(bitmap, 0, 0, paint);
+			return convertedBitmap;
 		}
 
 		protected Bitmap doInBackground(String... urls) {
@@ -86,9 +102,11 @@ public class ImageAdapter extends BaseAdapter {
 				options.inSampleSize = 8;
 				Bitmap preview_bitmap = BitmapFactory.decodeStream(input, null,
 						options);
-				preview_bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+				preview_bitmap.compress(Bitmap.CompressFormat.PNG, 10, out);
 				mIcon11 = BitmapFactory.decodeStream(new ByteArrayInputStream(
 						out.toByteArray()));
+				preview_bitmap.recycle();
+				mIcon11 = convert(mIcon11, Bitmap.Config.RGB_565);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
