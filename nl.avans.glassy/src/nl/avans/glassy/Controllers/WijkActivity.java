@@ -12,6 +12,7 @@ import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,9 +20,11 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 
 public class WijkActivity extends AccountFunctieActivity implements
 		webClientListener, wijkgoededoelenListener, wijkFaqListener, OnSpecialButtonPressListener {
@@ -58,8 +61,10 @@ public class WijkActivity extends AccountFunctieActivity implements
 			@Override
 			public void onPageSelected(int position) {
 
+				super.onPageSelected(position);
 				WijkFragment wf = (WijkFragment) mPagerAdapter.getItem(position);
 				wf.evalActieButton();
+				wf.evalWijkNaam();
 			}
 		});
 	}
@@ -135,7 +140,7 @@ public class WijkActivity extends AccountFunctieActivity implements
 	@Override
 	public void volgendeActieStapUitvoeren() {
 
-		final WijkFragment huidigeWijk = ((WijkFragment) mPagerAdapter.getItem(mPager.getCurrentItem()));
+		WijkFragment huidigeWijk = ((WijkFragment) mPagerAdapter.getItem(mPager.getCurrentItem()));
 		SharedPreferences preferences = getApplicationContext().getSharedPreferences("GLASSY", 0);
 
 		Log.d("volgende actie", "click");
@@ -144,43 +149,18 @@ public class WijkActivity extends AccountFunctieActivity implements
 
 			JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
 			
-			final String token = account.getString("token");
+			String token = account.getString("token");
 			if(!Gebruiker.zitInActie(getApplicationContext())) {
 
-				Gebruiker.aanmeldenBijWijk(getApplicationContext(), token, huidigeWijk);
-				return;
+				doeAanmelden(huidigeWijk, token);
 
 			} else if(!Gebruiker.heeftBetaald(getApplicationContext())) {
-
-				new AlertDialog.Builder(this)
-							   .setTitle("Contributie")
-							   .setMessage("Om de kabelexploitanten relevante informatie te geven, verwachten wij een tijdelijke contributie. Deze wordt zowel als de onderhandelingen lukken als mislukken terug gegeven.")
-							   .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						
-						Gebruiker.betaalBorg(getApplicationContext(), token);
-						huidigeWijk.evalActieButton();
-						return;
-					}
-				}).show();
+				
+				doeBetalingStap(huidigeWijk, token);
 	
 			} else if(!Gebruiker.heeftProviderGekozen(getApplicationContext())) {
 				
-				new AlertDialog.Builder(this)
-				   .setTitle("Provider kiezen")
-				   .setMessage("Kies de provider die jij zou willen hebben")
-				   .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-		
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						
-						Gebruiker.betaalBorg(getApplicationContext(), token);
-						huidigeWijk.evalActieButton();
-						return;
-					}
-				}).show();
+				doeProviderKiezenStap(huidigeWijk, token);
 			}
 
 		} catch(NullPointerException nullpointer) {
@@ -193,5 +173,109 @@ public class WijkActivity extends AccountFunctieActivity implements
 			e.printStackTrace();
 		}
 	}
+	
+	private void doeAanmelden(WijkFragment huidigewijk, String token) {
+		
+		Gebruiker.aanmeldenBijWijk(getApplicationContext(), token, huidigewijk);
+		return;
+	}
+	
+	private void doeBetalingStap(WijkFragment huidigewijk, String token) {
+		
+		final String token_finallized = token;
+		final WijkFragment wijk_finallized = huidigewijk;
+		
+		boolean gegevensNodig = Gebruiker.heeftGegevensIngevuld(getApplicationContext());
 
+		Builder dialog = new AlertDialog.Builder(this)
+					   .setTitle(R.string.inschrijven);							   
+		
+		if(gegevensNodig) {
+			
+				LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+			
+				dialog = dialog.setMessage(getResources().getString(R.string.inschrijven_uitleg) + "\r\n\r\n" + getResources().getString(R.string.extra_info_vereist))
+					   		  .setView(inflater.inflate(R.layout.dialog_info, null))
+					   		  .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+							
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						Gebruiker.betaalBorg(getApplicationContext(), token_finallized);
+						wijk_finallized.evalActieButton();
+						return;
+					}
+				});
+			   						
+		} else {
+
+			  dialog = dialog.setMessage(R.string.inschrijven_uitleg)
+					  		 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						Gebruiker.betaalBorg(getApplicationContext(), token_finallized);
+						wijk_finallized.evalActieButton();
+						return;
+					}
+				});
+		}
+		
+		AlertDialog alert = dialog.create();
+		alert.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+		alert.show();
+	}
+	
+	/** 
+	 * dialog voor het afhandelen van het kiezen van een provider
+	 * @param huidigewijk
+	 * @param token
+	 */
+	private void doeProviderKiezenStap(WijkFragment huidigewijk, String token) {
+
+		final String token_finallized = token;
+		final WijkFragment wijk_finallized = huidigewijk;
+		
+		new AlertDialog.Builder(this)
+		   .setTitle("Provider kiezen")
+		   .setMessage("Kies de provider die jij zou willen hebben")
+		   .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+				Gebruiker.betaalBorg(getApplicationContext(), token_finallized);
+				wijk_finallized.evalActieButton();
+				return;
+			}
+		}).show();
+	}
+
+
+	@Override
+	public void gaNaarMijnWijk() {
+		
+		int pagerItems = mPagerAdapter.getCount();
+		
+		int wijkIndex = -1;
+		for(int i = 0; i < pagerItems; i++) {
+			
+			WijkFragment wf = (WijkFragment) mPagerAdapter.getItem(i);
+			if(Gebruiker.zitInWelkeActie(getApplicationContext()) == wf.getActieId()) {
+				
+				wijkIndex = i;
+				break;
+			}
+		}
+		
+		if(wijkIndex != -1) {
+			
+			mPager.setCurrentItem(wijkIndex);
+			
+		} else {
+			
+			// TODO melding naar gebruiker
+		}
+	}
 }

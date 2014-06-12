@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:clickable="true"
-        android:text="Profiel" />
+        android:text="@string/profiel" />
     
 	<nl.avans.glassy.Utils.TextViewHelveticaLight
         android:id="@+id/mijn_wijk_link"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:clickable="true"
-        android:text="Mijn Wijk" />
+        android:text="@string/mijn_wijk" />
 	
 	<nl.avans.glassy.Utils.TextViewHelveticaLight
         android:id="@+id/uitloggen"
@@ -26,6 +26,6 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:clickable="true"
-        android:text="Uitloggen" />
+        android:text="@string/loguit" />
 
 </LinearLayout>

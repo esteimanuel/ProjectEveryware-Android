@@ -43,6 +43,16 @@
     
     <string name="deelnemen">Deelnemen</string>
     <string name="inschrijven">Inschrijven</string>
+    <string name="inschrijven_uitleg">Om de kabelexploitanten relevante informatie te geven, verwachten wij een tijdelijke contributie. Deze wordt zowel als de onderhandelingen lukken als mislukken terug gegeven.</string>
+    <string name="extra_info_vereist">Heej! we missen wat gegevens</string>
     <string name="provider_kiezen">Provider kiezen</string>
+    
+    <string name="profiel">Profiel</string>
+    <string name="mijn_wijk">Mijn Wijk</string>
+    <string name="voornaam">Voornaam</string>
+    <string name="tussenvoegsels">Tussenvoegsels</string>
+    <string name="achternaam">Achternaam</string>
+    <string name="postcode">Postcode</string>
+    <string name="huisnummer_toevoeging">Huisnummer toevoeging</string>
 
 </resources>

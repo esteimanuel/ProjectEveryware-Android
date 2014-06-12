@@ -54,6 +54,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
 
 public class WijkFragment extends Fragment implements faqListener,
 		goededoelenListener, actieStatsListener {
@@ -300,12 +301,14 @@ public class WijkFragment extends Fragment implements faqListener,
 
 		super.onStart();
 		evalActieButton();
+		evalWijkNaam();
 	}
 
 	public void onResume() {
 
 		super.onResume();
 		evalActieButton();
+		evalWijkNaam();
 	}
 
 	public void evalActieButton() {
@@ -314,8 +317,7 @@ public class WijkFragment extends Fragment implements faqListener,
 				R.id.ikDoeMeeButton);
 		Context context = getActivity().getApplicationContext();
 
-		if (Gebruiker.zitInWelkeActie(getActivity()
-				.getApplicationContext()) == getActieId()) {
+		if (Gebruiker.zitInWelkeActie(context) == getActieId()) {
 
 			if (Gebruiker.heeftBetaald(context)) {
 
@@ -341,6 +343,17 @@ public class WijkFragment extends Fragment implements faqListener,
 		} else {
 			
 			actieButton.setText(R.string.deelnemen);
+		}
+	}
+	
+	public void evalWijkNaam() {
+		
+		TextView wijknaam = (TextView) getView().findViewById(R.id.wijkTitel);
+		Context context = getActivity().getApplicationContext();
+
+		if (Gebruiker.zitInWelkeActie(context) == getActieId()) {
+			
+			wijknaam.setText(R.string.mijn_wijk);
 		}
 	}
 

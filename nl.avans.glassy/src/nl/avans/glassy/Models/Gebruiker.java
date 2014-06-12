@@ -168,8 +168,6 @@ public class Gebruiker {
 				"{ _token:" + token + ", actie_id:" + wijk.getActieId() + "}"
 		};
 		
-		Log.d("wijkaanmelden url", params[2]);
-		
 		final WijkFragment ditislelijk = wijk;
 
 		new ApiCommunicator(context){
@@ -190,6 +188,7 @@ public class Gebruiker {
 					editor.commit();
 					
 					ditislelijk.evalActieButton();
+					ditislelijk.evalWijkNaam();
 
 				} catch(Exception e) {
 
@@ -208,8 +207,6 @@ public class Gebruiker {
 				"{ _token:" + token + ", borg_betaald:" + true + "}"
 		};
 		
-		Log.d("Volgende Stap Uitvoeren", params[2]);
-
 		new ApiCommunicator(context){
 
 			@Override
@@ -291,6 +288,32 @@ public class Gebruiker {
 		return retval;		
 	}
 	
+	public static boolean heeftGegevensIngevuld(Context context) {
+		
+		String[] gegevens = {"voornaam", "achternaam", "postcode_id"};
+		
+		boolean retval = true;
+		
+		try {
+			
+			JSONObject gebruiker = getGebruikerUitContext(context);
+
+			for(String gegeven : gegevens) {	
+
+				retval = !(gebruiker.getString(gegeven) == null);
+				
+				if(!retval) break;
+			}
+			
+		} catch(Exception e) {
+			
+			e.printStackTrace();
+			retval = false;
+		}
+		
+		return retval;
+	}
+	
 	public static boolean heeftBetaald(Context context) {
 		
 		Boolean retval = false;
@@ -305,8 +328,6 @@ public class Gebruiker {
 			
 			e.printStackTrace();
 		}
-		
-		Log.d("Gebruiker.heeftBetaald()", "" + retval);
 		
 		return retval;
 	}

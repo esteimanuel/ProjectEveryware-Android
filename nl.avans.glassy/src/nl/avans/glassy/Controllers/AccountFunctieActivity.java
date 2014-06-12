@@ -79,7 +79,7 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 	@Override
 	public void avatarWijzigen() {
 		// TODO Auto-generated method stub
-		
+		// doen we niet meer...
 	}
 
 	@Override
@@ -87,35 +87,29 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 
 		AccountFunctiesFragment.getInstance().veranderFragment(new ProfielBewerkenFragment());
 	}
-
-	@Override
-	public void gaNaarMijnWijk() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override 
 	public void uitloggen() {
 		
 		try {
 				
-				SharedPreferences sp = getApplicationContext().getSharedPreferences("GLASSY", 0);
-				SharedPreferences.Editor editor = sp.edit();
-		 		editor.putString("ACCOUNT", null); 
-		 		
-		 		editor.commit();
-		 		
-		 		facebookLogout();
-		 		
-		 		Log.i("uitloggen", sp.getString("ACCOUNT", "niks"));
-		 		
-		 	} catch(Exception e) {
-		 		
-		 		e.printStackTrace(); // log it
-		 	}
-		 
-		 	AccountFunctiesFragment.getInstance().setIngelogd(false);
-		 	AccountFunctiesFragment.getInstance().veranderFragment(new AuthFragment());
+			SharedPreferences sp = getApplicationContext().getSharedPreferences("GLASSY", 0);
+			SharedPreferences.Editor editor = sp.edit();
+	 		editor.putString("ACCOUNT", null); 
+	 		
+	 		editor.commit();
+	 		
+	 		facebookLogout();
+	 		
+	 		Log.i("uitloggen", sp.getString("ACCOUNT", "niks"));
+	 		
+	 	} catch(Exception e) {
+	 		
+	 		e.printStackTrace(); // log it
+	 	}
+	 
+	 	AccountFunctiesFragment.getInstance().setIngelogd(false);
+	 	AccountFunctiesFragment.getInstance().veranderFragment(new AuthFragment());
 	}
 
 	@Override
@@ -250,6 +244,18 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 	protected void onStart() {
 		
 		super.onStart();
+		
+		try {
+			
+			SharedPreferences preferences = getApplicationContext().getSharedPreferences("GLASSY", 0);
+			
+			JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
+			
+			SharedPreferences.Editor edit = preferences.edit();
+			edit.putString("ACCOUNT", account.toString());
+			edit.commit();
+			
+		} catch(Exception e) {	}
 		
 		if(Session.getActiveSession() != null) {
 			
