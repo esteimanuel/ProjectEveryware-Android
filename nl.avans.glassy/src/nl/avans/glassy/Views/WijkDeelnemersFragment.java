@@ -21,6 +21,7 @@ public class WijkDeelnemersFragment extends Fragment {
 	private ViewGroup rootView;
 	private ExtendingGridView gridview;
 	private ImageAdapter mAdapter;
+	private TextView deelnemerView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,31 +34,29 @@ public class WijkDeelnemersFragment extends Fragment {
 				.findViewById(R.id.deelnemerGrid);
 
 		int deelnemers = 0;
-		TextView deelnemerView = (TextView) rootView
-				.findViewById(R.id.deelnemerCount);
+		deelnemerView = (TextView) rootView.findViewById(R.id.deelnemerCount);
 		deelnemerView.setText(String.valueOf(deelnemers));
 		return rootView;
-	}
-
-	public void setDeelnemersCount(int length) {
-		TextView deelnemerCount = (TextView) rootView
-				.findViewById(R.id.deelnemerCount);
-		deelnemerCount.setText("" + length);
 	}
 
 	public void addDeelnemers(ArrayList<Deelnemer> deelnemersArray) {
 		mAdapter = new ImageAdapter(getActivity(), deelnemersArray);
 		gridview.setAdapter(mAdapter);
+
+		deelnemerView.setText(String.valueOf(deelnemersArray.size()));
+
 		gridview.setExpanded(true);
 
 		gridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
 				Deelnemer deelnemer = mAdapter.getDeelnemer(position);
-				if (deelnemer != null) {					
-				    Intent intent = new Intent(getActivity(), BuddyProfielActivity.class);
-				    intent.putExtra("nl.avans.glassy.Models.Deelnemer", deelnemer);
-				    startActivity(intent);
+				if (deelnemer != null) {
+					Intent intent = new Intent(getActivity(),
+							BuddyProfielActivity.class);
+					intent.putExtra("nl.avans.glassy.Models.Deelnemer",
+							deelnemer);
+					startActivity(intent);
 				}
 			}
 		});

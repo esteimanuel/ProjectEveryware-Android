@@ -79,7 +79,6 @@ public class Deelnemer implements Parcelable  {
 			isBuddy = true;
 			buddyData = new Buddy(buddy);
 		} catch (JSONException e) {
-			e.printStackTrace();
 		}
 	}
 
