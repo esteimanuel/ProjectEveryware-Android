@@ -6,13 +6,13 @@ import org.json.JSONObject;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Deelnemer implements Parcelable  {
-	
-	private String voornaam = "", tussenvoegsel = "", achternaam = "";
-	private String fotoLink = "";
+public class Deelnemer implements Parcelable {
+
+	private String voornaam, tussenvoegsel, achternaam;
+	private String fotoLink;
 	private Buddy buddyData;
 	private Boolean isBuddy = false;
-	
+
 	public int describeContents() {
 		return 0;
 	}
@@ -41,27 +41,27 @@ public class Deelnemer implements Parcelable  {
 		this.tussenvoegsel = in.readString();
 		this.achternaam = in.readString();
 		this.fotoLink = in.readString();
-        this.isBuddy = (in.readInt() == 1);
+		this.isBuddy = (in.readInt() == 1);
 		this.buddyData = in.readParcelable(this.getClass().getClassLoader());
 	}
 
 	public Deelnemer(JSONObject data) {
 		try {
-			if (data.get("voornaam") != null) {
+			if (!data.isNull("voornaam")) {
 				voornaam = (String) data.get("voornaam").toString();
 			}
 		} catch (JSONException e) {
 		}
 
 		try {
-			if (data.get("tussenvoegsel") != null) {
+			if (!data.isNull("tussenvoegsel")) {
 				tussenvoegsel = (String) data.get("tussenvoegsel").toString();
 			}
 		} catch (JSONException e) {
 		}
 
 		try {
-			if (data.get("achternaam") != null) {
+			if (!data.isNull("achternaam")) {
 				achternaam = (String) data.get("achternaam").toString();
 			}
 		} catch (JSONException e) {

@@ -7,8 +7,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Buddy implements Parcelable {
-	private String tijd_vanaf = "", tijd_tot = "", locatie = "",
-			contact_tel = "", contact_email = "";
+	private String tijd_vanaf, tijd_tot, locatie, contact_tel, contact_email;
 
 	public int describeContents() {
 		return 0;
@@ -42,37 +41,35 @@ public class Buddy implements Parcelable {
 
 	public Buddy(JSONObject buddyData) {
 		try {
-			if (buddyData.get("tijd_vanaf") != null) {
-				tijd_vanaf = (String) buddyData.get("tijd_vanaf")
-						.toString();
+			if (!buddyData.isNull("tijd_vanaf")) {
+				tijd_vanaf = (String) buddyData.get("tijd_vanaf").toString();
 			}
 		} catch (JSONException e) {
 		}
 
 		try {
-			if (buddyData.get("tijd_tot") != null) {
+			if (!buddyData.isNull("tijd_tot")) {
 				tijd_tot = (String) buddyData.get("tijd_tot").toString();
 			}
 		} catch (JSONException e) {
 		}
 
 		try {
-			if (buddyData.get("locatie") != null) {
+			if (!buddyData.isNull("locatie")) {
 				locatie = (String) buddyData.get("locatie").toString();
 			}
 		} catch (JSONException e) {
 		}
 
 		try {
-			if (buddyData.get("contact_tel") != null) {
-				contact_tel = (String) buddyData.get("contact_tel")
-						.toString();
+			if (!buddyData.isNull("contact_tel")) {
+				contact_tel = (String) buddyData.get("contact_tel").toString();
 			}
 		} catch (JSONException e) {
 		}
 
 		try {
-			if (buddyData.get("contact_email") != null) {
+			if (!buddyData.isNull("contact_email")) {
 				contact_email = (String) buddyData.get("contact_email")
 						.toString();
 			}

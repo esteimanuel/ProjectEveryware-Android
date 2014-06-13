@@ -56,5 +56,7 @@
     <string name="huisnummer_toevoeging">Huisnummer toevoeging</string>
 
     <string name="title_activity_buddyprofiel">Buddy Profiel</string>
+    <string name="profielFoto">Profiel Foto</string>
+    
 
 </resources>
