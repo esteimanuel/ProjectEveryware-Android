@@ -244,25 +244,19 @@ public class WijkFragment extends Fragment implements faqListener,
 	}
 
 	private void startLoadingInfo() {
-		if(FaqInfo.answers.isEmpty() && FaqInfo.questions.isEmpty())
-		{
+		if (FaqInfo.answers.isEmpty() && FaqInfo.questions.isEmpty()) {
 			Faq.loadFaq(getActivity().getApplicationContext(), this);
-		} else
-		{
+		} else {
 			wijkFaqFragment.updateText(FaqInfo.questions, FaqInfo.answers);
 		}
 		GoedeDoelen.loadGoededoelen(getActivity().getApplicationContext(),
 				this, actieId);
-		ActieStats.loadStats(getActivity().getApplicationContext(), this, actieId);
+		ActieStats.loadStats(getActivity().getApplicationContext(), this,
+				actieId);
 	}
 
-	
-	
 	public void setDeelnemers(JSONArray result) {
 		ArrayList<Deelnemer> deelnemersArray = new ArrayList<Deelnemer>();
-		//int percentage = (int) (((float) result.length() / (float) target) * 100);
-		//wijkDetails.setDeelnemersCount(result.length(), percentage);
-		wijkDeelnemersFragment.setDeelnemersCount(result.length());
 		if (result.length() > 0) {
 			for (int i = 0; i < result.length(); i++) {
 				try {
@@ -272,9 +266,11 @@ public class WijkFragment extends Fragment implements faqListener,
 				}
 			}
 			wijkDeelnemersFragment.addDeelnemers(deelnemersArray);
+			rootView.findViewById(R.id.deelnemerSpecefiek).setVisibility(
+					View.VISIBLE);
 		}
 
-	} 
+	}
 
 	// Get usable device height (not counting statusbar ect.)
 	// Used for setting height of wijkDetails
@@ -330,30 +326,29 @@ public class WijkFragment extends Fragment implements faqListener,
 
 		} else if (Gebruiker.zitInActie(context)) {
 
-			if (Gebruiker
-					.zitInWelkeActie(context) != getActieId()) {
+			if (Gebruiker.zitInWelkeActie(context) != getActieId()) {
 
 				actieButton.setVisibility(View.GONE);
 			}
-			
+
 		} else if (Gebruiker.heeftProviderGekozen(context)) {
-			
+
 			actieButton.setVisibility(View.GONE);
-			
+
 		} else {
-			
+
 			actieButton.setText(R.string.deelnemen);
 			actieButton.setVisibility(View.VISIBLE);
 		}
 	}
-	
+
 	public void evalWijkNaam() {
-		
+
 		TextView wijknaam = (TextView) getView().findViewById(R.id.wijkTitel);
 		Context context = getActivity().getApplicationContext();
 
 		if (Gebruiker.zitInWelkeActie(context) == getActieId()) {
-			
+
 			wijknaam.setText(R.string.mijn_wijk);
 		}
 	}
