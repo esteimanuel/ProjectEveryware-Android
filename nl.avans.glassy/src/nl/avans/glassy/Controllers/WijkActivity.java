@@ -275,7 +275,18 @@ public class WijkActivity extends AccountFunctieActivity implements
 			
 		} else {
 			
-			// TODO melding naar gebruiker
+			new AlertDialog.Builder(this)
+						   .setTitle("Ooops")
+						   .setMessage("Je bent nog niet aangemeld bij een wijkactie!")
+						   .show();
 		}
+	}
+	
+	@Override 
+	protected void evalHuidigeWijk() {
+		
+		WijkFragment huidigeWijk = ((WijkFragment) mPagerAdapter.getItem(mPager.getCurrentItem()));
+		huidigeWijk.evalActieButton();
+		huidigeWijk.evalWijkNaam();
 	}
 }

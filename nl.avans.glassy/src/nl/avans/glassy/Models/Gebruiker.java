@@ -133,7 +133,7 @@ public class Gebruiker {
 
 			e.printStackTrace();
 		}
-
+		
 		new ApiCommunicator(context) {
 
 			@Override
@@ -158,6 +158,47 @@ public class Gebruiker {
 			}
 
 		}.execute(params);
+	}
+
+	public static void postcodeWijzigen(Context context, String postcode) {
+		
+		String[] params = {
+			"GET",
+			"postcode/findWithPostcode?postcode=" + postcode
+		};		
+		
+		Log.d("link", params[1]);
+		
+		new ApiCommunicator(context){
+
+			@Override
+			protected void onPostExecute(JSONObject result) {
+				
+				try {
+					
+					Log.d("postcode gevonden", result.toString());
+
+					SharedPreferences sp = getContext().getSharedPreferences("GLASSY", 0);
+					SharedPreferences.Editor editor = sp.edit();
+
+					JSONObject account = new JSONObject(sp.getString("ACCOUNT", null));
+					JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
+					gebruiker.put("postcode_id", result.getString("postcode_id"));
+					account.put("gebruiker", gebruiker.toString());
+
+					editor.putString("ACCOUNT", account.toString());
+
+					editor.commit();
+					
+					Gebruiker.profielWijzigen(getContext());
+
+				} catch(Exception e) {
+
+					e.printStackTrace();
+				}
+			}
+
+		}.execute(params);		
 	}
 
 	public static void aanmeldenBijWijk(Context context, String token, WijkFragment wijk) {

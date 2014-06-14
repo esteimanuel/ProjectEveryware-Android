@@ -41,23 +41,24 @@
 		    android:layout_height="wrap_content"
 		    android:hint="Postcode" />
 		
-		<EditText
-		    android:id="@+id/profiel_stad"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:hint="Stad" />
+		<LinearLayout android:orientation="horizontal" 
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content" >
 		
-		<EditText
-		    android:id="@+id/profiel_straat"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:hint="Straat" />
-		
-		<EditText
-		    android:id="@+id/profiel_huisnummer"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:hint="Huisnummer" />
+			<EditText
+			    android:id="@+id/profiel_huisnummer"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="0.5"
+			    android:hint="@string/huisnummer" />
+			
+			<EditText
+			    android:id="@+id/profiel_nummertoevoeging"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="0.5"
+			    android:hint="@string/huisnummer_toevoeging" />	
+		</LinearLayout>
 		
 		<Switch
 		    android:id="@+id/buddy_functies"
@@ -65,20 +66,65 @@
 		    android:layout_height="wrap_content"
 		    android:textOff="Buddy\?"
 		    android:textOn="Buddy!" />
-		
-		<EditText
-		    android:id="@+id/buddy_contactemail"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:hint="Contact email"
-		    android:visibility="gone" />
-		
+				
 		<EditText
 		    android:id="@+id/buddy_contacttel"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:hint="Contact telefoonnummer"
 		    android:visibility="gone" />
+		
+		<EditText
+		    android:id="@+id/buddy_contactmail"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:hint="Contact email"
+		    android:visibility="gone" />
+		
+		<LinearLayout android:orientation="vertical" 
+		    android:id="@+id/contacttijden"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:visibility="gone" >
+			
+			<nl.avans.glassy.Utils.TextViewHelveticaLight android:text="Contact tijden"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content" />
+			
+			<LinearLayout android:orientation="horizontal"
+			    android:id="@+id/contacttijd_van"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:clickable="true" >
+			    
+				<nl.avans.glassy.Utils.TextViewHelveticaLight android:text="Van:"
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:layout_weight="0.5" />
+				
+				<nl.avans.glassy.Utils.TextViewHelveticaLight android:id="@+id/contacttijd_van_tijd"
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:layout_weight="0.5" />
+			</LinearLayout>
+			
+			<LinearLayout android:orientation="horizontal"
+			    android:id="@+id/contacttijd_tot"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:clickable="true" >
+			    
+				<nl.avans.glassy.Utils.TextViewHelveticaLight android:text="Tot:"
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:layout_weight="0.5" />
+				
+				<nl.avans.glassy.Utils.TextViewHelveticaLight android:id="@+id/contacttijd_tot_tijd"
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:layout_weight="0.5" />
+			</LinearLayout>
+		</LinearLayout>
 		
 		<Button
 		    android:id="@+id/profiel_wijzigen"

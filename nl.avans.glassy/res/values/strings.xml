@@ -53,7 +53,8 @@
     <string name="tussenvoegsels">Tussenvoegsels</string>
     <string name="achternaam">Achternaam</string>
     <string name="postcode">Postcode</string>
-    <string name="huisnummer_toevoeging">Huisnummer toevoeging</string>
+    <string name="huisnummer">Huisnummer</string>
+    <string name="huisnummer_toevoeging">Toevoeging</string>
 
     <string name="title_activity_buddyprofiel">Buddy Profiel</string>
 

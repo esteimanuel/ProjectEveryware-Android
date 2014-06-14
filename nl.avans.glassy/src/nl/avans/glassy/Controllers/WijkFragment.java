@@ -343,6 +343,7 @@ public class WijkFragment extends Fragment implements faqListener,
 		} else {
 			
 			actieButton.setText(R.string.deelnemen);
+			actieButton.setVisibility(View.VISIBLE);
 		}
 	}
 	

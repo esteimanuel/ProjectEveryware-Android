@@ -46,13 +46,29 @@
 	    android:maxLines="1"
         android:hint="@string/postcode" />
     
-    <EditText 
-        android:id="@+id/dialog_nummertoevoeging"
-        android:textColor="@android:color/black"
+    <LinearLayout android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-	    android:lines="1"
-	    android:maxLines="1"
-        android:hint="@string/huisnummer_toevoeging" />
+        android:layout_height="wrap_content" >
+        
+	    <EditText 
+	        android:id="@+id/dialog_huisnummer"
+	        android:textColor="@android:color/black"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+		    android:lines="1"
+		    android:maxLines="1"
+		    android:layout_weight="0.5"
+	        android:hint="@string/huisnummer" />
+	    
+	    <EditText 
+	        android:id="@+id/dialog_nummertoevoeging"
+	        android:textColor="@android:color/black"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+		    android:lines="1"
+		    android:maxLines="1"
+		    android:layout_weight="0.5"
+	        android:hint="@string/huisnummer_toevoeging" />
+    </LinearLayout>
 
 </LinearLayout>

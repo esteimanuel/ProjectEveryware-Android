@@ -1,6 +1,8 @@
 package nl.avans.glassy.Controllers;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import nl.avans.glassy.R;
 import nl.avans.glassy.Models.Gebruiker;
@@ -11,6 +13,7 @@ import nl.avans.glassy.Views.AuthFragment.AuthManager;
 import nl.avans.glassy.Views.PostAuthFragment;
 import nl.avans.glassy.Views.PostAuthFragment.AccountLinkManager;
 import nl.avans.glassy.Views.ProfielBewerkenFragment;
+import nl.avans.glassy.Views.ProfielBewerkenFragment.ContactTijdenManager;
 import nl.avans.glassy.Views.ProfielBewerkenFragment.ProfielBewerkingManager;
 
 import org.json.JSONObject;
@@ -24,6 +27,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.facebook.LoggingBehavior;
@@ -36,10 +40,20 @@ import com.facebook.Settings;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 
-public abstract class AccountFunctieActivity extends FragmentActivity implements ToggleFunctiesManager, AuthManager, AccountLinkManager, ProfielBewerkingManager {
+public abstract class AccountFunctieActivity extends FragmentActivity implements ContactTijdenManager, ToggleFunctiesManager, AuthManager, AccountLinkManager, ProfielBewerkingManager {
 
 	private StatusCallback fssc = new FacebookSessionStatusCallback();
 	private SharedPreferenceStalker sps = new SharedPreferenceStalker();
+	
+	private Map<Integer, String> basicProfielPairs = new HashMap<Integer, String>() { 
+		{
+			put(R.id.profiel_voornaam, "voornaam");
+			put(R.id.profiel_tussenvoegsel, "tussenvoegsel");
+			put(R.id.profiel_achternaam, "achternaam");
+			put(R.id.profiel_huisnummer, "huisnummer");
+			put(R.id.profiel_nummertoevoeging, "huisnummer_toevoeging");
+		}; 
+	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstance) {
@@ -49,18 +63,31 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 	}
 	
 	@Override
+	public void setContacttijdVan(View v) {
+		
+	}
+	
+	@Override
+	public void setContacttijdTot(View v) {
+		
+	}
+	
+	@Override
 	public void profielWijzigen() {
 
 		SharedPreferences preferences = getApplicationContext().getSharedPreferences("GLASSY", 0);
 		
 		try {
-			
+						
 			JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
 			JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
 
-			gebruiker.put("voornaam", ((EditText) findViewById(R.id.profiel_voornaam)).getText().toString());
-			gebruiker.put("tussenvoegsel", ((EditText) findViewById(R.id.profiel_tussenvoegsel)).getText().toString());
-			gebruiker.put("achternaam", ((EditText) findViewById(R.id.profiel_achternaam)).getText().toString());
+			for(Integer key : basicProfielPairs.keySet()) {
+				
+				String value = ((EditText) findViewById(key)).getText().toString();
+				
+				if(!value.isEmpty()) gebruiker.put(basicProfielPairs.get(key), value);
+			}
 			
 			account.put("gebruiker", gebruiker.toString());
 			
@@ -70,9 +97,25 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 			
 			Gebruiker.profielWijzigen(getApplicationContext());
 			
+			String postcode = ((EditText) findViewById(R.id.profiel_postcode)).getText().toString();			
+			if(!postcode.isEmpty()) Gebruiker.postcodeWijzigen(getApplicationContext(), postcode.toUpperCase());
+			
+			buddyGegevensWijzigen(preferences, ((Switch) findViewById(R.id.buddy_functies)).isChecked());
+			
 		} catch(Exception e) {
 			
 			e.printStackTrace();
+		}
+	}
+	
+	private void buddyGegevensWijzigen(SharedPreferences preferences, boolean isBuddy) {
+		
+		if(isBuddy) {
+			
+			
+		} else {
+			
+			
 		}
 	}
 
@@ -174,6 +217,23 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 			view.setVisibility(View.GONE);
 		}
 	}
+	
+	@Override
+ 	public void toggleBuddyGegevens(boolean zichtbaar) {
+ 		
+ 		if(zichtbaar) {
+
+ 			findViewById(R.id.buddy_contacttel).setVisibility(View.VISIBLE);
+ 			findViewById(R.id.buddy_contactmail).setVisibility(View.VISIBLE);
+ 			findViewById(R.id.contacttijden).setVisibility(View.VISIBLE);
+ 			
+ 		} else {
+ 
+ 			findViewById(R.id.buddy_contacttel).setVisibility(View.GONE);
+ 			findViewById(R.id.buddy_contactmail).setVisibility(View.GONE);
+ 			findViewById(R.id.contacttijden).setVisibility(View.GONE);
+ 		}
+ 	}
 	
 	@Override
 	public void search() {
@@ -342,6 +402,8 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 						e.printStackTrace();
 					}
 				}
+				
+				evalHuidigeWijk();
 			}
 		}		
 	}	
@@ -360,4 +422,6 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 		Session session = Session.getActiveSession();
 		session.closeAndClearTokenInformation();
 	}
+	
+	protected abstract void evalHuidigeWijk();
 }
