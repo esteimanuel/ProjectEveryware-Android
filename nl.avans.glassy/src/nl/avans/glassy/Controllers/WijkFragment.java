@@ -227,7 +227,7 @@ public class WijkFragment extends Fragment implements faqListener,
 	}
 
 	private void setYoutubePlayer(String url) {
-		String[] seperated = url.split("=");
+		String[] seperated = url.split("embed\\/");
 
 		Bundle bundle = new Bundle();
 		bundle.putString("url", seperated[1]);

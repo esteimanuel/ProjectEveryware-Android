@@ -69,15 +69,19 @@ public class Deelnemer implements Parcelable {
 
 		try {
 			JSONObject account = data.getJSONObject("account");
-			fotoLink = (String) account.get("foto_link").toString();
+			if (!account.isNull("foto_link")) {
+				fotoLink = (String) account.get("foto_link").toString();
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
 		try {
-			JSONObject buddy = data.getJSONObject("buddy");
-			isBuddy = true;
-			buddyData = new Buddy(buddy);
+			if (!data.isNull("buddy")) {
+				JSONObject buddy = data.getJSONObject("buddy");
+				isBuddy = true;
+				buddyData = new Buddy(buddy);
+			}
 		} catch (JSONException e) {
 		}
 	}
