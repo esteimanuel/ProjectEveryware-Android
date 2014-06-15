@@ -162,6 +162,8 @@ public class Gebruiker {
 				"gebruiker",
 				"{ _token:" + account.getString("token") + ", _gebruiker: " + account.getString("gebruiker") + "}"
 			};
+			
+			Log.d("gebruiker", params[2]);
 
 		} catch(Exception e) {
 
@@ -421,6 +423,19 @@ public class Gebruiker {
 	
 	public static boolean heeftProviderGekozen(Context context) {
 		
-		return false;
+		Boolean retval = false;
+		
+		try {
+			
+			JSONObject gebruiker = getGebruikerUitContext(context);
+			
+			retval = !gebruiker.getString("provider_id").toLowerCase().equals("null");
+			
+		} catch(Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return retval;
 	}
 }

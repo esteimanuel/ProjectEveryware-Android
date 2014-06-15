@@ -315,7 +315,11 @@ public class WijkFragment extends Fragment implements faqListener,
 
 		if (Gebruiker.zitInWelkeActie(context) == getActieId()) {
 
-			if (Gebruiker.heeftBetaald(context)) {
+			if (Gebruiker.heeftProviderGekozen(context)) {
+
+				actieButton.setText(R.string.afwachten);
+
+			} else if (Gebruiker.heeftBetaald(context)) {
 
 				actieButton.setText(R.string.provider_kiezen);
 
@@ -331,11 +335,7 @@ public class WijkFragment extends Fragment implements faqListener,
 				actieButton.setVisibility(View.GONE);
 			}
 
-		} else if (Gebruiker.heeftProviderGekozen(context)) {
-
-			actieButton.setVisibility(View.GONE);
-
-		} else {
+		}  else {
 
 			actieButton.setText(R.string.deelnemen);
 			actieButton.setVisibility(View.VISIBLE);

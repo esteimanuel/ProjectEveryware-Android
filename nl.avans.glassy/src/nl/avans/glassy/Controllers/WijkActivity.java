@@ -3,6 +3,7 @@ package nl.avans.glassy.Controllers;
 import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.PagerAdapter;
 import nl.avans.glassy.Models.Gebruiker;
+import nl.avans.glassy.Models.Providers;
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Views.ProfielBewerkenFragment;
 import nl.avans.glassy.Views.WijkDetailsFragment.OnSpecialButtonPressListener;
@@ -10,11 +11,13 @@ import nl.avans.glassy.Views.WijkFaqFragment.wijkFaqListener;
 import nl.avans.glassy.Views.WijkGoededoelenFragment.wijkgoededoelenListener;
 import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -77,6 +80,13 @@ public class WijkActivity extends AccountFunctieActivity implements
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	@Override
+	protected void onStart() {
+		
+		super.onStart();
+		Providers.updateProviders(getApplicationContext());
 	}
 
 	@Override
@@ -288,15 +298,53 @@ public class WijkActivity extends AccountFunctieActivity implements
 		final String token_finallized = token;
 		final WijkFragment wijk_finallized = huidigewijk;
 		
+		String[] providers = new String[] {};
+		JSONArray providersJsonArray = new JSONArray();
+		
+		try {
+			
+			SharedPreferences preferences = getApplicationContext().getSharedPreferences("GLASSY", 0);
+			JSONObject providersJson = new JSONObject(preferences.getString("PROVIDERS", null));
+			providersJsonArray = providersJson.getJSONArray("entries");
+
+			providers = new String[providersJsonArray.length()];
+			
+			for(int i = 0; i < providersJsonArray.length(); i++) {
+				
+				providers[i] = providersJsonArray.getJSONObject(i).getString("naam");
+			}
+			
+		} catch(Exception e) { e.printStackTrace(); }
+		
+		final String[] finalizedProviders = providers;
+		final JSONArray finalizedJsonArray = providersJsonArray;
+		
 		new AlertDialog.Builder(this)
 		   .setTitle("Provider kiezen")
-		   .setMessage("Kies de provider die jij zou willen hebben")
-		   .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
+		   .setItems(finalizedProviders, new OnClickListener() {
+			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				
-				Gebruiker.betaalBorg(getApplicationContext(), token_finallized);
+				try {
+					
+					SharedPreferences sp = getApplicationContext().getSharedPreferences("GLASSY", 0);
+					SharedPreferences.Editor editor = sp.edit();
+	
+					JSONObject account = new JSONObject(sp.getString("ACCOUNT", null));
+					JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
+					
+					gebruiker.put("provider_id", finalizedJsonArray.getJSONObject(which).getInt("provider_id"));
+					account.put("gebruiker", gebruiker.toString());
+	
+					editor.putString("ACCOUNT", account.toString());
+	
+					editor.commit();
+					
+					Gebruiker.profielWijzigen(getApplicationContext());
+				
+				} catch(Exception e) { e.printStackTrace();	}
+				
 				wijk_finallized.evalActieButton();
 				return;
 			}
