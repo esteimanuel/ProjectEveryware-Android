@@ -18,6 +18,8 @@ import nl.avans.glassy.Views.ProfielBewerkenFragment.ProfielBewerkingManager;
 
 import org.json.JSONObject;
 
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -29,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.facebook.LoggingBehavior;
 import com.facebook.Request;
@@ -55,6 +58,16 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 		}; 
 	};
 	
+	final public static Map<Integer, String> dialogProfielPairs = new HashMap<Integer, String>() { 
+		{
+			put(R.id.dialog_voornaam, "voornaam");
+			put(R.id.dialog_tussenvoegsels, "tussenvoegsel");
+			put(R.id.dialog_achternaam, "achternaam");
+			put(R.id.dialog_huisnummer, "huisnummer");
+			put(R.id.dialog_nummertoevoeging, "huisnummer_toevoeging");
+		}; 
+	};
+	
 	@Override
 	protected void onCreate(Bundle savedInstance) {
 		
@@ -65,11 +78,40 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 	@Override
 	public void setContacttijdVan(View v) {
 		
+		final View theView = v;
+		final String[] tijd = ((TextView) findViewById(R.id.contacttijd_van_tijd)).getText().toString().split(":");
+		
+		new TimePickerDialog(this, new OnTimeSetListener() {
+			
+			@Override
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				
+				String tijd = "" + hourOfDay;
+				tijd += ":" + String.format("%02d", minute) + ":00";
+
+				((TextView) theView.findViewById(R.id.contacttijd_van_tijd)).setText(tijd);
+			}
+		}, Integer.parseInt(tijd[0]), Integer.parseInt(tijd[1]), true).show();
+		
 	}
 	
 	@Override
 	public void setContacttijdTot(View v) {
+				
+		final View theView = v;
+		final String[] tijd = ((TextView) findViewById(R.id.contacttijd_tot_tijd)).getText().toString().split(":");
 		
+		new TimePickerDialog(this, new OnTimeSetListener() {
+			
+			@Override
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				
+				String tijd = "" + hourOfDay;
+				tijd += ":" + String.format("%02d", minute) + ":00";
+		
+				((TextView) theView.findViewById(R.id.contacttijd_tot_tijd)).setText(tijd);
+			}
+		}, Integer.parseInt(tijd[0]), Integer.parseInt(tijd[1]), true).show();
 	}
 	
 	@Override
@@ -110,13 +152,29 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 	
 	private void buddyGegevensWijzigen(SharedPreferences preferences, boolean isBuddy) {
 		
-		if(isBuddy) {
+		if(!isBuddy) {
 			
-			
-		} else {
-			
-			
+			// buddy gegevens verwijderen
+			return;
 		}
+		
+		try {
+			
+			JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
+			JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
+			
+			if(gebruiker.has("buddy")) {
+				
+				//TODO update buddy gegevens
+				return;
+				
+			} else {
+				
+				//TODO nieuwe buddy aanmaken
+			}
+		
+		} catch(Exception e) { e.printStackTrace(); }		
+		
 	}
 
 	@Override
@@ -129,6 +187,7 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 	public void gaNaarProfiel() {
 
 		AccountFunctiesFragment.getInstance().veranderFragment(new ProfielBewerkenFragment());
+		
 	}
 	
 	@Override 

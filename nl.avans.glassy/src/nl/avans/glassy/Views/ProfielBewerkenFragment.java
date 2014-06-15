@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -152,10 +153,10 @@ public class ProfielBewerkenFragment extends Fragment {
 
 			if(gebruiker.getString("huisnummer_toevoeging") != null && !gebruiker.getString("huisnummer_toevoeging").equals("null")) {
 				
-				((EditText) view.findViewById(R.id.profiel_huisnummer)).setText(gebruiker.getString("huisnummer"));			
+				((EditText) view.findViewById(R.id.profiel_nummertoevoeging)).setText(gebruiker.getString("huisnummer_toevoeging"));			
 			}
 			
-			postcodeInvullen(view);
+			postcodeInvullen(view);		
 			buddyVeldenInvullen(view);
 
 		} catch(Exception e) {
@@ -183,34 +184,37 @@ public class ProfielBewerkenFragment extends Fragment {
 	// logic hier is lelijk maar heb geen beter oplossing...
 	private void buddyVeldenInvullen(View view) throws JSONException {
 		
-		final View finalized = view;
 		SharedPreferences preferences = getActivity().getSharedPreferences("GLASSY", 0);
 		JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
 		JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
 		
-		String[] params = new String[] {
-			"GET",
-			"buddy/getByGebruikerId?gebruiker_id=" + gebruiker.getString("gebruiker_id")
-		};
-		
-		new ApiCommunicator(null) {
+		try {
 			
-			@Override
-			protected void onPostExecute(JSONObject result) {
+			JSONObject buddy = new JSONObject(gebruiker.getString("buddy"));
+			
+			if(buddy.getString("contact_email") != null && !buddy.getString("contact_email").equals("null")) {
 				
-				if(result == null) return; // don't even bother
-				
-				try {
-					
-					((TextView) finalized.findViewById(R.id.buddy_contacttel)).setText(result.getString("contact_tel"));
-					((TextView) finalized.findViewById(R.id.buddy_contactmail)).setText(result.getString("contact_email"));
-					((TextView) finalized.findViewById(R.id.contacttijd_tot_tijd)).setText(result.getString("tijd_tot"));
-					((TextView) finalized.findViewById(R.id.contacttijd_van_tijd)).setText(result.getString("tijd_vanaf"));					
-					
-				} catch(Exception e) { }
+				((TextView) view.findViewById(R.id.buddy_contactmail)).setText(buddy.getString("contact_email"));			
 			}
 			
-		}.execute(params); 	
+			if(buddy.getString("contact_tel") != null && !buddy.getString("contact_tel").equals("null")) {
+				
+				((TextView) view.findViewById(R.id.buddy_contacttel)).setText(buddy.getString("contact_tel"));			
+			}
+			
+			if(buddy.getString("tijd_vanaf") != null && !buddy.getString("tijd_vanaf").equals("null")) {
+				
+				((TextView) view.findViewById(R.id.contacttijd_van_tijd)).setText(buddy.getString("tijd_vanaf"));			
+			}
+			
+			if(buddy.getString("tijd_tot") != null && !buddy.getString("tijd_tot").equals("null")) {
+				
+				((TextView) view.findViewById(R.id.contacttijd_tot_tijd)).setText(buddy.getString("tijd_tot"));			
+			}
+			
+			
+			
+		} catch(Exception e) { e.printStackTrace(); }
 		
 	}
 	
@@ -242,5 +246,51 @@ public class ProfielBewerkenFragment extends Fragment {
 			
 		}.execute(params); 	
 		
+	}
+	
+	public static View dialogInvullen(Context context, View view) {
+		
+		View retval = view;
+		
+		SharedPreferences sp = context.getApplicationContext().getSharedPreferences("GLASSY", 0);
+
+		try {
+			
+			JSONObject account = new JSONObject(sp.getString("ACCOUNT", null));
+			JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
+					
+			// naam gegevens invullen
+			if(gebruiker.getString("voornaam") != null && !gebruiker.getString("voornaam").equals("null")) {
+				
+				((EditText) view.findViewById(R.id.dialog_voornaam)).setText(gebruiker.getString("voornaam"));			
+			}
+
+			if(gebruiker.getString("tussenvoegsel") != null && !gebruiker.getString("tussenvoegsel").equals("null")) {
+				
+				((EditText) view.findViewById(R.id.dialog_tussenvoegsels)).setText(gebruiker.getString("tussenvoegsel"));			
+			}
+			
+			if(gebruiker.getString("achternaam") != null && !gebruiker.getString("achternaam").equals("null")) {
+				
+				((EditText) view.findViewById(R.id.dialog_achternaam)).setText(gebruiker.getString("achternaam"));			
+			}
+			
+			// locatie gegevens invullen
+			if(gebruiker.getString("huisnummer") != null && !gebruiker.getString("huisnummer").equals("null")) {
+				
+				((EditText) view.findViewById(R.id.dialog_huisnummer)).setText(gebruiker.getString("huisnummer"));			
+			}
+
+			if(gebruiker.getString("huisnummer_toevoeging") != null && !gebruiker.getString("huisnummer_toevoeging").equals("null")) {
+				
+				((EditText) view.findViewById(R.id.dialog_nummertoevoeging)).setText(gebruiker.getString("huisnummer_toevoeging"));			
+			}
+		
+		} catch(Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return retval;
 	}
 }

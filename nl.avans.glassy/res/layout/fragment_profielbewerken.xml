@@ -100,12 +100,12 @@
 				<nl.avans.glassy.Utils.TextViewHelveticaLight android:text="Van:"
 				    android:layout_width="fill_parent"
 				    android:layout_height="wrap_content"
-				    android:layout_weight="0.5" />
+				    android:layout_weight="0.8" />
 				
 				<nl.avans.glassy.Utils.TextViewHelveticaLight android:id="@+id/contacttijd_van_tijd"
 				    android:layout_width="fill_parent"
 				    android:layout_height="wrap_content"
-				    android:layout_weight="0.5" />
+				    android:layout_weight="0.2" />
 			</LinearLayout>
 			
 			<LinearLayout android:orientation="horizontal"
@@ -117,12 +117,12 @@
 				<nl.avans.glassy.Utils.TextViewHelveticaLight android:text="Tot:"
 				    android:layout_width="fill_parent"
 				    android:layout_height="wrap_content"
-				    android:layout_weight="0.5" />
+				    android:layout_weight="0.8" />
 				
 				<nl.avans.glassy.Utils.TextViewHelveticaLight android:id="@+id/contacttijd_tot_tijd"
 				    android:layout_width="fill_parent"
 				    android:layout_height="wrap_content"
-				    android:layout_weight="0.5" />
+				    android:layout_weight="0.2" />
 			</LinearLayout>
 		</LinearLayout>
 		

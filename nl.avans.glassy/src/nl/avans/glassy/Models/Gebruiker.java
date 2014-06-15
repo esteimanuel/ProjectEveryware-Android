@@ -1,5 +1,6 @@
 package nl.avans.glassy.Models;
 
+import nl.avans.glassy.R;
 import nl.avans.glassy.Controllers.WijkFragment;
 import nl.avans.glassy.Utils.ApiCommunicator;
 
@@ -9,6 +10,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.facebook.model.GraphUser;
 
@@ -38,6 +40,8 @@ public class Gebruiker {
 					editor.putString("ACCOUNT", result.get("account").toString()); // if account is null exception will be caught
 
 					editor.commit();
+
+					Gebruiker.haalBuddyGegevensOp(getContext(), result.getInt("gebruiker_id"));
 
 				} catch(Exception e) {
 
@@ -71,7 +75,7 @@ public class Gebruiker {
 					editor.putString("ACCOUNT", result.get("account").toString()); // if account is null exception will be caught
 
 					editor.commit();
-
+					
 				} catch(Exception e) {
 
 					e.printStackTrace();
@@ -103,7 +107,7 @@ public class Gebruiker {
 					editor.putString("ACCOUNT", result.get("account").toString()); // if account is null exception will be caught
 
 					editor.commit();
-
+					
 				} catch(Exception e) {
 
 					e.printStackTrace();
@@ -111,6 +115,36 @@ public class Gebruiker {
 			}
 
 		}.execute(params);
+	}
+	
+	public static void haalBuddyGegevensOp(Context context, int gebruiker_id) {
+				
+		String[] params = new String[] {
+			"GET",
+			"buddy/getByGebruikerId?gebruiker_id=" + gebruiker_id
+		};
+		
+		new ApiCommunicator(context) {
+			
+			@Override
+			protected void onPostExecute(JSONObject result) {
+				
+				if(result == null) return; // don't even bother
+				
+				try {
+					
+					SharedPreferences preferences = getContext().getSharedPreferences("GLASSY", 0);
+					SharedPreferences.Editor editor = preferences.edit();
+					JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
+					
+					account.put("buddy", result.toString());
+					editor.putString("ACCOUNT", account.toString());
+					editor.commit();				
+					
+				} catch(Exception e) { }
+			}
+			
+		}.execute(params); 	
 	}
 
 	public static void profielWijzigen(Context context) {
@@ -331,7 +365,7 @@ public class Gebruiker {
 	
 	public static boolean heeftGegevensIngevuld(Context context) {
 		
-		String[] gegevens = {"voornaam", "achternaam", "postcode_id"};
+		String[] gegevens = {"voornaam", "achternaam", "postcode_id", "huisnummer"};
 		
 		boolean retval = true;
 		
@@ -341,9 +375,14 @@ public class Gebruiker {
 
 			for(String gegeven : gegevens) {	
 
-				retval = !(gebruiker.getString(gegeven) == null);
+				retval = !(gebruiker.getString(gegeven).equals("null"));
+				Log.d(gegeven, "" + retval);
 				
-				if(!retval) break;
+				if(!retval) {
+					
+					Log.d("kapot gegaan", gegeven);
+					break;
+				}
 			}
 			
 		} catch(Exception e) {

@@ -4,6 +4,7 @@ import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.PagerAdapter;
 import nl.avans.glassy.Models.Gebruiker;
 import nl.avans.glassy.Threads.ActieManager;
+import nl.avans.glassy.Views.ProfielBewerkenFragment;
 import nl.avans.glassy.Views.WijkDetailsFragment.OnSpecialButtonPressListener;
 import nl.avans.glassy.Views.WijkFaqFragment.wijkFaqListener;
 import nl.avans.glassy.Views.WijkGoededoelenFragment.wijkgoededoelenListener;
@@ -25,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 public class WijkActivity extends AccountFunctieActivity implements
 		webClientListener, wijkgoededoelenListener, wijkFaqListener, OnSpecialButtonPressListener {
@@ -165,7 +167,29 @@ public class WijkActivity extends AccountFunctieActivity implements
 
 		} catch(NullPointerException nullpointer) {
 
-			// TODO aanmelden
+			Builder dialog = new AlertDialog.Builder(this)
+			   .setTitle("Inloggen");		
+			
+			LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+			final View view = inflater.inflate(R.layout.dialog_login, null);
+			
+			dialog = dialog.setMessage("Je bent nog niet ingelogd! Om deel te kunnen nemen aan een wijk moet je ingelogd zijn.")
+			   		  .setView(view)
+			   		  .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+					
+				@Override
+				public void onClick(DialogInterface iDialog, int which) {
+					
+					Gebruiker.login(
+							getApplicationContext(), 
+							((EditText) view.findViewById(R.id.dialog_email)).getText().toString(), 
+							((EditText) view.findViewById(R.id.dialog_wachtwoord)).getText().toString()
+						);
+				}
+			});
+			
+			dialog.show();
+			
 			nullpointer.printStackTrace();
 
 		} catch(Exception e) {
@@ -185,27 +209,54 @@ public class WijkActivity extends AccountFunctieActivity implements
 		final String token_finallized = token;
 		final WijkFragment wijk_finallized = huidigewijk;
 		
-		boolean gegevensNodig = Gebruiker.heeftGegevensIngevuld(getApplicationContext());
+		boolean gegevensNodig = !Gebruiker.heeftGegevensIngevuld(getApplicationContext());
 
 		Builder dialog = new AlertDialog.Builder(this)
 					   .setTitle(R.string.inschrijven);							   
 		
 		if(gegevensNodig) {
 			
-				LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+			LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+			View view = inflater.inflate(R.layout.dialog_info, null);
 			
-				dialog = dialog.setMessage(getResources().getString(R.string.inschrijven_uitleg) + "\r\n\r\n" + getResources().getString(R.string.extra_info_vereist))
-					   		  .setView(inflater.inflate(R.layout.dialog_info, null))
-					   		  .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-							
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
+			final View finalizedView = ProfielBewerkenFragment.dialogInvullen(getApplicationContext(), view);	
+			
+			dialog = dialog.setMessage(getResources().getString(R.string.extra_info_vereist))
+				   		  .setView(finalizedView)
+				   		  .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 						
-						Gebruiker.betaalBorg(getApplicationContext(), token_finallized);
-						wijk_finallized.evalActieButton();
-						return;
-					}
-				});
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					
+					try {
+						
+						SharedPreferences preferences = getApplicationContext().getSharedPreferences("GLASSY", 0);
+						JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
+						JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
+						
+						for(Integer key : dialogProfielPairs.keySet()) {
+							
+							String value = ((EditText) finalizedView.findViewById(key)).getText().toString();
+							
+							if(!value.isEmpty()) gebruiker.put(dialogProfielPairs.get(key), value);
+						}
+						
+						account.put("gebruiker", gebruiker.toString());
+						
+						SharedPreferences.Editor edit = preferences.edit();
+						edit.putString("ACCOUNT", account.toString());
+						edit.commit();
+												
+						Gebruiker.profielWijzigen(getApplicationContext());
+						
+						String postcode = ((EditText) finalizedView.findViewById(R.id.dialog_postcode)).getText().toString();			
+						if(!postcode.isEmpty()) Gebruiker.postcodeWijzigen(getApplicationContext(), postcode.toUpperCase());
+						
+					} catch(Exception e) { e.printStackTrace(); }
+					
+					return;
+				}
+			});
 			   						
 		} else {
 
