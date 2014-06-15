@@ -101,19 +101,19 @@ public class WijkActivity extends AccountFunctieActivity implements
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onBackPressed() {
-		if (mPager.getCurrentItem() == 0) {
-			// If the user is currently looking at the first step, allow the
-			// system to handle the
-			// Back button. This calls finish() on this activity and pops the
-			// back stack.
-			super.onBackPressed();
-		} else {
-			// Otherwise, select the previous step.
-			mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-		}
-	}
+//	@Override
+//	public void onBackPressed() {
+//		if (mPager.getCurrentItem() == 0) {
+//			// If the user is currently looking at the first step, allow the
+//			// system to handle the
+//			// Back button. This calls finish() on this activity and pops the
+//			// back stack.
+//			super.onBackPressed();
+//		} else {
+//			// Otherwise, select the previous step.
+//			mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+//		}
+//	}
 
 	/**
 	 * A simple pager adapter that represents 5 ScreenSlidePageFragment objects,
