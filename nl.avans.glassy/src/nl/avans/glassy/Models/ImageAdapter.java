@@ -57,7 +57,7 @@ public class ImageAdapter extends BaseAdapter {
 		Deelnemer deelnemer = deelnemers.get(position);
 
 		imageView.setImageResource(R.drawable.profile1);
-		if (deelnemer.getFotoLink() != "null") {
+		if (deelnemer.getFotoLink() != null) {
 			new DownloadImageTask(imageView).execute(deelnemer.getFotoLink());
 		}
 
