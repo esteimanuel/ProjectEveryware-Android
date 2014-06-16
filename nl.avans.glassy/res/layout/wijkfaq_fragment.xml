@@ -29,7 +29,6 @@
             android:layout_height="wrap_content"
             android:maxLines="3"
             android:paddingBottom="5dp"
-            android:text="@string/temp"
             android:textColor="@color/white"
             android:textSize="20sp" />
     </RelativeLayout>

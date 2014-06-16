@@ -3,7 +3,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nl.avans.glassy.Controllers.DetailMapActivity"
+    tools:context="nl.avans.glassy.Controllers.DetailStappenActivity"
     tools:ignore="MergeRootFrame" 
     android:layout_marginTop="60dp"
     android:layout_marginLeft="1dp"
@@ -11,9 +11,9 @@
     android:background="@color/blackSemiTransparent" >
 
 	<fragment
-    	android:id="@+id/detailmapfragment"
-    	android:name="nl.avans.glassy.Views.DetailMapFragment"
+    	android:id="@+id/detailStappenfragment"
+    	android:name="nl.avans.glassy.Views.DetailStappenFragment"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
-	
 </FrameLayout>
+

@@ -10,12 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class FaqFragment extends Fragment {
 	private TextView faqinfo;
-	private ImageButton closeb;
+	private Button closeb;
 
 
 	public FaqFragment() {
@@ -25,7 +25,7 @@ public class FaqFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.faq_fragment, container, false);
 		faqinfo = (TextView) rootView.findViewById(R.id.faqInfo);
-		closeb = (ImageButton) rootView.findViewById(R.id.faq_view_button);
+		closeb = (Button) rootView.findViewById(R.id.faq_view_button);
 		closeb.setOnClickListener(
 				new OnClickListener(){
 

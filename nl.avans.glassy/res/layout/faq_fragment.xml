@@ -4,13 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageButton
+    <Button
         android:id="@+id/faq_view_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:contentDescription="@string/closebutton"
-        android:src="@drawable/ic_action_cancel" />
+        android:text="@string/x"
+        android:textColor="@color/white"/>
 
     <ScrollView
         android:layout_width="wrap_content"

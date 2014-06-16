@@ -3,10 +3,9 @@
 
     <string name="app_name">Glassy</string>
     <string name="app_id">608467429234622</string>
-    
     <string name="action_settings">Settings</string>
     <string name="email">E-mail</string>
-    <string name="wachtwoord">Wachtwoord</string>    
+    <string name="wachtwoord">Wachtwoord</string>
     <string name="herhaling_wachtwoord">HGerhaling wachtwoord</string>
     <string name="password">Password</string>
     <string name="password_repeat">Repeat password</string>
@@ -14,7 +13,6 @@
     <string name="loguit">Log uit</string>
     <string name="registreer">Registreer</string>
     <string name="anonieme_gebruiker">Anonieme Gebruiker</string>
-    
     <string name="backgroundContentDescription">Buurt achtergrond</string>
     <string name="tempwijknaam">Bart\'s glasvezel buurt</string>
     <string name="deelnemers">deelnemers</string>
@@ -33,20 +31,19 @@
     <string name="title_activity_goededoelen">Goededoelen</string>
     <string name="stappenTitel">Stappen</string>
     <string name="faqTitel">Veel gestelde vragen</string>
-    <string name="stap1">1. Bewoners verzamelen</string>	
+    <string name="stap1">1. Bewoners verzamelen</string>
     <string name="stap2">2. Inschrijven</string>
     <string name="stap3">3. Provider kiezen</string>
     <string name="stap4">4. Glasvezel aanleggen</string>
     <string name="stap5">5. Overstappen naar glasvezel</string>
     <string name="temp">Laden&#8230;</string>
     <string name="closebutton">close</string>
-    
+    <string name="x">X</string>
     <string name="deelnemen">Deelnemen</string>
     <string name="inschrijven">Inschrijven</string>
     <string name="inschrijven_uitleg">Om de kabelexploitanten relevante informatie te geven, verwachten wij een tijdelijke contributie. Deze wordt zowel als de onderhandelingen lukken als mislukken terug gegeven.</string>
     <string name="extra_info_vereist">Heej! we missen wat gegevens</string>
     <string name="provider_kiezen">Provider kiezen</string>
-    
     <string name="profiel">Profiel</string>
     <string name="mijn_wijk">Mijn Wijk</string>
     <string name="voornaam">Voornaam</string>
@@ -55,9 +52,9 @@
     <string name="postcode">Postcode</string>
     <string name="huisnummer">Huisnummer</string>
     <string name="huisnummer_toevoeging">Toevoeging</string>
-
     <string name="title_activity_buddyprofiel">Buddy Profiel</string>
     <string name="profielFoto">Profiel Foto</string>
-    
+    <string name="title_activity_detailvideo">VIDEO</string>
+    <string name="title_activity_detail_stappen">DetailStappenActivity</string>
 
 </resources>

@@ -5,7 +5,10 @@
     android:layout_height="match_parent"
     tools:context="nl.avans.glassy.Controllers.DetailGoededoelenActivity"
     tools:ignore="MergeRootFrame"
-    android:background="@color/black" >
+    android:layout_marginTop="60dp"
+    android:layout_marginLeft="1dp"
+    android:layout_marginRight="1dp"
+    android:background="@color/blackSemiTransparent" >
 
 	<fragment
     	android:id="@+id/detailGoededoelenfragment"

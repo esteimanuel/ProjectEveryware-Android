@@ -3,17 +3,14 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nl.avans.glassy.Controllers.DetailMapActivity"
-    tools:ignore="MergeRootFrame" 
-    android:layout_marginTop="60dp"
-    android:layout_marginLeft="1dp"
-    android:layout_marginRight="1dp"
+    tools:context="nl.avans.glassy.Controllers.DetailVideoActivity"
+    tools:ignore="MergeRootFrame"
     android:background="@color/blackSemiTransparent" >
-
-	<fragment
-    	android:id="@+id/detailmapfragment"
-    	android:name="nl.avans.glassy.Views.DetailMapFragment"
+    
+    <fragment
+    	android:id="@+id/detailvideofragment"
+    	android:name="nl.avans.glassy.Views.DetailVideoFragment"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
-	
+
 </FrameLayout>

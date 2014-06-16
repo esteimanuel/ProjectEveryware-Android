@@ -42,7 +42,7 @@ public class GoedeDoelen {
 						myListener.onGoededoelenLoaded(title ,description, message);
 					} else
 					{
-						myListener.onGoededoelenLoaded("" ,"Geen goede doel in deze wijk", "");
+						myListener.onGoededoelenLoaded("" , "", "");
 					}
 
 				} catch(Exception e) {

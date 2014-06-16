@@ -43,5 +43,7 @@ public class FaqActivity extends FragmentActivity implements faqListener {
 				.findFragmentById(R.id.faqfragment);
 		fragment.updateText(questions, answers);
 	}
+	
+	
 
 }

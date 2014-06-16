@@ -122,6 +122,10 @@ public class WijkFragment extends Fragment implements faqListener,
 		wijkMapFragment = new WijkMapFragment();
 		wijkMapFragment.setWijkid(wijkId);
 		fragmentTransaction.replace(R.id.map, wijkMapFragment, "wijkMap");
+		
+		// New faq Fragment
+		wijkFaqFragment = new WijkFaqFragment();
+		fragmentTransaction.replace(R.id.faq, wijkFaqFragment, "wijkfaq");
 
 		fragmentTransaction.commit();
 		return rootView;
@@ -206,10 +210,6 @@ public class WijkFragment extends Fragment implements faqListener,
 		fragmentTransaction.replace(R.id.goededoelen, wijkGoededoelenFragment,
 				"wijkgoededoelen");
 
-		// New faq Fragment
-		wijkFaqFragment = new WijkFaqFragment();
-		fragmentTransaction.replace(R.id.faq, wijkFaqFragment, "wijkfaq");
-
 		// New stappen Fragment
 		wijkStappenFragment = new WijkStappenFragment();
 		fragmentTransaction.replace(R.id.stappen, wijkStappenFragment,
@@ -219,28 +219,27 @@ public class WijkFragment extends Fragment implements faqListener,
 		wijkDeelnemersFragment = new WijkDeelnemersFragment();
 		fragmentTransaction.replace(R.id.deelnemers, wijkDeelnemersFragment,
 				"wijkDeelnemers");
-
-		startLoadingInfo();
+		
 		fragmentTransaction.commit();
 		ActieManager.startDeelnemersInitialization(this);
 		rootView.findViewById(R.id.actieSpecefiek).setVisibility(View.VISIBLE);
+		startLoadingInfo();
 	}
 
 	private void setYoutubePlayer(String url) {
-		String[] seperated = url.split("=");
-
-		Bundle bundle = new Bundle();
-		bundle.putString("url", seperated[1]);
+		String[] seperated = url.split("/");
+		int size = seperated.length - 1;	
 
 		// New youtubePlayer SupportFragment
 		wijkVideoFragment = new WijkVideoFragment();
-		wijkVideoFragment.setArguments(bundle);
+		wijkVideoFragment.setVideoId(seperated[size]);
 
 		fragmentManager = getChildFragmentManager();
 		fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.youtube, wijkVideoFragment,
 				"youtubePlayer");
 		fragmentTransaction.commit();
+		
 	}
 
 	private void startLoadingInfo() {
@@ -249,10 +248,8 @@ public class WijkFragment extends Fragment implements faqListener,
 		} else {
 			wijkFaqFragment.updateText(FaqInfo.questions, FaqInfo.answers);
 		}
-		GoedeDoelen.loadGoededoelen(getActivity().getApplicationContext(),
-				this, actieId);
-		ActieStats.loadStats(getActivity().getApplicationContext(), this,
-				actieId);
+		GoedeDoelen.loadGoededoelen(getActivity().getApplicationContext(), this, actieId);
+		ActieStats.loadStats(getActivity().getApplicationContext(), this, actieId);
 	}
 
 	public void setDeelnemers(JSONArray result) {
@@ -354,8 +351,7 @@ public class WijkFragment extends Fragment implements faqListener,
 	}
 
 	@Override
-	public void onFaqLoaded(ArrayList<String> questions,
-			ArrayList<String> answers) {
+	public void onFaqLoaded(ArrayList<String> questions, ArrayList<String> answers) {
 		FaqInfo.answers = answers;
 		FaqInfo.questions = questions;
 		wijkFaqFragment.updateText(questions, answers);
@@ -364,7 +360,14 @@ public class WijkFragment extends Fragment implements faqListener,
 	@Override
 	public void onGoededoelenLoaded(String title, String description,
 			String message) {
-		wijkGoededoelenFragment.updateText(title, description, message);
+		if(title.isEmpty() && description.isEmpty() && message.isEmpty())
+		{
+			wijkGoededoelenFragment.hide();
+		} else
+		{
+			wijkGoededoelenFragment.updateText(title, description, message);			
+		}
+
 	}
 
 	@Override

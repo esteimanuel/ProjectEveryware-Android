@@ -5,7 +5,7 @@
     android:orientation="vertical" >
     
     <Button
-        android:id="@+id/goededoelen_view_button"
+        android:id="@+id/stappen_view_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
@@ -16,10 +16,10 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/goededoelen_view_button" >
+        android:layout_below="@+id/stappen_view_button" >
     
     <nl.avans.glassy.Utils.TextViewHelveticaLight
-        android:id="@+id/Goededoelen_detail_info"
+        android:id="@+id/stappen_detail_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"

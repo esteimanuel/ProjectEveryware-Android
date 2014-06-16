@@ -15,21 +15,21 @@ import android.widget.TextView;
 public class WijkFaqFragment extends Fragment {
 	private TextView faqContent;
 	private wijkFaqListener myfaqListener;
+	private View rootView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View rootView = (ViewGroup) inflater.inflate(R.layout.wijkfaq_fragment,
+		rootView = (ViewGroup) inflater.inflate(R.layout.wijkfaq_fragment,
 				container, false);
 		faqContent = (TextView) rootView.findViewById(R.id.faqContent);
-		faqContent.setText("laden...");
+		faqContent.setText("Laden...");
 		setlisteners();
 		return rootView;
 	}
 
-	public void updateText(ArrayList<String> questions,
-			ArrayList<String> answers) {
+	public void updateText(ArrayList<String> questions,	ArrayList<String> answers) {
 		try {
 			String textviewinfo = "";
 			for (int i = 0; i < 3 && i < questions.size() && i < answers.size(); i++) {

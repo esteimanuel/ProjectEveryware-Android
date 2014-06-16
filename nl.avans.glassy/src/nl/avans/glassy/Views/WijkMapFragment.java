@@ -109,7 +109,7 @@ public class WijkMapFragment extends Fragment {
 		webView.setOnTouchListener(new View.OnTouchListener() {
 		    @Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
+		    	mywebListener.onTouchMap(URL + wijkId);
 				return true;
 			}
 		});

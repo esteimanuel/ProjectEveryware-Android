@@ -41,7 +41,7 @@
         <activity
             android:name="nl.avans.glassy.Controllers.DetailMapActivity"
             android:label="@string/title_activity_map_detail"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@style/TransparentDetail" >
         </activity>
         <activity
             android:name="nl.avans.glassy.Controllers.FaqActivity"
@@ -51,12 +51,23 @@
         <activity
             android:name="nl.avans.glassy.Controllers.DetailGoededoelenActivity"
             android:label="@string/title_activity_goededoelen"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@style/TransparentDetail" >
         </activity>
         <activity
             android:name="nl.avans.glassy.Controllers.BuddyProfielActivity"
             android:label="@string/title_activity_buddyprofiel"
             android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
+            android:name="nl.avans.glassy.Controllers.DetailVideoActivity"
+            android:label="@string/title_activity_detailvideo"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="nl.avans.glassy.Controllers.DetailStappenActivity"
+            android:label="@string/title_activity_detail_stappen"
+            android:theme="@style/TransparentDetail" >
         </activity>
     </application>
 

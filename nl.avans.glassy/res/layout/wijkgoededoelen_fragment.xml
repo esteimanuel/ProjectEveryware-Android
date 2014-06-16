@@ -30,7 +30,6 @@
             android:textSize="20sp" 
             android:paddingBottom="5dp"          
             android:textColor="@color/white" 
-            android:text="@string/temp"
             android:maxLines="3"
              /> 
         <!--

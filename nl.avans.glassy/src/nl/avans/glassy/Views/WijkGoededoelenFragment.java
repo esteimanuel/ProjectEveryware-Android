@@ -1,6 +1,7 @@
 package nl.avans.glassy.Views;
 
 import nl.avans.glassy.R;
+import nl.avans.glassy.Models.Locks;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,12 +22,14 @@ public class WijkGoededoelenFragment extends Fragment{
 	private View clickableLayout;
 	private TextView goededoelenInfo;
 	private ProgressBar status;
+	private View rootView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View rootView = (ViewGroup) inflater.inflate(R.layout.wijkgoededoelen_fragment, container, false);
+		rootView = (ViewGroup) inflater.inflate(R.layout.wijkgoededoelen_fragment, container, false);
 		goededoelenInfo = (TextView) rootView.findViewById(R.id.goededoelenInfo);	
+		goededoelenInfo.setText("Laden...");
 		status = (ProgressBar) rootView.findViewById(R.id.goededoelen_view_progress);
 		clickableLayout = rootView.findViewById(R.id.goededoelenLayout);	    
 		setlisteners();
@@ -74,5 +77,9 @@ public class WijkGoededoelenFragment extends Fragment{
 	//Interface that the activity implements to listen to events
 	public interface wijkgoededoelenListener {		
 		public void onTouchGoededoelen(String title, String description, String message);
+	}
+
+	public void hide() {
+		rootView.setVisibility(View.GONE);		
 	}
 }

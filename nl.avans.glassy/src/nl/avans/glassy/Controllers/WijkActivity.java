@@ -3,12 +3,15 @@ package nl.avans.glassy.Controllers;
 import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.PagerAdapter;
 import nl.avans.glassy.Models.Gebruiker;
+import nl.avans.glassy.Models.Locks;
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Views.ProfielBewerkenFragment;
 import nl.avans.glassy.Views.WijkDetailsFragment.OnSpecialButtonPressListener;
 import nl.avans.glassy.Views.WijkFaqFragment.wijkFaqListener;
 import nl.avans.glassy.Views.WijkGoededoelenFragment.wijkgoededoelenListener;
 import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
+import nl.avans.glassy.Views.WijkStappenFragment.wijkstappenListener;
+import nl.avans.glassy.Views.WijkVideoFragment.videoFullscreenListener;
 
 import org.json.JSONObject;
 
@@ -29,7 +32,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 public class WijkActivity extends AccountFunctieActivity implements
-		webClientListener, wijkgoededoelenListener, wijkFaqListener, OnSpecialButtonPressListener {
+webClientListener, wijkgoededoelenListener, wijkFaqListener, videoFullscreenListener, wijkstappenListener, OnSpecialButtonPressListener {
 	private ActieManager mActieManager;
 
 	/**
@@ -42,6 +45,10 @@ public class WijkActivity extends AccountFunctieActivity implements
 	 * The pager adapter, which provides the pages to the view pager widget.
 	 */
 	private PagerAdapter mPagerAdapter;
+
+	private boolean videoFullscreen;
+
+	private boolean mapFullscreen;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +64,9 @@ public class WijkActivity extends AccountFunctieActivity implements
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
-		
+
 		mPager.setOnPageChangeListener(new SimpleOnPageChangeListener() {
-			
+
 			@Override
 			public void onPageSelected(int position) {
 
@@ -78,7 +85,7 @@ public class WijkActivity extends AccountFunctieActivity implements
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -110,13 +117,234 @@ public class WijkActivity extends AccountFunctieActivity implements
 	 * in sequence.
 	 */
 
+
+
+	public PagerAdapter getViewPagerAdapter() {
+		return mPagerAdapter;
+	}
+	@Override
+	public void volgendeActieStapUitvoeren() {
+
+		WijkFragment huidigeWijk = ((WijkFragment) mPagerAdapter.getItem(mPager.getCurrentItem()));
+		SharedPreferences preferences = getApplicationContext().getSharedPreferences("GLASSY", 0);
+
+		Log.d("volgende actie", "click");
+
+		try {
+
+			JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
+
+			String token = account.getString("token");
+			if(!Gebruiker.zitInActie(getApplicationContext())) {
+
+				doeAanmelden(huidigeWijk, token);
+
+			} else if(!Gebruiker.heeftBetaald(getApplicationContext())) {
+
+				doeBetalingStap(huidigeWijk, token);
+
+			} else if(!Gebruiker.heeftProviderGekozen(getApplicationContext())) {
+
+				doeProviderKiezenStap(huidigeWijk, token);
+			}
+
+		} catch(NullPointerException nullpointer) {
+
+			Builder dialog = new AlertDialog.Builder(this)
+			.setTitle("Inloggen");		
+
+			LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+			final View view = inflater.inflate(R.layout.dialog_login, null);
+
+			dialog = dialog.setMessage("Je bent nog niet ingelogd! Om deel te kunnen nemen aan een wijk moet je ingelogd zijn.")
+					.setView(view)
+					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface iDialog, int which) {
+
+							Gebruiker.login(
+									getApplicationContext(), 
+									((EditText) view.findViewById(R.id.dialog_email)).getText().toString(), 
+									((EditText) view.findViewById(R.id.dialog_wachtwoord)).getText().toString()
+									);
+						}
+					});
+
+			dialog.show();
+
+			nullpointer.printStackTrace();
+
+		} catch(Exception e) {
+
+			e.printStackTrace();
+		}
+	}
+
+	private void doeAanmelden(WijkFragment huidigewijk, String token) {
+
+		Gebruiker.aanmeldenBijWijk(getApplicationContext(), token, huidigewijk);
+		return;
+	}
+
+	private void doeBetalingStap(WijkFragment huidigewijk, String token) {
+
+		final String token_finallized = token;
+		final WijkFragment wijk_finallized = huidigewijk;
+
+		boolean gegevensNodig = !Gebruiker.heeftGegevensIngevuld(getApplicationContext());
+
+		Builder dialog = new AlertDialog.Builder(this)
+		.setTitle(R.string.inschrijven);							   
+
+		if(gegevensNodig) {
+
+			LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+			View view = inflater.inflate(R.layout.dialog_info, null);
+
+			final View finalizedView = ProfielBewerkenFragment.dialogInvullen(getApplicationContext(), view);	
+
+			dialog = dialog.setMessage(getResources().getString(R.string.extra_info_vereist))
+					.setView(finalizedView)
+					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+
+							try {
+
+								SharedPreferences preferences = getApplicationContext().getSharedPreferences("GLASSY", 0);
+								JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
+								JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
+
+								for(Integer key : dialogProfielPairs.keySet()) {
+
+									String value = ((EditText) finalizedView.findViewById(key)).getText().toString();
+
+									if(!value.isEmpty()) gebruiker.put(dialogProfielPairs.get(key), value);
+								}
+
+								account.put("gebruiker", gebruiker.toString());
+
+								SharedPreferences.Editor edit = preferences.edit();
+								edit.putString("ACCOUNT", account.toString());
+								edit.commit();
+
+								Gebruiker.profielWijzigen(getApplicationContext());
+
+								String postcode = ((EditText) finalizedView.findViewById(R.id.dialog_postcode)).getText().toString();			
+								if(!postcode.isEmpty()) Gebruiker.postcodeWijzigen(getApplicationContext(), postcode.toUpperCase());
+
+							} catch(Exception e) { e.printStackTrace(); }
+
+							return;
+						}
+					});
+
+		} else {
+
+			dialog = dialog.setMessage(R.string.inschrijven_uitleg)
+					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+
+							Gebruiker.betaalBorg(getApplicationContext(), token_finallized);
+							wijk_finallized.evalActieButton();
+							return;
+						}
+					});
+		}
+
+		AlertDialog alert = dialog.create();
+		alert.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+		alert.show();
+	}
+
+	/** 
+	 * dialog voor het afhandelen van het kiezen van een provider
+	 * @param huidigewijk
+	 * @param token
+	 */
+	private void doeProviderKiezenStap(WijkFragment huidigewijk, String token) {
+
+		final String token_finallized = token;
+		final WijkFragment wijk_finallized = huidigewijk;
+
+		new AlertDialog.Builder(this)
+		.setTitle("Provider kiezen")
+		.setMessage("Kies de provider die jij zou willen hebben")
+		.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				Gebruiker.betaalBorg(getApplicationContext(), token_finallized);
+				wijk_finallized.evalActieButton();
+				return;
+			}
+		}).show();
+	}
+
+
+	@Override
+	public void gaNaarMijnWijk() {
+
+		int pagerItems = mPagerAdapter.getCount();
+
+		int wijkIndex = -1;
+		for(int i = 0; i < pagerItems; i++) {
+
+			WijkFragment wf = (WijkFragment) mPagerAdapter.getItem(i);
+			if(Gebruiker.zitInWelkeActie(getApplicationContext()) == wf.getActieId()) {
+
+				wijkIndex = i;
+				break;
+			}
+		}
+
+		if(wijkIndex != -1) {
+
+			mPager.setCurrentItem(wijkIndex);
+
+		} else {
+
+			new AlertDialog.Builder(this)
+			.setTitle("Ooops")
+			.setMessage("Je bent nog niet aangemeld bij een wijkactie!")
+			.show();
+		}
+	}
+
+	@Override 
+	protected void evalHuidigeWijk() {
+
+		WijkFragment huidigeWijk = ((WijkFragment) mPagerAdapter.getItem(mPager.getCurrentItem()));
+		huidigeWijk.evalActieButton();
+		huidigeWijk.evalWijkNaam();
+	}
+
+	@Override
+	public void onVideoFullscreen(String VIDEO_ID) {
+		if(!Locks.videofull){	
+			Locks.videofull = true;
+			Intent myIntent = new Intent(this, DetailVideoActivity.class);
+			myIntent.putExtra("url", VIDEO_ID);
+			this.startActivity(myIntent);
+		}
+
+	}
+
 	// Implementations of the ontouchlistener from wijkMapFragment
 	@Override
 	public void onTouchMap(String URL) {
-		//TODO FIX
+		if(!Locks.mapfull)
+		{
+			Locks.mapfull = true;
 		Intent myIntent = new Intent(this, DetailMapActivity.class);
 		myIntent.putExtra("url", URL);
 		this.startActivity(myIntent);
+		}
 	}
 
 	@Override
@@ -128,216 +356,22 @@ public class WijkActivity extends AccountFunctieActivity implements
 		this.startActivity(myIntent);
 	}
 
-	public PagerAdapter getViewPagerAdapter() {
-		return mPagerAdapter;
-	}
-	
+
+
 	@Override
 	public void onTouchFaq() {
 		Intent myIntent = new Intent(this, FaqActivity.class);
+		this.startActivity(myIntent);			
+	}
+
+	@Override
+	public void onTouchstappen(String p1, String p2, String p3, String p4, String p5) {
+		Intent myIntent = new Intent(this, DetailStappenActivity.class);
+		myIntent.putExtra("1", p1);
+		myIntent.putExtra("2", p2);
+		myIntent.putExtra("3", p3);
+		myIntent.putExtra("4", p4);
+		myIntent.putExtra("5", p5);
 		this.startActivity(myIntent);
-		
-	}
-
-	@Override
-	public void volgendeActieStapUitvoeren() {
-
-		WijkFragment huidigeWijk = ((WijkFragment) mPagerAdapter.getItem(mPager.getCurrentItem()));
-		SharedPreferences preferences = getApplicationContext().getSharedPreferences("GLASSY", 0);
-
-		Log.d("volgende actie", "click");
-		
-		try {
-
-			JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
-			
-			String token = account.getString("token");
-			if(!Gebruiker.zitInActie(getApplicationContext())) {
-
-				doeAanmelden(huidigeWijk, token);
-
-			} else if(!Gebruiker.heeftBetaald(getApplicationContext())) {
-				
-				doeBetalingStap(huidigeWijk, token);
-	
-			} else if(!Gebruiker.heeftProviderGekozen(getApplicationContext())) {
-				
-				doeProviderKiezenStap(huidigeWijk, token);
-			}
-
-		} catch(NullPointerException nullpointer) {
-
-			Builder dialog = new AlertDialog.Builder(this)
-			   .setTitle("Inloggen");		
-			
-			LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-			final View view = inflater.inflate(R.layout.dialog_login, null);
-			
-			dialog = dialog.setMessage("Je bent nog niet ingelogd! Om deel te kunnen nemen aan een wijk moet je ingelogd zijn.")
-			   		  .setView(view)
-			   		  .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-					
-				@Override
-				public void onClick(DialogInterface iDialog, int which) {
-					
-					Gebruiker.login(
-							getApplicationContext(), 
-							((EditText) view.findViewById(R.id.dialog_email)).getText().toString(), 
-							((EditText) view.findViewById(R.id.dialog_wachtwoord)).getText().toString()
-						);
-				}
-			});
-			
-			dialog.show();
-			
-			nullpointer.printStackTrace();
-
-		} catch(Exception e) {
-
-			e.printStackTrace();
-		}
-	}
-	
-	private void doeAanmelden(WijkFragment huidigewijk, String token) {
-		
-		Gebruiker.aanmeldenBijWijk(getApplicationContext(), token, huidigewijk);
-		return;
-	}
-	
-	private void doeBetalingStap(WijkFragment huidigewijk, String token) {
-		
-		final String token_finallized = token;
-		final WijkFragment wijk_finallized = huidigewijk;
-		
-		boolean gegevensNodig = !Gebruiker.heeftGegevensIngevuld(getApplicationContext());
-
-		Builder dialog = new AlertDialog.Builder(this)
-					   .setTitle(R.string.inschrijven);							   
-		
-		if(gegevensNodig) {
-			
-			LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-			View view = inflater.inflate(R.layout.dialog_info, null);
-			
-			final View finalizedView = ProfielBewerkenFragment.dialogInvullen(getApplicationContext(), view);	
-			
-			dialog = dialog.setMessage(getResources().getString(R.string.extra_info_vereist))
-				   		  .setView(finalizedView)
-				   		  .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-						
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					
-					try {
-						
-						SharedPreferences preferences = getApplicationContext().getSharedPreferences("GLASSY", 0);
-						JSONObject account = new JSONObject(preferences.getString("ACCOUNT", null));
-						JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
-						
-						for(Integer key : dialogProfielPairs.keySet()) {
-							
-							String value = ((EditText) finalizedView.findViewById(key)).getText().toString();
-							
-							if(!value.isEmpty()) gebruiker.put(dialogProfielPairs.get(key), value);
-						}
-						
-						account.put("gebruiker", gebruiker.toString());
-						
-						SharedPreferences.Editor edit = preferences.edit();
-						edit.putString("ACCOUNT", account.toString());
-						edit.commit();
-												
-						Gebruiker.profielWijzigen(getApplicationContext());
-						
-						String postcode = ((EditText) finalizedView.findViewById(R.id.dialog_postcode)).getText().toString();			
-						if(!postcode.isEmpty()) Gebruiker.postcodeWijzigen(getApplicationContext(), postcode.toUpperCase());
-						
-					} catch(Exception e) { e.printStackTrace(); }
-					
-					return;
-				}
-			});
-			   						
-		} else {
-
-			  dialog = dialog.setMessage(R.string.inschrijven_uitleg)
-					  		 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						
-						Gebruiker.betaalBorg(getApplicationContext(), token_finallized);
-						wijk_finallized.evalActieButton();
-						return;
-					}
-				});
-		}
-		
-		AlertDialog alert = dialog.create();
-		alert.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-		alert.show();
-	}
-	
-	/** 
-	 * dialog voor het afhandelen van het kiezen van een provider
-	 * @param huidigewijk
-	 * @param token
-	 */
-	private void doeProviderKiezenStap(WijkFragment huidigewijk, String token) {
-
-		final String token_finallized = token;
-		final WijkFragment wijk_finallized = huidigewijk;
-		
-		new AlertDialog.Builder(this)
-		   .setTitle("Provider kiezen")
-		   .setMessage("Kies de provider die jij zou willen hebben")
-		   .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				
-				Gebruiker.betaalBorg(getApplicationContext(), token_finallized);
-				wijk_finallized.evalActieButton();
-				return;
-			}
-		}).show();
-	}
-
-
-	@Override
-	public void gaNaarMijnWijk() {
-		
-		int pagerItems = mPagerAdapter.getCount();
-		
-		int wijkIndex = -1;
-		for(int i = 0; i < pagerItems; i++) {
-			
-			WijkFragment wf = (WijkFragment) mPagerAdapter.getItem(i);
-			if(Gebruiker.zitInWelkeActie(getApplicationContext()) == wf.getActieId()) {
-				
-				wijkIndex = i;
-				break;
-			}
-		}
-		
-		if(wijkIndex != -1) {
-			
-			mPager.setCurrentItem(wijkIndex);
-			
-		} else {
-			
-			new AlertDialog.Builder(this)
-						   .setTitle("Ooops")
-						   .setMessage("Je bent nog niet aangemeld bij een wijkactie!")
-						   .show();
-		}
-	}
-	
-	@Override 
-	protected void evalHuidigeWijk() {
-		
-		WijkFragment huidigeWijk = ((WijkFragment) mPagerAdapter.getItem(mPager.getCurrentItem()));
-		huidigeWijk.evalActieButton();
-		huidigeWijk.evalWijkNaam();
 	}
 }
