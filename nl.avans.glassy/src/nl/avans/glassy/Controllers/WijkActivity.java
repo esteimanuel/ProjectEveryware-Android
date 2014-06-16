@@ -3,7 +3,11 @@ package nl.avans.glassy.Controllers;
 import nl.avans.glassy.R;
 import nl.avans.glassy.Interfaces.PagerAdapter;
 import nl.avans.glassy.Models.Gebruiker;
+
 import nl.avans.glassy.Models.Locks;
+
+import nl.avans.glassy.Models.Providers;
+
 import nl.avans.glassy.Threads.ActieManager;
 import nl.avans.glassy.Views.ProfielBewerkenFragment;
 import nl.avans.glassy.Views.WijkDetailsFragment.OnSpecialButtonPressListener;
@@ -13,11 +17,13 @@ import nl.avans.glassy.Views.WijkMapFragment.webClientListener;
 import nl.avans.glassy.Views.WijkStappenFragment.wijkstappenListener;
 import nl.avans.glassy.Views.WijkVideoFragment.videoFullscreenListener;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -85,7 +91,16 @@ webClientListener, wijkgoededoelenListener, wijkFaqListener, videoFullscreenList
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
+
+
+	@Override
+	protected void onStart() {
+
+		super.onStart();
+		Providers.updateProviders(getApplicationContext());
+	}
+
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -98,19 +113,19 @@ webClientListener, wijkgoededoelenListener, wijkFaqListener, videoFullscreenList
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onBackPressed() {
-		if (mPager.getCurrentItem() == 0) {
-			// If the user is currently looking at the first step, allow the
-			// system to handle the
-			// Back button. This calls finish() on this activity and pops the
-			// back stack.
-			super.onBackPressed();
-		} else {
-			// Otherwise, select the previous step.
-			mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-		}
-	}
+	//	@Override
+	//	public void onBackPressed() {
+	//		if (mPager.getCurrentItem() == 0) {
+	//			// If the user is currently looking at the first step, allow the
+	//			// system to handle the
+	//			// Back button. This calls finish() on this activity and pops the
+	//			// back stack.
+	//			super.onBackPressed();
+	//		} else {
+	//			// Otherwise, select the previous step.
+	//			mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+	//		}
+	//	}
 
 	/**
 	 * A simple pager adapter that represents 5 ScreenSlidePageFragment objects,
@@ -244,7 +259,7 @@ webClientListener, wijkgoededoelenListener, wijkFaqListener, videoFullscreenList
 		} else {
 
 			dialog = dialog.setMessage(R.string.inschrijven_uitleg)
-					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
@@ -270,7 +285,6 @@ webClientListener, wijkgoededoelenListener, wijkFaqListener, videoFullscreenList
 
 		final String token_finallized = token;
 		final WijkFragment wijk_finallized = huidigewijk;
-
 		new AlertDialog.Builder(this)
 		.setTitle("Provider kiezen")
 		.setMessage("Kies de provider die jij zou willen hebben")
@@ -279,99 +293,148 @@ webClientListener, wijkgoededoelenListener, wijkFaqListener, videoFullscreenList
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 
-				Gebruiker.betaalBorg(getApplicationContext(), token_finallized);
-				wijk_finallized.evalActieButton();
-				return;
+				Gebruiker.betaalBorg(getApplicationContext(), token_finallized);		
+				String[] providers = new String[] {};
+				JSONArray providersJsonArray = new JSONArray();
+
+				try {
+
+					SharedPreferences preferences = getApplicationContext().getSharedPreferences("GLASSY", 0);
+					JSONObject providersJson = new JSONObject(preferences.getString("PROVIDERS", null));
+					providersJsonArray = providersJson.getJSONArray("entries");
+
+					providers = new String[providersJsonArray.length()];
+
+					for(int i = 0; i < providersJsonArray.length(); i++) {
+
+						providers[i] = providersJsonArray.getJSONObject(i).getString("naam");
+					}
+
+				} catch(Exception e) { e.printStackTrace(); }
+			
+				final String[] finalizedProviders = providers;
+				final JSONArray finalizedJsonArray = providersJsonArray;
+			}});
+		/*
+				new AlertDialog.Builder(this)
+				.setTitle("Provider kiezen")
+				.setItems(finalizedProviders, new OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						try {
+
+							SharedPreferences sp = getApplicationContext().getSharedPreferences("GLASSY", 0);
+							SharedPreferences.Editor editor = sp.edit();
+
+							JSONObject account = new JSONObject(sp.getString("ACCOUNT", null));
+							JSONObject gebruiker = new JSONObject(account.getString("gebruiker"));
+
+							gebruiker.put("provider_id", finalizedJsonArray.getJSONObject(which).getInt("provider_id"));
+							account.put("gebruiker", gebruiker.toString());
+
+							editor.putString("ACCOUNT", account.toString());
+
+							editor.commit();
+
+							Gebruiker.profielWijzigen(getApplicationContext());
+
+						} catch(Exception e) { e.printStackTrace();	}
+
+						wijk_finallized.evalActieButton();
+						return;
+					}
+				}).show();
+				*/
 			}
-		}).show();
-	}
 
 
-	@Override
-	public void gaNaarMijnWijk() {
+			@Override
+			public void gaNaarMijnWijk() {
 
-		int pagerItems = mPagerAdapter.getCount();
+				int pagerItems = mPagerAdapter.getCount();
 
-		int wijkIndex = -1;
-		for(int i = 0; i < pagerItems; i++) {
+				int wijkIndex = -1;
+				for(int i = 0; i < pagerItems; i++) {
 
-			WijkFragment wf = (WijkFragment) mPagerAdapter.getItem(i);
-			if(Gebruiker.zitInWelkeActie(getApplicationContext()) == wf.getActieId()) {
+					WijkFragment wf = (WijkFragment) mPagerAdapter.getItem(i);
+					if(Gebruiker.zitInWelkeActie(getApplicationContext()) == wf.getActieId()) {
 
-				wijkIndex = i;
-				break;
+						wijkIndex = i;
+						break;
+					}
+				}
+
+				if(wijkIndex != -1) {
+
+					mPager.setCurrentItem(wijkIndex);
+
+				} else {
+
+					new AlertDialog.Builder(this)
+					.setTitle("Ooops")
+					.setMessage("Je bent nog niet aangemeld bij een wijkactie!")
+					.show();
+				}
+			}
+
+			@Override 
+			protected void evalHuidigeWijk() {
+
+				WijkFragment huidigeWijk = ((WijkFragment) mPagerAdapter.getItem(mPager.getCurrentItem()));
+				huidigeWijk.evalActieButton();
+				huidigeWijk.evalWijkNaam();
+			}
+
+			@Override
+			public void onVideoFullscreen(String VIDEO_ID) {
+				if(!Locks.videofull){	
+					Locks.videofull = true;
+					Intent myIntent = new Intent(this, DetailVideoActivity.class);
+					myIntent.putExtra("url", VIDEO_ID);
+					this.startActivity(myIntent);
+				}
+
+			}
+
+			// Implementations of the ontouchlistener from wijkMapFragment
+			@Override
+			public void onTouchMap(String URL) {
+				if(!Locks.mapfull)
+				{
+					Locks.mapfull = true;
+					Intent myIntent = new Intent(this, DetailMapActivity.class);
+					myIntent.putExtra("url", URL);
+					this.startActivity(myIntent);
+				}
+			}
+
+			@Override
+			public void onTouchGoededoelen(String title, String description, String message) {
+				Intent myIntent = new Intent(this, DetailGoededoelenActivity.class);
+				myIntent.putExtra("title", title);
+				myIntent.putExtra("description", description);
+				myIntent.putExtra("message", message);
+				this.startActivity(myIntent);
+			}
+
+
+
+			@Override
+			public void onTouchFaq() {
+				Intent myIntent = new Intent(this, FaqActivity.class);
+				this.startActivity(myIntent);			
+			}
+
+			@Override
+			public void onTouchstappen(String p1, String p2, String p3, String p4, String p5) {
+				Intent myIntent = new Intent(this, DetailStappenActivity.class);
+				myIntent.putExtra("1", p1);
+				myIntent.putExtra("2", p2);
+				myIntent.putExtra("3", p3);
+				myIntent.putExtra("4", p4);
+				myIntent.putExtra("5", p5);
+				this.startActivity(myIntent);
 			}
 		}
-
-		if(wijkIndex != -1) {
-
-			mPager.setCurrentItem(wijkIndex);
-
-		} else {
-
-			new AlertDialog.Builder(this)
-			.setTitle("Ooops")
-			.setMessage("Je bent nog niet aangemeld bij een wijkactie!")
-			.show();
-		}
-	}
-
-	@Override 
-	protected void evalHuidigeWijk() {
-
-		WijkFragment huidigeWijk = ((WijkFragment) mPagerAdapter.getItem(mPager.getCurrentItem()));
-		huidigeWijk.evalActieButton();
-		huidigeWijk.evalWijkNaam();
-	}
-
-	@Override
-	public void onVideoFullscreen(String VIDEO_ID) {
-		if(!Locks.videofull){	
-			Locks.videofull = true;
-			Intent myIntent = new Intent(this, DetailVideoActivity.class);
-			myIntent.putExtra("url", VIDEO_ID);
-			this.startActivity(myIntent);
-		}
-
-	}
-
-	// Implementations of the ontouchlistener from wijkMapFragment
-	@Override
-	public void onTouchMap(String URL) {
-		if(!Locks.mapfull)
-		{
-			Locks.mapfull = true;
-		Intent myIntent = new Intent(this, DetailMapActivity.class);
-		myIntent.putExtra("url", URL);
-		this.startActivity(myIntent);
-		}
-	}
-
-	@Override
-	public void onTouchGoededoelen(String title, String description, String message) {
-		Intent myIntent = new Intent(this, DetailGoededoelenActivity.class);
-		myIntent.putExtra("title", title);
-		myIntent.putExtra("description", description);
-		myIntent.putExtra("message", message);
-		this.startActivity(myIntent);
-	}
-
-
-
-	@Override
-	public void onTouchFaq() {
-		Intent myIntent = new Intent(this, FaqActivity.class);
-		this.startActivity(myIntent);			
-	}
-
-	@Override
-	public void onTouchstappen(String p1, String p2, String p3, String p4, String p5) {
-		Intent myIntent = new Intent(this, DetailStappenActivity.class);
-		myIntent.putExtra("1", p1);
-		myIntent.putExtra("2", p2);
-		myIntent.putExtra("3", p3);
-		myIntent.putExtra("4", p4);
-		myIntent.putExtra("5", p5);
-		this.startActivity(myIntent);
-	}
-}

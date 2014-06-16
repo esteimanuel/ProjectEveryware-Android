@@ -134,7 +134,6 @@ public abstract class AccountFunctieActivity extends FragmentActivity implements
 
 				if(!value.isEmpty()) gebruiker.put(basicProfielPairs.get(key), value);
 			}
-
 			account.put("gebruiker", gebruiker.toString());
 
 			SharedPreferences.Editor edit = preferences.edit();
